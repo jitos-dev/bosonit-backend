@@ -27,14 +27,14 @@ public class Main {
                     //Cuando faltan los dos delimitadores de campo o el ultimo
                     if (delimiterCount == 0 || delimiterCount == 1) {
                         throw new InvalidLineFormatException("Los campos de la linea del fichero son insuficientes.\n" +
-                                "LINEA: 32 funcion getPersonList().\n" +
+                                "LINEA: 30 funcion getPersonList().\n" +
                                 "CAUSA: Faltan delimitadores");
                     }
 
                     // si no contiene nombre
                     if (fields[0].isBlank()) {
                         throw new InvalidLineFormatException("El campo nombre es obligatorio.\n" +
-                                "LINEA: 39 funcion getPersonList().\n" +
+                                "LINEA: 37 funcion getPersonList().\n" +
                                 "CAUSA: El campo nombre no puede estar vacio");
                     }
 
