@@ -1,3 +1,5 @@
+package dev.jitos.block1processfileandstreams;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -82,8 +84,8 @@ public class Main {
             //predicado para el filtro de personas que sean menores de 25 años
             Predicate<Person> ageLess25 = person->
                     !person.getAge().equalsIgnoreCase("unknown")
-                    && Integer.parseInt(person.getAge()) < 25
-                    && Integer.parseInt(person.getAge()) > 0;
+                            && Integer.parseInt(person.getAge()) < 25
+                            && Integer.parseInt(person.getAge()) > 0;
 
             //lista de personas del fichero .csv
             var persons = Main.getPersonList("./files/persons.csv");
