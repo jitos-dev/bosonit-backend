@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -81,17 +83,45 @@ public class Main {
     public static void main(String[] args) {
 
         try {
+            Path pathFile = Paths.get("./files/persons.csv");
+
+            //lista de personas del fichero .csv
+            var persons = Main.getPersonList(pathFile.toString());
+
             //predicado para el filtro de personas que sean menores de 25 años
-            Predicate<Person> ageLess25 = person->
+            Predicate<Person> ageLess25 = person ->
                     !person.getAge().equalsIgnoreCase("unknown")
                             && Integer.parseInt(person.getAge()) < 25
                             && Integer.parseInt(person.getAge()) > 0;
 
-            //lista de personas del fichero .csv
-            var persons = Main.getPersonList("./files/persons.csv");
+            Predicate<Person> startWithLetterA = person ->
+                    !person.getName().startsWith("A")
+                            && !person.getName().startsWith("Á")
+                            && !person.getName().startsWith("a");
 
-            var personsFilter = Main.filterPersonsByPredicate(ageLess25, persons);
+            Main.filterPersonsByPredicate(ageLess25, persons)
+                    .forEach(System.out::println);
+
+            System.out.println("--------------------------------");
+
+            var personsFilter = Main.filterPersonsByPredicate(startWithLetterA, persons);
             personsFilter.forEach(System.out::println);
+
+            System.out.println("--------------------------------");
+
+            var personMadrid = personsFilter.stream()
+                    .filter(person -> person.getTown().equalsIgnoreCase("Madrid"))
+                    .findFirst();
+
+            personMadrid.ifPresent(System.out::println);
+
+            System.out.println("--------------------------------");
+
+            var personBarcelona = personsFilter.stream()
+                    .filter(person -> person.getTown().equalsIgnoreCase("barcelona"))
+                    .findFirst();
+
+            personBarcelona.ifPresent(System.out::println);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
