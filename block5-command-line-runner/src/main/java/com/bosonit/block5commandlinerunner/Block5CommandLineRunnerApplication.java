@@ -42,16 +42,21 @@ public class Block5CommandLineRunnerApplication {
 		System.out.println("Hola desde clase secundaria");
 	}
 
-	private void thirdFunction() {
+	private void thirdFunction(String message) {
 		System.out.println("Soy la tercera clase");
+		System.out.println("Este es el valor pasado por parámetro: " + message);
 	}
 
 	@Bean
 	CommandLineRunner commandLineRunner(String... args) {
 		return value -> {
 			log.info("Value: " + Arrays.asList(value));
+
 			secondFunction();
-			thirdFunction();
+
+			var arg = Arrays.asList(value);
+			String message = arg.isEmpty() ? "Sin valor" : String.join(", ", arg);
+			thirdFunction(message);
 		};
 	}
 }
