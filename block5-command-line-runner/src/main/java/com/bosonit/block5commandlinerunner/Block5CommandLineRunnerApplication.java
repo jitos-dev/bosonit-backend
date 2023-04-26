@@ -1,7 +1,9 @@
 package com.bosonit.block5commandlinerunner;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -47,6 +49,16 @@ public class Block5CommandLineRunnerApplication {
 		System.out.println("Este es el valor pasado por parámetro: " + message);
 	}
 
+	//---------  Exercise part two -------------
+	@Resource(name = "greetingValue")
+	private String greeting;
+
+	@Resource(name = "myNumberValue")
+	private String number;
+
+	@Resource(name = "getNewPropertyValue")
+	private String newProperty;
+
 	@Bean
 	CommandLineRunner commandLineRunner(String... args) {
 		return value -> {
@@ -57,6 +69,11 @@ public class Block5CommandLineRunnerApplication {
 			var arg = Arrays.asList(value);
 			String message = arg.isEmpty() ? "Sin valor" : String.join(", ", arg);
 			thirdFunction(message);
+
+			//Exercise part two
+			System.out.println("El valor de greeting es: " + greeting);
+			System.out.println("El valor de my.number es: " + number);
+			System.out.println("El valor de new.property es: " + newProperty);
 		};
 	}
 }
