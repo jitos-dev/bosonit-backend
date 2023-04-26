@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--Filtros para los mensajes de la consola-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <!--El primer filtro lo establezco en el nivel más bajo que es trace para que lo acepte todo-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <!--Este es para excluir los de tipo ERROR-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+    </appender>
+
+    <!--Filtros para los mensajes del fichero de log-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/myapp.log</file>
+        <!--Crea un archivo cada vez que se arranca la aplicacion-->
+        <prudent>true</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/myapp.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>5kb</maxFileSize>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <!--Ponemos las dos configuraciones en el root-->
+    <root level="trace">
+        <appender-ref ref="console" />
+        <appender-ref ref="file" />
+    </root>
+
+</configuration>
