@@ -18,11 +18,6 @@ public class PersonController1 {
 
     private final CityService cityService;
 
-//    public PersonController1(PersonService service, CityService cityService) {
-//        this.service = service;
-//        this.cityService = cityService;
-//    }
-
     @GetMapping(value = "/addPersona")
     public ResponseEntity<Person> addPersona(
             @RequestHeader("name") String name,
