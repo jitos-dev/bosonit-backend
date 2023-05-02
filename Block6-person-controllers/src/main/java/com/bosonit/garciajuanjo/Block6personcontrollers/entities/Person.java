@@ -1,4 +1,4 @@
-package com.bosonit.garciajuanjo.Block6personcontrollers;
+package com.bosonit.garciajuanjo.Block6personcontrollers.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

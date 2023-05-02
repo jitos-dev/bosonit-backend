@@ -1,6 +1,6 @@
-package com.bosonit.garciajuanjo.Block6personcontrollers.controllers;
+package com.bosonit.garciajuanjo.Block6personcontrollers.services;
 
-import com.bosonit.garciajuanjo.Block6personcontrollers.Person;
+import com.bosonit.garciajuanjo.Block6personcontrollers.entities.Person;
 import org.springframework.stereotype.Service;
 
 @Service
