@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -16,10 +17,11 @@ public class PersonController {
     @Autowired
     private PersonService service;
 
-    @PostMapping
-    public ResponseEntity<Person> addPerson(@RequestBody Person person) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(person).orElseThrow());
+    @GetMapping
+    public ResponseEntity<List<Person>> allPersons() {
+        return ResponseEntity.ok().body(service.getAll());
     }
+
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Person> getById(@PathVariable Long id) {
@@ -31,18 +33,39 @@ public class PersonController {
 
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Person> update(@RequestBody Person person, @PathVariable Long id) {
-        if (!service.existById(id))
+    @GetMapping(value = "/name/{name}")
+    public ResponseEntity<List<Person>> personByName(@PathVariable String name) {
+        List<Person> persons = service.getPersonsByName(name);
+
+        if (persons.isEmpty())
             return ResponseEntity.notFound().build();
 
-        Person personUpdated = new Person();
-        personUpdated.setIdPerson(id);
-        personUpdated.setName(person.getName() == null ? "" : person.getName());
-        personUpdated.setAge(person.getAge() == null ? "" : person.getAge());
-        personUpdated.setPopulation(person.getPopulation() == null ? "" : person.getPopulation());
+        return ResponseEntity.ok().body(persons);
+    }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(personUpdated).orElseThrow());
+    @PostMapping
+    public ResponseEntity<Person> addPerson(@RequestBody Person person) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(person).orElseThrow());
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Person> update(@RequestBody Person person, @PathVariable Long id) {
+        Optional<Person> optPerson = service.update(id, person);
+
+        return optPerson.map(value ->
+                        ResponseEntity.ok().body(value))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        Optional<Person> person = service.delete(id);
+
+        if (person.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.noContent().build();
     }
 
 }

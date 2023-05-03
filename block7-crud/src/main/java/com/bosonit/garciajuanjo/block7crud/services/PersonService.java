@@ -11,8 +11,11 @@ public interface PersonService {
 
     Optional<Person> getPersonById(Long id);
 
+    List<Person> getPersonsByName(String name);
+
     List<Person> getAll();
 
-    Boolean existById(Long id);
+    Optional<Person> delete(Long id);
 
+    Optional<Person> update(Long id, Person person);
 }
