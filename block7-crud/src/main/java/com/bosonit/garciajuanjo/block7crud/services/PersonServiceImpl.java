@@ -28,4 +28,9 @@ public class PersonServiceImpl implements PersonService{
     public List<Person> getAll() {
         return repository.findAll();
     }
+
+    @Override
+    public Boolean existById(Long id) {
+        return repository.existsById(id);
+    }
 }

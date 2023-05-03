@@ -18,11 +18,7 @@ public class PersonController {
 
     @PostMapping
     public ResponseEntity<Person> addPerson(@RequestBody Person person) {
-        Optional<Person> optPerson = service.save(person);
-
-        return optPerson.map(value ->
-                        ResponseEntity.status(HttpStatus.CREATED).body(value))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(person).orElseThrow());
     }
 
     @GetMapping(value = "/{id}")
@@ -33,6 +29,20 @@ public class PersonController {
                         ResponseEntity.ok().body(value))
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Person> update(@RequestBody Person person, @PathVariable Long id) {
+        if (!service.existById(id))
+            return ResponseEntity.notFound().build();
+
+        Person personUpdated = new Person();
+        personUpdated.setIdPerson(id);
+        personUpdated.setName(person.getName() == null ? "" : person.getName());
+        personUpdated.setAge(person.getAge() == null ? "" : person.getAge());
+        personUpdated.setPopulation(person.getPopulation() == null ? "" : person.getPopulation());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(personUpdated).orElseThrow());
     }
 
 }

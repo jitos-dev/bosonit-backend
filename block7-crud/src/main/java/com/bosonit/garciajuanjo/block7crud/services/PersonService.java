@@ -13,4 +13,6 @@ public interface PersonService {
 
     List<Person> getAll();
 
+    Boolean existById(Long id);
+
 }
