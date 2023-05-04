@@ -24,18 +24,22 @@ public class Person {
     @Column(name = "id_person")
     @JsonProperty(value = "id_person")
     private Integer idPerson;
-    @Column(name = "usuario")
+    @Column(name = "usuario", nullable = false, length = 10)
     private String user;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String name;
     private String surname;
-    @Column(name = "company_email")
+    @Column(name = "company_email", nullable = false)
     private String companyEmail;
-    @Column(name = "personal_email")
+    @Column(name = "personal_email", nullable = false)
     private String personalEmail;
+    @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
     private Boolean active;
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false)
     private Date createdDate;
     @Column(name = "image_url")
     private String imageUrl;

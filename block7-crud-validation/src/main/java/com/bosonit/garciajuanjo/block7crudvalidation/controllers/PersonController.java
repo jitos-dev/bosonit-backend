@@ -45,18 +45,27 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<PersonOutputDto> addPerson(@RequestBody PersonInputDto personInputDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(personInputDto).orElseThrow());
+    public ResponseEntity<?> addPerson(@RequestBody PersonInputDto personInputDto) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.save(personInputDto).orElseThrow());
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<PersonOutputDto> update(@RequestBody PersonInputDto personInputDto, @PathVariable Integer id) {
-        Optional<PersonOutputDto> optPerson = service.update(id, personInputDto);
+    public ResponseEntity<?> update(@RequestBody PersonInputDto personInputDto, @PathVariable Integer id) {
+        try {
+            Optional<PersonOutputDto> optPerson = service.update(id, personInputDto);
 
-        return optPerson.map(value ->
-                        ResponseEntity.ok().body(value))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+            return optPerson.map(value ->
+                            ResponseEntity.ok().body(value))
+                    .orElseGet(() -> ResponseEntity.notFound().build());
 
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping(value = "/{id}")

@@ -42,13 +42,20 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<PersonOutputDto> save(PersonInputDto personInputDto) {
-        return Optional.of(repository.save(new Person(personInputDto))
-                .personToPersonOutputDto());
+    public Optional<PersonOutputDto> save(PersonInputDto personInputDto) throws Exception {
+            if (isAllFieldsCorrect(personInputDto)) {
+                return Optional.of(repository.save(new Person(personInputDto))
+                        .personToPersonOutputDto());
+            }
+
+            return Optional.empty();
     }
 
     @Override
-    public Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto) {
+    public Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto) throws Exception {
+        if (!isAllFieldsCorrect(personInputDto))
+            return Optional.empty();
+
         Optional<Person> optPerson = repository.findById(id);
 
         if (optPerson.isEmpty())
@@ -82,5 +89,36 @@ public class PersonServiceImpl implements PersonService {
         repository.delete(person.get());
 
         return person.map(Person::personToPersonOutputDto);
+    }
+
+    private Boolean isAllFieldsCorrect(PersonInputDto personInputDto) throws Exception {
+        if (personInputDto.getUser() == null)
+            throw new Exception("The user field cannot be null");
+
+        if (personInputDto.getUser().length() < 6 || personInputDto.getUser().length() > 10)
+            throw new Exception("The user length cannot be less than 6 characters or greater than 12");
+
+        if (personInputDto.getPassword() == null)
+            throw new Exception("The password field cannot be null");
+
+        if (personInputDto.getName() == null)
+            throw new Exception("The name field cannot be null");
+
+        if (personInputDto.getCompanyEmail() == null)
+            throw new Exception("The company email field cannot be null");
+
+        if (personInputDto.getPersonalEmail() == null)
+            throw new Exception("The personal email field cannot be null");
+
+        if (personInputDto.getCity() == null)
+            throw new Exception("The city field cannot be null");
+
+        if (personInputDto.getActive() == null)
+            throw new Exception("The active field cannot be null");
+
+        if (personInputDto.getCreatedDate() == null)
+            throw new Exception("The created date field cannot be null");
+
+        return true;
     }
 }

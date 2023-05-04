@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface PersonService {
 
-    Optional<PersonOutputDto> save(PersonInputDto personInputDto);
+    Optional<PersonOutputDto> save(PersonInputDto personInputDto) throws Exception;
 
     Optional<PersonOutputDto> getPersonById(int id);
 
@@ -19,5 +19,5 @@ public interface PersonService {
 
     Optional<PersonOutputDto> delete(int id);
 
-    Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto);
+    Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto) throws Exception;
 }
