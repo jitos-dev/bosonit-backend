@@ -5,11 +5,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +31,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonOutputDto> getPersonsByName(String name) {
-        return repository.findByName(name).stream()
+    public List<PersonOutputDto> getPersonsByUser(String user) {
+        return repository.findByUser(user).stream()
                 .map(Person::personToPersonOutputDto)
                 .toList();
     }
@@ -52,28 +48,16 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto) throws Exception {
-        if (!isAllFieldsCorrect(personInputDto))
-            return Optional.empty();
-
+    public Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto) {
         Optional<Person> optPerson = repository.findById(id);
 
         if (optPerson.isEmpty())
             return Optional.empty();
 
-        Person personUpdated = optPerson.get();
-        personUpdated.setIdPerson(id);
-        personUpdated.setName(personInputDto.getName() == null ? personUpdated.getName() : personInputDto.getName());
-        personUpdated.setUser(personInputDto.getUser() == null ? personUpdated.getUser() : personInputDto.getUser());
-        personUpdated.setPassword(personInputDto.getPassword() == null ? personUpdated.getPassword() : personInputDto.getPassword());
-        personUpdated.setSurname(personInputDto.getSurname() == null ? personUpdated.getSurname() : personInputDto.getSurname());
-        personUpdated.setCompanyEmail(personInputDto.getCompanyEmail() == null ? personUpdated.getCompanyEmail() : personInputDto.getCompanyEmail());
-        personUpdated.setPersonalEmail(personInputDto.getPersonalEmail() == null ? personUpdated.getPersonalEmail() : personInputDto.getPersonalEmail());
-        personUpdated.setCity(personInputDto.getCity() == null ? personUpdated.getCity() : personInputDto.getCity());
-        personUpdated.setActive(personInputDto.getActive() == null ? personUpdated.getActive() : personInputDto.getActive());
-        personUpdated.setCreatedDate(personInputDto.getCreatedDate() == null ? personUpdated.getCreatedDate() : personInputDto.getCreatedDate());
-        personUpdated.setImageUrl(personInputDto.getImageUrl() == null ? personUpdated.getImageUrl() : personInputDto.getImageUrl());
-        personUpdated.setTerminationDate(personInputDto.getTerminationDate() == null ? personUpdated.getTerminationDate() : personInputDto.getTerminationDate());
+        Person person = optPerson.get();
+        person.setIdPerson(id);
+
+        Person personUpdated = getPersonUpdated(personInputDto, person);
 
         return Optional.of(repository.save(personUpdated).personToPersonOutputDto());
     }
@@ -120,5 +104,20 @@ public class PersonServiceImpl implements PersonService {
             throw new Exception("The created date field cannot be null");
 
         return true;
+    }
+
+    private Person getPersonUpdated(PersonInputDto personInputDto, Person person) {
+        person.setName(personInputDto.getName() == null ? person.getName() : personInputDto.getName());
+        person.setUser(personInputDto.getUser() == null ? person.getUser() : personInputDto.getUser());
+        person.setPassword(personInputDto.getPassword() == null ? person.getPassword() : personInputDto.getPassword());
+        person.setSurname(personInputDto.getSurname() == null ? person.getSurname() : personInputDto.getSurname());
+        person.setCompanyEmail(personInputDto.getCompanyEmail() == null ? person.getCompanyEmail() : personInputDto.getCompanyEmail());
+        person.setPersonalEmail(personInputDto.getPersonalEmail() == null ? person.getPersonalEmail() : personInputDto.getPersonalEmail());
+        person.setCity(personInputDto.getCity() == null ? person.getCity() : personInputDto.getCity());
+        person.setActive(personInputDto.getActive() == null ? person.getActive() : personInputDto.getActive());
+        person.setCreatedDate(personInputDto.getCreatedDate() == null ? person.getCreatedDate() : personInputDto.getCreatedDate());
+        person.setImageUrl(personInputDto.getImageUrl() == null ? person.getImageUrl() : personInputDto.getImageUrl());
+        person.setTerminationDate(personInputDto.getTerminationDate() == null ? person.getTerminationDate() : personInputDto.getTerminationDate());
+        return person;
     }
 }

@@ -34,9 +34,9 @@ public class PersonController {
 
     }
 
-    @GetMapping(value = "/name/{name}")
-    public ResponseEntity<List<PersonOutputDto>> personByName(@PathVariable String name) {
-        List<PersonOutputDto> persons = service.getPersonsByName(name);
+    @GetMapping(value = "/user/{user}")
+    public ResponseEntity<List<PersonOutputDto>> personByName(@PathVariable String user) {
+        List<PersonOutputDto> persons = service.getPersonsByUser(user);
 
         if (persons.isEmpty())
             return ResponseEntity.notFound().build();
@@ -56,16 +56,12 @@ public class PersonController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> update(@RequestBody PersonInputDto personInputDto, @PathVariable Integer id) {
-        try {
+
             Optional<PersonOutputDto> optPerson = service.update(id, personInputDto);
 
             return optPerson.map(value ->
                             ResponseEntity.ok().body(value))
                     .orElseGet(() -> ResponseEntity.notFound().build());
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
     }
 
     @DeleteMapping(value = "/{id}")
