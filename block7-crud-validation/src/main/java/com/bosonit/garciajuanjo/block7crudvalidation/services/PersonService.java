@@ -13,11 +13,11 @@ public interface PersonService {
 
     Optional<PersonOutputDto> getPersonById(int id);
 
-    List<PersonOutputDto> getPersonsByName(String name);
+    List<PersonOutputDto> getPersonsByUser(String name);
 
     List<PersonOutputDto> getAll();
 
     Optional<PersonOutputDto> delete(int id);
 
-    Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto) throws Exception;
+    Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto);
 }

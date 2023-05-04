@@ -5,11 +5,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +31,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonOutputDto> getPersonsByName(String name) {
-        return repository.findByName(name).stream()
+    public List<PersonOutputDto> getPersonsByUser(String user) {
+        return repository.findByUser(user).stream()
                 .map(Person::personToPersonOutputDto)
                 .toList();
     }
@@ -52,10 +48,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto) throws Exception {
-        if (!isAllFieldsCorrect(personInputDto))
-            return Optional.empty();
-
+    public Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto) {
         Optional<Person> optPerson = repository.findById(id);
 
         if (optPerson.isEmpty())
