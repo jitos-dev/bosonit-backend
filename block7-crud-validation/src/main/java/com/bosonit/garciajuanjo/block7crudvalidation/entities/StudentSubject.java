@@ -8,33 +8,32 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Date;
+
 @Entity
-@Table(name = "students")
+@Table(name = "student_subject")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+public class StudentSubject {
 
     @Id
     @GeneratedValue(generator = "myGenerator")
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
-    @Column(name = "id_student")
-    @JsonProperty(value = "id_student")
-    private Long idStudent;
+    @Column(name = "id_subject")
+    @JsonProperty(value = "id_subject")
+    private Long idSubject;
 
-    @Column(name = "num_hours_week", nullable = false)
-    @JsonProperty(value = "num_hours_week")
-    private Integer numHoursWeek;
+    private String subject;
 
     private String comments;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Branch branch;
+    @Column(name = "initial_date", nullable = false)
+    @JsonProperty(value = "initial_date")
+    private Date initialDate;
 
-    @OneToOne
-    private Person person;
-
+    @Column(name = "finish_date")
+    @JsonProperty(value = "finish_date")
+    private Date finishDate;
 }
-

@@ -23,7 +23,7 @@ public class Person {
     @Id
     @GeneratedValue(generator = "myGenerator")
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
-    @Column(name = "id_person", nullable = false, unique = true)
+    @Column(name = "id_person")
     @JsonProperty(value = "id_person")
     private String idPerson;
 
@@ -58,6 +58,11 @@ public class Person {
 
     @Column(name = "termination_date")
     private Date terminationDate;
+
+    @OneToOne
+    @JoinColumn(name = "student_id", unique = true)
+    @JsonProperty(value = "student_id")
+    private Student student;
 
     public Person(PersonInputDto personInputDto) {
         this.idPerson = personInputDto.getIdPerson();
