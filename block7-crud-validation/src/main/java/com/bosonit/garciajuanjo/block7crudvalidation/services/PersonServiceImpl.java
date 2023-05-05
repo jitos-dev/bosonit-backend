@@ -3,6 +3,8 @@ package com.bosonit.garciajuanjo.block7crudvalidation.services;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
+import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,18 +29,26 @@ public class PersonServiceImpl implements PersonService {
     public Optional<PersonOutputDto> getPersonById(int id) {
         Optional<Person> person = repository.findById(id);
 
+        if (person.isEmpty())
+            throw new EntityNotFoundException();
+
         return person.map(Person::personToPersonOutputDto);
     }
 
     @Override
     public List<PersonOutputDto> getPersonsByUser(String user) {
-        return repository.findByUser(user).stream()
+        List<Person> personList = repository.findByUser(user);
+
+        if (personList.isEmpty())
+            throw new EntityNotFoundException();
+
+        return personList.stream()
                 .map(Person::personToPersonOutputDto)
                 .toList();
     }
 
     @Override
-    public Optional<PersonOutputDto> save(PersonInputDto personInputDto) throws Exception {
+    public Optional<PersonOutputDto> save(PersonInputDto personInputDto) {
             if (isAllFieldsCorrect(personInputDto)) {
                 return Optional.of(repository.save(new Person(personInputDto))
                         .personToPersonOutputDto());
@@ -52,7 +62,7 @@ public class PersonServiceImpl implements PersonService {
         Optional<Person> optPerson = repository.findById(id);
 
         if (optPerson.isEmpty())
-            return Optional.empty();
+            throw new EntityNotFoundException();
 
         Person person = optPerson.get();
         person.setIdPerson(id);
@@ -64,49 +74,52 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override
-    public Optional<PersonOutputDto> delete(int id) {
+    public void delete(int id) {
         Optional<Person> person = repository.findById(id);
 
         if (person.isEmpty())
-            return Optional.empty();
+            throw new EntityNotFoundException();
 
         repository.delete(person.get());
-
-        return person.map(Person::personToPersonOutputDto);
     }
 
-    private Boolean isAllFieldsCorrect(PersonInputDto personInputDto) throws Exception {
+    private Boolean isAllFieldsCorrect(PersonInputDto personInputDto) {
         if (personInputDto.getUser() == null)
-            throw new Exception("The user field cannot be null");
+            throw new UnprocessableEntityException("The user field cannot be null");
 
         if (personInputDto.getUser().length() < 6 || personInputDto.getUser().length() > 10)
-            throw new Exception("The user length cannot be less than 6 characters or greater than 12");
+            throw new UnprocessableEntityException("The user length cannot be less than 6 characters or greater than 12");
 
         if (personInputDto.getPassword() == null)
-            throw new Exception("The password field cannot be null");
+            throw new UnprocessableEntityException("The password field cannot be null");
 
         if (personInputDto.getName() == null)
-            throw new Exception("The name field cannot be null");
+            throw new UnprocessableEntityException("The name field cannot be null");
 
         if (personInputDto.getCompanyEmail() == null)
-            throw new Exception("The company email field cannot be null");
+            throw new UnprocessableEntityException("The company email field cannot be null");
 
         if (personInputDto.getPersonalEmail() == null)
-            throw new Exception("The personal email field cannot be null");
+            throw new UnprocessableEntityException("The personal email field cannot be null");
 
         if (personInputDto.getCity() == null)
-            throw new Exception("The city field cannot be null");
+            throw new UnprocessableEntityException("The city field cannot be null");
 
         if (personInputDto.getActive() == null)
-            throw new Exception("The active field cannot be null");
+            throw new UnprocessableEntityException("The active field cannot be null");
 
         if (personInputDto.getCreatedDate() == null)
-            throw new Exception("The created date field cannot be null");
+            throw new UnprocessableEntityException("The created date field cannot be null");
 
         return true;
     }
 
     private Person getPersonUpdated(PersonInputDto personInputDto, Person person) {
+
+        if (personInputDto.getUser() != null && (personInputDto.getUser().length() < 6 || personInputDto.getUser().length() > 10))
+            throw new UnprocessableEntityException("The user length cannot be less than 6 characters or greater than 12");
+
+
         person.setName(personInputDto.getName() == null ? person.getName() : personInputDto.getName());
         person.setUser(personInputDto.getUser() == null ? person.getUser() : personInputDto.getUser());
         person.setPassword(personInputDto.getPassword() == null ? person.getPassword() : personInputDto.getPassword());
