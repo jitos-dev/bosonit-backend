@@ -10,10 +10,6 @@ public class MyIdentifierGenerator implements IdentifierGenerator {
 
     @Override
     public Object generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException {
-        return generateId();
-    }
-
-    private String generateId() {
         return UUID.randomUUID().toString();
     }
 }

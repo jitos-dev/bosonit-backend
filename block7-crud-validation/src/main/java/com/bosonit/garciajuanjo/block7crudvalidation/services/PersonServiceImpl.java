@@ -26,7 +26,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<PersonOutputDto> getPersonById(int id) {
+    public Optional<PersonOutputDto> getPersonById(String id) {
         Optional<Person> person = repository.findById(id);
 
         if (person.isEmpty())
@@ -58,7 +58,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto) {
+    public Optional<PersonOutputDto> update(String id, PersonInputDto personInputDto) {
         Optional<Person> optPerson = repository.findById(id);
 
         if (optPerson.isEmpty())
@@ -74,7 +74,7 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override
-    public void delete(int id) {
+    public void delete(String id) {
         Optional<Person> person = repository.findById(id);
 
         if (person.isEmpty())
