@@ -8,11 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
-@Table(name = "person")
+@Table(name = "persons")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,10 +22,11 @@ import java.util.Date;
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_person")
+    @GeneratedValue(generator = "myGenerator")
+    @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
+    @Column(name = "id_person", nullable = false, unique = true)
     @JsonProperty(value = "id_person")
-    private Integer idPerson;
+    private String idPerson;
     @Column(name = "usuario", nullable = false, length = 10)
     private String user;
     @Column(nullable = false)
@@ -45,6 +48,37 @@ public class Person {
     private String imageUrl;
     @Column(name = "termination_date")
     private Date terminationDate;
+
+/*
+    public Person(String user,
+                  String password,
+                  String name,
+                  String surname,
+                  String companyEmail,
+                  String personalEmail,
+                  String city,
+                  Boolean active,
+                  Date createdDate,
+                  String imageUrl,
+                  Date terminationDate) {
+        this.idPerson = generateId();
+        this.user = user;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.companyEmail = companyEmail;
+        this.personalEmail = personalEmail;
+        this.city = city;
+        this.active = active;
+        this.createdDate = createdDate;
+        this.imageUrl = imageUrl;
+        this.terminationDate = terminationDate;
+    }
+
+    public Person(){
+        this.idPerson = generateId();
+    }
+*/
 
     public Person(PersonInputDto personInputDto) {
         this.idPerson = personInputDto.getIdPerson();
@@ -76,5 +110,6 @@ public class Person {
                 this.imageUrl,
                 this.terminationDate);
     }
+
 }
 

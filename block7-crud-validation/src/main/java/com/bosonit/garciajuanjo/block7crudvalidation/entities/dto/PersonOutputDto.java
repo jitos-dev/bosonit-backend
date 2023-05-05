@@ -15,7 +15,7 @@ import java.util.Date;
 public class PersonOutputDto {
 
     @JsonProperty(value = "id_persona")
-    private Integer idPerson;
+    private String idPerson;
     @JsonProperty(value = "usuario")
     private String user;
     private String password;
