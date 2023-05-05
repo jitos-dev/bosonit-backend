@@ -1,6 +1,5 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services;
 
-
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
 
@@ -9,7 +8,7 @@ import java.util.Optional;
 
 public interface PersonService {
 
-    Optional<PersonOutputDto> save(PersonInputDto personInputDto) throws Exception;
+    Optional<PersonOutputDto> save(PersonInputDto personInputDto);
 
     Optional<PersonOutputDto> getPersonById(int id);
 
@@ -17,7 +16,7 @@ public interface PersonService {
 
     List<PersonOutputDto> getAll();
 
-    Optional<PersonOutputDto> delete(int id);
+    void delete(int id);
 
     Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto);
 }
