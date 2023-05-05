@@ -23,7 +23,7 @@ public class Student {
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
     @Column(name = "id_student")
     @JsonProperty(value = "id_student")
-    private Long idStudent;
+    private String idStudent;
 
     @Column(name = "num_hours_week", nullable = false)
     @JsonProperty(value = "num_hours_week")

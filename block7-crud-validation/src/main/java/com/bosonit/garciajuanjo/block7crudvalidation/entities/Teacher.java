@@ -1,6 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
-
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class Teacher {
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
     @Column(name = "id_teacher")
     @JsonProperty(value = "id_teacher")
-    private Long idTeacher;
+    private String idTeacher;
 
     private String comments;
 
@@ -30,4 +31,17 @@ public class Teacher {
     @Column(nullable = false)
     private Branch branch;
 
+    public Teacher(TeacherInputDto dto) {
+        this.idTeacher = dto.getIdTeacher();
+        this.comments = dto.getComments();
+        this.branch = dto.getBranch();
+    }
+
+    public TeacherOutputDto teacherToTeacherOutputDto(){
+        return new TeacherOutputDto(
+                this.idTeacher,
+                this.comments,
+                this.branch
+        );
+    }
 }

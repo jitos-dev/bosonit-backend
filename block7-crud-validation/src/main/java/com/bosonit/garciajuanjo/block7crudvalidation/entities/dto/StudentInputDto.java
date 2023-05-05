@@ -15,7 +15,7 @@ import lombok.Setter;
 public class StudentInputDto {
 
     @JsonProperty(value = "id_student")
-    private Long idStudent;
+    private String idStudent;
 
     @JsonProperty(value = "num_hours_week")
     private Integer numHoursWeek;

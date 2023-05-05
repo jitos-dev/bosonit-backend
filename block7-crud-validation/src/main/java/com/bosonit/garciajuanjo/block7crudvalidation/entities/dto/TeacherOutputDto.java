@@ -1,7 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.entities.dto;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Branch;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,18 +11,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentOutputDto {
+public class TeacherOutputDto {
 
-    @JsonProperty(value = "id_student")
-    private String idStudent;
-
-    @JsonProperty(value = "num_hours_week")
-    private Integer numHoursWeek;
+    @JsonProperty(value = "id_teacher")
+    private String idTeacher;
 
     private String comments;
 
     private Branch branch;
-
-    @JsonProperty(value = "id_person")
-    private Person person;
 }
