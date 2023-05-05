@@ -29,4 +29,5 @@ public class Teacher {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Branch branch;
+
 }

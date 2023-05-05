@@ -1,5 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,5 +38,22 @@ public class Student {
     @OneToOne
     private Person person;
 
+    public Student(StudentInputDto dto) {
+        this.idStudent = dto.getIdStudent();
+        this.numHoursWeek = dto.getNumHoursWeek();
+        this.comments = dto.getComments();
+        this.branch = dto.getBranch();
+        this.person = dto.getPerson();
+    }
+
+    public StudentOutputDto studentToStudentOutputDto() {
+        return new StudentOutputDto(
+                this.idStudent,
+                this.numHoursWeek,
+                this.comments,
+                this.branch,
+                this.person
+        );
+    }
 }
 
