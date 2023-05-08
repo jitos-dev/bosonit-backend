@@ -61,4 +61,15 @@ public class StudentSubject {
                 this.student.studentToStudentOutputDto()
         );
     }
+
+    public StudentSubjectInputDto studentSubjectToStudentSubjectInputDto() {
+        return new StudentSubjectInputDto(
+                this.idStudentSubject,
+                this.subject,
+                this.comments,
+                this.initialDate,
+                this.finishDate,
+                this.student.studentToStudentInputDto()
+        );
+    }
 }

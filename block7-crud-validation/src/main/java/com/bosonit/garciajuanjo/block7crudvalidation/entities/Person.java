@@ -89,5 +89,21 @@ public class Person {
                 this.imageUrl,
                 this.terminationDate);
     }
+
+    public PersonInputDto personToPersonInputDto() {
+        return new PersonInputDto(
+                this.idPerson,
+                this.user,
+                this.password,
+                this.name,
+                this.surname,
+                this.companyEmail,
+                this.personalEmail,
+                this.city,
+                this.active,
+                this.createdDate,
+                this.imageUrl,
+                this.terminationDate);
+    }
 }
 

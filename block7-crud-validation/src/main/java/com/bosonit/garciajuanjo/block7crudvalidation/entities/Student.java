@@ -54,5 +54,15 @@ public class Student {
                 this.person.personToPersonOutputDto()
         );
     }
+
+    public StudentInputDto studentToStudentInputDto() {
+        return new StudentInputDto(
+                this.idStudent,
+                this.numHoursWeek,
+                this.comments,
+                this.branch,
+                this.person.personToPersonInputDto()
+        );
+    }
 }
 

@@ -51,6 +51,9 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
         if (inputDto.getInitialDate() == null)
             throw new UnprocessableEntityException("The initial date field cannot be null");
 
+        // de esta forma como el Student lo obtenemos de bd lo tenemos con todos sus datos aunque esté vacio
+        inputDto.setStudent(optStudent.get().studentToStudentInputDto());
+
         return Optional.of(studentSubjectRepository
                 .save(new StudentSubject(inputDto))
                 .studentSubjectToStudentSubjectOutputDto());
@@ -58,13 +61,12 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
 
     @Override
     public Optional<StudentSubjectOutputDto> update(String id, StudentSubjectInputDto inputDto) {
-        Optional<StudentSubject> optStudentSubject = studentSubjectRepository.findById(inputDto.getIdStudentSubject());
+        Optional<StudentSubject> optStudentSubject = studentSubjectRepository.findById(id);
 
         if (optStudentSubject.isEmpty())
             throw new UnprocessableEntityException("The id of the student doesn't correspond to any student subject");
 
         StudentSubject studentSubjectDb = getStudentSubjectUpdated(optStudentSubject.get(), inputDto);
-
 
         return Optional.of(studentSubjectRepository.save(studentSubjectDb)
                 .studentSubjectToStudentSubjectOutputDto());
