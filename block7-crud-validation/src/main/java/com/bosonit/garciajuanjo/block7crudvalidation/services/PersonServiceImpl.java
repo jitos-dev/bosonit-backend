@@ -65,7 +65,6 @@ public class PersonServiceImpl implements PersonService {
             throw new EntityNotFoundException();
 
         Person person = optPerson.get();
-        //person.setIdPerson(id);
 
         Person personUpdated = getPersonUpdated(personInputDto, person);
 
