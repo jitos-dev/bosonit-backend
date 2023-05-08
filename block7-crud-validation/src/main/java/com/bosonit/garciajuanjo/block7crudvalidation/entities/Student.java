@@ -22,11 +22,9 @@ public class Student {
     @GeneratedValue(generator = "myGenerator")
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
     @Column(name = "id_student")
-    @JsonProperty(value = "id_student")
     private String idStudent;
 
     @Column(name = "num_hours_week", nullable = false)
-    @JsonProperty(value = "num_hours_week")
     private Integer numHoursWeek;
 
     private String comments;
