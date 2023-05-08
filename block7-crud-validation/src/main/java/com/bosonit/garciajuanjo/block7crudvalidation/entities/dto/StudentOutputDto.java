@@ -24,6 +24,6 @@ public class StudentOutputDto {
 
     private Branch branch;
 
-    @JsonProperty(value = "id_person")
-    private Person person;
+    @JsonProperty(value = "person")
+    private PersonOutputDto person;
 }

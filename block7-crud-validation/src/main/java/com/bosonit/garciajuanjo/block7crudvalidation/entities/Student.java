@@ -36,6 +36,7 @@ public class Student {
     private Branch branch;
 
     @OneToOne
+    @JoinColumn(name = "person_id")
     private Person person;
 
     public Student(StudentInputDto dto) {
@@ -43,7 +44,7 @@ public class Student {
         this.numHoursWeek = dto.getNumHoursWeek();
         this.comments = dto.getComments();
         this.branch = dto.getBranch();
-        this.person = dto.getPerson();
+        this.person = new Person(dto.getPerson());
     }
 
     public StudentOutputDto studentToStudentOutputDto() {
@@ -52,7 +53,7 @@ public class Student {
                 this.numHoursWeek,
                 this.comments,
                 this.branch,
-                this.person
+                this.person.personToPersonOutputDto()
         );
     }
 }

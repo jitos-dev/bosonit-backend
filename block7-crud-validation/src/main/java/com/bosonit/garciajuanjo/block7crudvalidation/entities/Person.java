@@ -59,11 +59,6 @@ public class Person {
     @Column(name = "termination_date")
     private Date terminationDate;
 
-    @OneToOne
-    @JoinColumn(name = "student_id", unique = true)
-    @JsonProperty(value = "student_id")
-    private Student student;
-
     public Person(PersonInputDto personInputDto) {
         this.idPerson = personInputDto.getIdPerson();
         this.user = personInputDto.getUser();
