@@ -2,7 +2,6 @@ package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
@@ -49,9 +48,13 @@ public class TeacherServiceImpl implements TeacherService {
         if (optPerson.isEmpty())
             throw new UnprocessableEntityException("The id of the person doesn't correspond to any user");
 
+        Optional<String> teacherId = teacherRepository.findTeacherIdFromIdPerson(optPerson.get().getIdPerson());
+
+        if (teacherId.isPresent())
+            throw new UnprocessableEntityException("The person's id is already associated with a teacher");
+
         if (isAllFieldsCorrect(teacherInputDto))
             return Optional.of(teacherRepository.save(new Teacher(teacherInputDto)).teacherToTeacherOutputDto());
-
 
         return Optional.empty();
     }

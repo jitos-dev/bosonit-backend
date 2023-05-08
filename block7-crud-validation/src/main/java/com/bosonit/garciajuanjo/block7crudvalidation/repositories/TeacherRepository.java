@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
     /*Esta es una query para eliminar todos los Teacher por el id de su Person. Como es de
@@ -13,4 +15,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
     @Modifying
     @Query(value = "DELETE from teachers WHERE person_id = ?1", nativeQuery = true)
     void deleteTeacherByPersonId(String personId);
+
+    @Query(value = "SELECT id_teacher from teachers WHERE person_id = ?1 limit 1", nativeQuery = true)
+    Optional<String> findTeacherIdFromIdPerson(String id);
 }

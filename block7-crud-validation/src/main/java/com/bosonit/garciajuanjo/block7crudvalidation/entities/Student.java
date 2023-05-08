@@ -36,7 +36,7 @@ public class Student {
     private Branch branch;
 
     @OneToOne
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "person_id", unique = true)
     private Person person;
 
     public Student(StudentInputDto dto) {
