@@ -13,10 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TeacherInputDto {
 
-    @JsonProperty(value = "id_teacher")
     private String idTeacher;
-
     private String comments;
-
     private Branch branch;
+    private PersonInputDto person;
 }

@@ -19,4 +19,6 @@ public class TeacherOutputDto {
     private String comments;
 
     private Branch branch;
+
+    private PersonOutputDto person;
 }

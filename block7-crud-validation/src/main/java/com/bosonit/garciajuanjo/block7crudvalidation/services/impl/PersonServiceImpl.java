@@ -1,4 +1,4 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.services;
+package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
@@ -6,6 +6,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDt
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

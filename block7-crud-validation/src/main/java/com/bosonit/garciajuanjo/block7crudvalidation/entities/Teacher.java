@@ -31,17 +31,23 @@ public class Teacher {
     @Column(nullable = false)
     private Branch branch;
 
+    @OneToOne
+    @JoinColumn(name = "id_person")
+    private Person person;
+
     public Teacher(TeacherInputDto dto) {
         this.idTeacher = dto.getIdTeacher();
         this.comments = dto.getComments();
         this.branch = dto.getBranch();
+        this.person = new Person(dto.getPerson());
     }
 
     public TeacherOutputDto teacherToTeacherOutputDto(){
         return new TeacherOutputDto(
                 this.idTeacher,
                 this.comments,
-                this.branch
+                this.branch,
+                this.person.personToPersonOutputDto()
         );
     }
 }

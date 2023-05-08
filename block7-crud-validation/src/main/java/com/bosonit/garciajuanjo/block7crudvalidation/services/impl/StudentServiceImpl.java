@@ -1,4 +1,4 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.services;
+package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
@@ -8,6 +8,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundEx
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class StudentServiceImpl implements StudentService{
+public class StudentServiceImpl implements StudentService {
 
     private StudentRepository studentRepository;
 
