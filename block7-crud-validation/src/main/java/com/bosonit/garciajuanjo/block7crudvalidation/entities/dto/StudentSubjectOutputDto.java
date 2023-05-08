@@ -16,7 +16,7 @@ import java.util.Date;
 public class StudentSubjectOutputDto {
 
     @JsonProperty(value = "id_subject")
-    private String idSubject;
+    private String idStudentSubject;
     private Subject subject;
     private String comments;
     @JsonProperty(value = "initial_date")

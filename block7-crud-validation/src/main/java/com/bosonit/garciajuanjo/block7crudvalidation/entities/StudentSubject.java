@@ -25,7 +25,7 @@ public class StudentSubject {
     @GeneratedValue(generator = "myGenerator")
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
     @Column(name = "id_subject")
-    private String idSubject;
+    private String idStudentSubject;
 
     private String comments;
 
@@ -43,7 +43,7 @@ public class StudentSubject {
     private Student student;
 
     public StudentSubject(StudentSubjectInputDto inputDto) {
-        this.idSubject = inputDto.getIdSubject();
+        this.idStudentSubject = inputDto.getIdStudentSubject();
         this.comments = inputDto.getComments();
         this.initialDate = inputDto.getInitialDate();
         this.finishDate = inputDto.getFinishDate();
@@ -53,7 +53,7 @@ public class StudentSubject {
 
     public StudentSubjectOutputDto studentSubjectToStudentSubjectOutputDto() {
         return new StudentSubjectOutputDto(
-                this.idSubject,
+                this.idStudentSubject,
                 this.subject,
                 this.comments,
                 this.initialDate,
