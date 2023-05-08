@@ -1,11 +1,17 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.services;
+package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentSubjectRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +22,21 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PersonServiceImpl implements PersonService {
 
-    private PersonRepository repository;
+    private PersonRepository personRepository;
+    private TeacherRepository teacherRepository;
+    private StudentRepository studentRepository;
+    private StudentSubjectRepository studentSubjectRepository;
 
     @Override
     public List<PersonOutputDto> getAll() {
-        return repository.findAll()
+        return personRepository.findAll()
                 .stream()
                 .map(Person::personToPersonOutputDto).toList();
     }
 
     @Override
-    public Optional<PersonOutputDto> getPersonById(int id) {
-        Optional<Person> person = repository.findById(id);
+    public Optional<PersonOutputDto> getById(String id) {
+        Optional<Person> person = personRepository.findById(id);
 
         if (person.isEmpty())
             throw new EntityNotFoundException();
@@ -36,8 +45,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonOutputDto> getPersonsByUser(String user) {
-        List<Person> personList = repository.findByUser(user);
+    public List<PersonOutputDto> getByUser(String user) {
+        List<Person> personList = personRepository.findByUser(user);
 
         if (personList.isEmpty())
             throw new EntityNotFoundException();
@@ -50,7 +59,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Optional<PersonOutputDto> save(PersonInputDto personInputDto) {
             if (isAllFieldsCorrect(personInputDto)) {
-                return Optional.of(repository.save(new Person(personInputDto))
+                return Optional.of(personRepository.save(new Person(personInputDto))
                         .personToPersonOutputDto());
             }
 
@@ -58,29 +67,42 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto) {
-        Optional<Person> optPerson = repository.findById(id);
+    public Optional<PersonOutputDto> update(String id, PersonInputDto personInputDto) {
+        Optional<Person> optPerson = personRepository.findById(id);
 
         if (optPerson.isEmpty())
             throw new EntityNotFoundException();
 
         Person person = optPerson.get();
-        person.setIdPerson(id);
 
         Person personUpdated = getPersonUpdated(personInputDto, person);
 
-        return Optional.of(repository.save(personUpdated).personToPersonOutputDto());
+        return Optional.of(personRepository.save(personUpdated).personToPersonOutputDto());
     }
 
 
+    @Transactional
     @Override
-    public void delete(int id) {
-        Optional<Person> person = repository.findById(id);
+    public void delete(String id) {
+        Optional<Person> person = personRepository.findById(id);
 
         if (person.isEmpty())
             throw new EntityNotFoundException();
 
-        repository.delete(person.get());
+        Person personRemove = person.get();
+
+        /*Eliminamos todas los asociados a Person como son Teacher, Student y como eliminamos Student a su vez
+        también eliminamos los StudentSubject*/
+        Optional<Student> student = studentRepository.findByPersonId(personRemove.getIdPerson());
+
+        if (student.isPresent()) {
+            studentSubjectRepository.deleteStudentSubjectByStudentId(student.get().getIdStudent());
+            studentRepository.deleteStudentByPersonId(personRemove.getIdPerson());
+        }
+
+        teacherRepository.deleteTeacherByPersonId(personRemove.getIdPerson());
+
+        personRepository.delete(personRemove);
     }
 
     private Boolean isAllFieldsCorrect(PersonInputDto personInputDto) {

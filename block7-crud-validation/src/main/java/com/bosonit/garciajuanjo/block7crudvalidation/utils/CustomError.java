@@ -1,4 +1,4 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.entities;
+package com.bosonit.garciajuanjo.block7crudvalidation.utils;
 
 import lombok.*;
 

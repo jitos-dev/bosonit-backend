@@ -10,13 +10,13 @@ public interface PersonService {
 
     Optional<PersonOutputDto> save(PersonInputDto personInputDto);
 
-    Optional<PersonOutputDto> getPersonById(int id);
+    Optional<PersonOutputDto> getById(String id);
 
-    List<PersonOutputDto> getPersonsByUser(String name);
+    List<PersonOutputDto> getByUser(String name);
 
     List<PersonOutputDto> getAll();
 
-    void delete(int id);
+    void delete(String id);
 
-    Optional<PersonOutputDto> update(int id, PersonInputDto personInputDto);
+    Optional<PersonOutputDto> update(String id, PersonInputDto personInputDto);
 }

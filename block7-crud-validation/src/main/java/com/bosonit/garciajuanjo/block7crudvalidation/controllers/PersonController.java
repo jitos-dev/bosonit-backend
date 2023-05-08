@@ -22,16 +22,16 @@ public class PersonController {
         return service.getAll();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PersonOutputDto getById(@PathVariable Integer id) {
-        return service.getPersonById(id).orElseThrow();
+    public PersonOutputDto getById(@PathVariable String id) {
+        return service.getById(id).orElseThrow();
     }
 
     @GetMapping(value = "/user/{user}")
     @ResponseStatus(HttpStatus.OK)
     public List<PersonOutputDto> personByUser(@PathVariable String user) {
-        return service.getPersonsByUser(user);
+        return service.getByUser(user);
     }
 
     @PostMapping
@@ -40,15 +40,15 @@ public class PersonController {
         return service.save(personInputDto).orElseThrow();
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PersonOutputDto update(@RequestBody PersonInputDto personInputDto, @PathVariable Integer id) {
+    public PersonOutputDto update(@RequestBody PersonInputDto personInputDto, @PathVariable String id) {
         return service.update(id, personInputDto).orElseThrow();
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable String id) {
         service.delete(id);
     }
 }

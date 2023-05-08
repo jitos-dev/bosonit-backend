@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class PersonInputDto {
 
-    private Integer idPerson;
+    private String idPerson;
     private String user;
     private String password;
     private String name;

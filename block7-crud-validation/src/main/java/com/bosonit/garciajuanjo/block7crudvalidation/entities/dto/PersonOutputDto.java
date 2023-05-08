@@ -14,9 +14,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class PersonOutputDto {
 
-    @JsonProperty(value = "id_persona")
-    private Integer idPerson;
-    @JsonProperty(value = "usuario")
+    @JsonProperty(value = "id_person")
+    private String idPerson;
+    @JsonProperty(value = "user")
     private String user;
     private String password;
     private String name;
@@ -29,9 +29,8 @@ public class PersonOutputDto {
     private Boolean active;
     @JsonProperty(value = "created_date")
     private Date createdDate;
-    @JsonProperty(value = "imagen_url")
+    @JsonProperty(value = "image_url")
     private String imageUrl;
     @JsonProperty(value = "termination_date")
     private Date terminationDate;
-
 }

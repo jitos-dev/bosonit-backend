@@ -1,6 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.exceptions;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.CustomError;
+import com.bosonit.garciajuanjo.block7crudvalidation.utils.CustomError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
