@@ -12,6 +12,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,11 @@ public class StudentServiceImpl implements StudentService {
 
         if (optPerson.isEmpty())
             throw new UnprocessableEntityException("The id of the person doesn't correspond to any user");
+
+        Optional<String> optStudentId = studentRepository.findStudentIdByPersonId(optPerson.get().getIdPerson());
+
+        if (optStudentId.isPresent())
+            throw new UnprocessableEntityException("The person's id is already associated with a student");
 
         /*Como al guardar un estudiante no pongo todos los campos del objeto (solo el id ya funciona) al
          * devolver el objeto Student los campos de person van a null.*/
