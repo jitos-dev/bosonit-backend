@@ -2,7 +2,6 @@ package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +23,6 @@ public class Person {
     @GeneratedValue(generator = "myGenerator")
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
     @Column(name = "id_person")
-    @JsonProperty(value = "id_person")
     private String idPerson;
 
     @Column(name = "usuario", nullable = false, length = 10)

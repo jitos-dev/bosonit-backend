@@ -1,9 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectOutputDto;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,7 +36,7 @@ public class StudentSubject {
     @Enumerated(EnumType.STRING)
     private Subject subject;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
 

@@ -25,13 +25,13 @@ public class PersonController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PersonOutputDto getById(@PathVariable String id) {
-        return service.getPersonById(id).orElseThrow();
+        return service.getById(id).orElseThrow();
     }
 
     @GetMapping(value = "/user/{user}")
     @ResponseStatus(HttpStatus.OK)
     public List<PersonOutputDto> personByUser(@PathVariable String user) {
-        return service.getPersonsByUser(user);
+        return service.getByUser(user);
     }
 
     @PostMapping

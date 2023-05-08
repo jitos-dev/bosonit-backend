@@ -10,9 +10,9 @@ public interface PersonService {
 
     Optional<PersonOutputDto> save(PersonInputDto personInputDto);
 
-    Optional<PersonOutputDto> getPersonById(String id);
+    Optional<PersonOutputDto> getById(String id);
 
-    List<PersonOutputDto> getPersonsByUser(String name);
+    List<PersonOutputDto> getByUser(String name);
 
     List<PersonOutputDto> getAll();
 

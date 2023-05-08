@@ -2,7 +2,6 @@ package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +21,6 @@ public class Teacher {
     @GeneratedValue(generator = "myGenerator")
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
     @Column(name = "id_teacher")
-    @JsonProperty(value = "id_teacher")
     private String idTeacher;
 
     private String comments;
@@ -32,7 +30,7 @@ public class Teacher {
     private Branch branch;
 
     @OneToOne
-    @JoinColumn(name = "id_person")
+    @JoinColumn(name = "person_id", unique = true)
     private Person person;
 
     public Teacher(TeacherInputDto dto) {
