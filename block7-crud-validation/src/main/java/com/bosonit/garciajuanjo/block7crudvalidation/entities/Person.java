@@ -60,6 +60,9 @@ public class Person {
     @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
     private Teacher teacher;
 
+    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+    private Student student;
+
     public Person(PersonInputDto personInputDto) {
         this.idPerson = personInputDto.getIdPerson();
         this.user = personInputDto.getUser();

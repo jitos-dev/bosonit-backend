@@ -40,16 +40,17 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
 
     @Override
     public Optional<StudentSubjectOutputDto> save(StudentSubjectInputDto inputDto) {
-        Student student = studentRepository.findById(inputDto.getStudent().getIdStudent())
+        Student student = studentRepository.findById(inputDto.getStudentId())
                 .orElseThrow(() -> new UnprocessableEntityException("The id of the student doesn't correspond to any student"));
 
         if (inputDto.getInitialDate() == null)
             throw new UnprocessableEntityException("The initial date field cannot be null");
 
-        inputDto.setStudent(student.studentToStudentInputDto());
+        StudentSubject studentSubject = new StudentSubject(inputDto);
+        studentSubject.setStudent(student);
 
         return Optional.of(studentSubjectRepository
-                .save(new StudentSubject(inputDto))
+                .save(studentSubject)
                 .studentSubjectToStudentSubjectOutputDto());
     }
 

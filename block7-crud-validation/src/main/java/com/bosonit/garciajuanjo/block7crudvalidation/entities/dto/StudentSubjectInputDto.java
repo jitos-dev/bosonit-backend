@@ -19,5 +19,5 @@ public class StudentSubjectInputDto {
     private String comments;
     private Date initialDate;
     private Date finishDate;
-    private StudentInputDto student;
+    private String studentId;
 }

@@ -44,8 +44,10 @@ public class TeacherServiceImpl implements TeacherService {
         Person person = personRepository.findById(teacherInputDto.getPersonId())
                 .orElseThrow(() -> new UnprocessableEntityException("The id of the person doesn't correspond to any user"));
 
-        teacherRepository.findTeacherIdFromIdPerson(person.getIdPerson())
-                .orElseThrow(() -> new UnprocessableEntityException("The person's id is already associated with a teacher"));
+        Optional<String> teacherId = teacherRepository.findTeacherIdFromIdPerson(person.getIdPerson());
+
+        if (teacherId.isPresent())
+                throw new UnprocessableEntityException("The person's id is already associated with a teacher");
 
         if (isAllFieldsCorrect(teacherInputDto)) {
             Teacher teacher = new Teacher(teacherInputDto);

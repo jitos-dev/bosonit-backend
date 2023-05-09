@@ -44,26 +44,31 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Optional<StudentOutputDto> save(StudentInputDto studentInputDto) {
         //Comprobamos que el idPerson corresponde con algun Person
-        Person person = personRepository.findById(studentInputDto.getPerson().getIdPerson())
+        Person person = personRepository.findById(studentInputDto.getPersonId())
                 .orElseThrow(() -> new UnprocessableEntityException("The id of the person doesn't correspond to any user"));
 
         //Buscamos el student_id por el id de Person. Si existe es que ya esta asociado la Person con un Student
-        studentRepository.findStudentIdByPersonId(person.getIdPerson())
-                .orElseThrow(() -> new UnprocessableEntityException("The person's id is already associated with a student"));
+        Optional<String> studentId = studentRepository.findStudentIdByPersonId(person.getIdPerson());
+
+        if (studentId.isPresent())
+                throw new UnprocessableEntityException("The person's id is already associated with a student");
 
         //Buscamos el teacher_id por el id de Person. Si existe es que ya esta asociado la Person con un Teacher
-        teacherRepository.findTeacherIdFromIdPerson(studentInputDto.getPerson().getIdPerson())
-                .orElseThrow(() -> new UnprocessableEntityException("The person's id is already associated with a teacher"));
+        Optional<String> teacherId = teacherRepository.findTeacherIdFromIdPerson(studentInputDto.getPersonId());
 
-        Teacher optTeacher = teacherRepository.findById(studentInputDto.getTeacherId())
+        if (teacherId.isPresent())
+                throw new UnprocessableEntityException("The person's id is already associated with a teacher");
+
+        Teacher teacher = teacherRepository.findById(studentInputDto.getTeacherId())
                 .orElseThrow(() -> new UnprocessableEntityException("The id of the teacher doesn't correspond any record"));
 
-        //Le añadimos el Person que hemos obtenido de base de datos
-        studentInputDto.setPerson(person.personToPersonInputDto());
-
         if (isAllFieldsCorrect(studentInputDto)) {
+            Student student = new Student(studentInputDto);
+            student.setPerson(person);
+            student.setTeacher(teacher);
+
             return Optional.of(studentRepository
-                    .save(new Student(studentInputDto))
+                    .save(student)
                     .studentToStudentOutputDto());
         }
 

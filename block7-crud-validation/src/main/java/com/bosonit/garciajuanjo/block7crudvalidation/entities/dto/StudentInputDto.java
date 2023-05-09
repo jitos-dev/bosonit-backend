@@ -16,6 +16,6 @@ public class StudentInputDto {
     private Integer numHoursWeek;
     private String comments;
     private Branch branch;
-    private PersonInputDto person;
+    private String personId;
     private String teacherId;
 }
