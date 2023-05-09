@@ -2,7 +2,7 @@ package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,12 +39,19 @@ public class Student {
     @JoinColumn(name = "person_id", unique = true)
     private Person person;
 
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    @JsonIgnoreProperties(value = {"students"})
+    private Teacher teacher;
+
     public Student(StudentInputDto dto) {
         this.idStudent = dto.getIdStudent();
         this.numHoursWeek = dto.getNumHoursWeek();
         this.comments = dto.getComments();
         this.branch = dto.getBranch();
         this.person = new Person(dto.getPerson());
+        this.teacher = new Teacher();
+        this.teacher.setIdTeacher(dto.getTeacherId());
     }
 
     public StudentOutputDto studentToStudentOutputDto() {
@@ -53,7 +60,8 @@ public class Student {
                 this.numHoursWeek,
                 this.comments,
                 this.branch,
-                this.person.personToPersonOutputDto()
+                this.person.personToPersonOutputDto(),
+                this.teacher.getIdTeacher()
         );
     }
 
@@ -63,7 +71,8 @@ public class Student {
                 this.numHoursWeek,
                 this.comments,
                 this.branch,
-                this.person.personToPersonInputDto()
+                this.person.personToPersonInputDto(),
+                this.teacher.getIdTeacher()
         );
     }
 }

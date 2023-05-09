@@ -17,4 +17,5 @@ public class StudentInputDto {
     private String comments;
     private Branch branch;
     private PersonInputDto person;
+    private String teacherId;
 }
