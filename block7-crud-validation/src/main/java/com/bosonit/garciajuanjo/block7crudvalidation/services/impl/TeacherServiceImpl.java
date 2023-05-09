@@ -25,12 +25,10 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Optional<TeacherOutputDto> findById(String id) {
-        Optional<Teacher> optTeacher = teacherRepository.findById(id);
+        Teacher teacher = teacherRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
-        if (optTeacher.isEmpty())
-            throw new EntityNotFoundException();
-
-        return Optional.of(optTeacher.get().teacherToTeacherOutputDto());
+        return Optional.of(teacher.teacherToTeacherOutputDto());
     }
 
     @Override
@@ -43,49 +41,44 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Optional<TeacherOutputDto> save(TeacherInputDto teacherInputDto) {
-        Optional<Person> optPerson = personRepository.findById(teacherInputDto.getPerson().getIdPerson());
+        Person person = personRepository.findById(teacherInputDto.getPersonId())
+                .orElseThrow(() -> new UnprocessableEntityException("The id of the person doesn't correspond to any user"));
 
-        if (optPerson.isEmpty())
-            throw new UnprocessableEntityException("The id of the person doesn't correspond to any user");
+        teacherRepository.findTeacherIdFromIdPerson(person.getIdPerson())
+                .orElseThrow(() -> new UnprocessableEntityException("The person's id is already associated with a teacher"));
 
-        Optional<String> teacherId = teacherRepository.findTeacherIdFromIdPerson(optPerson.get().getIdPerson());
+        if (isAllFieldsCorrect(teacherInputDto)) {
+            Teacher teacher = new Teacher(teacherInputDto);
+            teacher.setPerson(person);
 
-        if (teacherId.isPresent())
-            throw new UnprocessableEntityException("The person's id is already associated with a teacher");
-
-        if (isAllFieldsCorrect(teacherInputDto))
-            return Optional.of(teacherRepository.save(new Teacher(teacherInputDto)).teacherToTeacherOutputDto());
+            return Optional.of(teacherRepository.save(teacher).teacherToTeacherOutputDto());
+        }
 
         return Optional.empty();
     }
 
     @Override
     public Optional<TeacherOutputDto> update(String id, TeacherInputDto inputDto) {
-        Optional<Teacher> optTeacher = teacherRepository.findById(id);
+        Teacher teacher = teacherRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        if (optTeacher.isEmpty())
-            throw new EntityNotFoundException();
-
-        Teacher teacherUpdated = getTeacherUpdated(inputDto, optTeacher.get());
+        Teacher teacherUpdated = getTeacherUpdated(inputDto, teacher);
         return Optional.of(teacherRepository.save(teacherUpdated).teacherToTeacherOutputDto());
     }
 
 
     @Override
     public void delete(String id) {
-        Optional<Teacher> optTeacher = teacherRepository.findById(id);
+        //no necesito guardar el Teacher, solo que si no lo encuentra que lance una excepcion
+        teacherRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        if (optTeacher.isEmpty())
-            throw new EntityNotFoundException();
-
-        teacherRepository.delete(optTeacher.get());
+        teacherRepository.deleteById(id);
     }
 
-    private Boolean isAllFieldsCorrect(TeacherInputDto dto) {
-        if (dto == null)
+    private Boolean isAllFieldsCorrect(TeacherInputDto inputDto) {
+        if (inputDto == null)
             throw new UnprocessableEntityException("The object is null");
 
-        if (dto.getBranch() == null)
+        if (inputDto.getBranch() == null)
             throw new UnprocessableEntityException("The field branch cannot be null");
 
         return true;

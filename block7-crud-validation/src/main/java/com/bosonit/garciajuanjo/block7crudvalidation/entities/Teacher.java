@@ -3,8 +3,6 @@ package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,7 +34,7 @@ public class Teacher {
     private Branch branch;
 
     @OneToOne
-    @JoinColumn(name = "person_id", unique = true)
+    @JoinColumn(name = "person_id", nullable = false)
     private Person person;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
@@ -46,19 +44,20 @@ public class Teacher {
         this.idTeacher = dto.getIdTeacher();
         this.comments = dto.getComments();
         this.branch = dto.getBranch();
-        this.person = new Person(dto.getPerson());
         this.students = new ArrayList<>();
     }
 
     public TeacherOutputDto teacherToTeacherOutputDto() {
-        List<StudentOutputDto> list = this.students.stream().map(Student::studentToStudentOutputDto).toList();
+        List<StudentOutputDto> studentList = this.students.stream()
+                .map(Student::studentToStudentOutputDto)
+                .toList();
 
         return new TeacherOutputDto(
                 this.idTeacher,
                 this.comments,
                 this.branch,
                 this.person.personToPersonOutputDto(),
-                list
+                studentList
         );
     }
 
@@ -67,7 +66,7 @@ public class Teacher {
                 this.idTeacher,
                 this.comments,
                 this.branch,
-                this.person.personToPersonInputDto()
+                this.person.getIdPerson()
         );
     }
 }

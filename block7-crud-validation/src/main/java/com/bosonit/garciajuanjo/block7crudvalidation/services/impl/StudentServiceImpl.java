@@ -14,7 +14,6 @@ import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,41 +35,31 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Optional<StudentOutputDto> getById(String id) {
-        Optional<Student> optStudent = studentRepository.findById(id);
+        Student student = studentRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
-        if (optStudent.isEmpty())
-            throw new EntityNotFoundException();
-
-        return Optional.of(optStudent.get().studentToStudentOutputDto());
+        return Optional.of(student.studentToStudentOutputDto());
     }
 
     @Override
     public Optional<StudentOutputDto> save(StudentInputDto studentInputDto) {
         //Comprobamos que el idPerson corresponde con algun Person
-        Optional<Person> optPerson = personRepository.findById(studentInputDto.getPerson().getIdPerson());
-
-        if (optPerson.isEmpty())
-            throw new UnprocessableEntityException("The id of the person doesn't correspond to any user");
+        Person person = personRepository.findById(studentInputDto.getPerson().getIdPerson())
+                .orElseThrow(() -> new UnprocessableEntityException("The id of the person doesn't correspond to any user"));
 
         //Buscamos el student_id por el id de Person. Si existe es que ya esta asociado la Person con un Student
-        Optional<String> optStudentId = studentRepository.findStudentIdByPersonId(optPerson.get().getIdPerson());
-
-        if (optStudentId.isPresent())
-            throw new UnprocessableEntityException("The person's id is already associated with a student");
+        studentRepository.findStudentIdByPersonId(person.getIdPerson())
+                .orElseThrow(() -> new UnprocessableEntityException("The person's id is already associated with a student"));
 
         //Buscamos el teacher_id por el id de Person. Si existe es que ya esta asociado la Person con un Teacher
-        Optional<String> optTeacherId = teacherRepository.findTeacherIdFromIdPerson(studentInputDto.getPerson().getIdPerson());
+        teacherRepository.findTeacherIdFromIdPerson(studentInputDto.getPerson().getIdPerson())
+                .orElseThrow(() -> new UnprocessableEntityException("The person's id is already associated with a teacher"));
 
-        if (optTeacherId.isPresent())
-            throw new UnprocessableEntityException("The person's id is already associated with a teacher");
-
-        Optional<Teacher> optTeacher = teacherRepository.findById(studentInputDto.getTeacherId());
-
-        if (optTeacher.isEmpty())
-            throw new UnprocessableEntityException("The id of the teacher doesn't correspond any record");
+        Teacher optTeacher = teacherRepository.findById(studentInputDto.getTeacherId())
+                .orElseThrow(() -> new UnprocessableEntityException("The id of the teacher doesn't correspond any record"));
 
         //Le añadimos el Person que hemos obtenido de base de datos
-        studentInputDto.setPerson(optPerson.get().personToPersonInputDto());
+        studentInputDto.setPerson(person.personToPersonInputDto());
 
         if (isAllFieldsCorrect(studentInputDto)) {
             return Optional.of(studentRepository
@@ -83,24 +72,20 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Optional<StudentOutputDto> update(String id, StudentInputDto inputDto) {
-        Optional<Student> optStudent = studentRepository.findById(id);
+        Student student = studentRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
-        if (optStudent.isEmpty())
-            throw new EntityNotFoundException();
-
-        Student studentUpdated = getStudentUpdated(inputDto, optStudent.get());
+        Student studentUpdated = getStudentUpdated(inputDto, student);
 
         return Optional.of(studentRepository.save(studentUpdated).studentToStudentOutputDto());
     }
 
     @Override
     public void delete(String id) {
-        Optional<Student> studentDatabase = studentRepository.findById(id);
+        Student student = studentRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
-        if (studentDatabase.isEmpty())
-            throw new EntityNotFoundException();
-
-        studentRepository.delete(studentDatabase.get());
+        studentRepository.delete(student);
     }
 
 

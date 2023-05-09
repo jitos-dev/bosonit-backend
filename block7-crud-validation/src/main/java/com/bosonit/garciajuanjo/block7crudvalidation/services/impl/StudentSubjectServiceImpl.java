@@ -20,7 +20,6 @@ import java.util.Optional;
 public class StudentSubjectServiceImpl implements StudentSubjectService {
 
     private StudentSubjectRepository studentSubjectRepository;
-
     private StudentRepository studentRepository;
 
     @Override
@@ -33,26 +32,21 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
 
     @Override
     public Optional<StudentSubjectOutputDto> findById(String id) {
-        Optional<StudentSubject> optStudentSubject = studentSubjectRepository.findById(id);
+        StudentSubject studentSubject = studentSubjectRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
-        if (optStudentSubject.isEmpty())
-            throw new EntityNotFoundException();
-
-        return Optional.of(optStudentSubject.get().studentSubjectToStudentSubjectOutputDto());
+        return Optional.of(studentSubject.studentSubjectToStudentSubjectOutputDto());
     }
 
     @Override
     public Optional<StudentSubjectOutputDto> save(StudentSubjectInputDto inputDto) {
-        Optional<Student> optStudent = studentRepository.findById(inputDto.getStudent().getIdStudent());
-
-        if (optStudent.isEmpty())
-            throw new UnprocessableEntityException("The id of the student doesn't correspond to any student");
+        Student student = studentRepository.findById(inputDto.getStudent().getIdStudent())
+                .orElseThrow(() -> new UnprocessableEntityException("The id of the student doesn't correspond to any student"));
 
         if (inputDto.getInitialDate() == null)
             throw new UnprocessableEntityException("The initial date field cannot be null");
 
-        // de esta forma como el Student lo obtenemos de bd lo tenemos con todos sus datos aunque esté vacio
-        inputDto.setStudent(optStudent.get().studentToStudentInputDto());
+        inputDto.setStudent(student.studentToStudentInputDto());
 
         return Optional.of(studentSubjectRepository
                 .save(new StudentSubject(inputDto))
@@ -61,25 +55,21 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
 
     @Override
     public Optional<StudentSubjectOutputDto> update(String id, StudentSubjectInputDto inputDto) {
-        Optional<StudentSubject> optStudentSubject = studentSubjectRepository.findById(id);
+        StudentSubject studentSubject = studentSubjectRepository.findById(id)
+                .orElseThrow(() -> new UnprocessableEntityException("The id of the student doesn't correspond to any student subject"));
 
-        if (optStudentSubject.isEmpty())
-            throw new UnprocessableEntityException("The id of the student doesn't correspond to any student subject");
+        StudentSubject studentSubjectUpdated = getStudentSubjectUpdated(studentSubject, inputDto);
 
-        StudentSubject studentSubjectDb = getStudentSubjectUpdated(optStudentSubject.get(), inputDto);
-
-        return Optional.of(studentSubjectRepository.save(studentSubjectDb)
+        return Optional.of(studentSubjectRepository.save(studentSubjectUpdated)
                 .studentSubjectToStudentSubjectOutputDto());
     }
 
     @Override
     public void delete(String id) {
-        Optional<StudentSubject> optStudentSubject = studentSubjectRepository.findById(id);
+        StudentSubject studentSubject = studentSubjectRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
-        if (optStudentSubject.isEmpty())
-            throw new EntityNotFoundException();
-
-        studentSubjectRepository.delete(optStudentSubject.get());
+        studentSubjectRepository.delete(studentSubject);
     }
 
     private StudentSubject getStudentSubjectUpdated(StudentSubject studentSubject, StudentSubjectInputDto inputDto) {

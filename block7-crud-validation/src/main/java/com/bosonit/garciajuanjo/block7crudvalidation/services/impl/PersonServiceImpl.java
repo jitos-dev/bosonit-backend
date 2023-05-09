@@ -9,7 +9,6 @@ import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEnt
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentSubjectRepository;
-import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,6 @@ import java.util.Optional;
 public class PersonServiceImpl implements PersonService {
 
     private PersonRepository personRepository;
-    private TeacherRepository teacherRepository;
     private StudentRepository studentRepository;
     private StudentSubjectRepository studentSubjectRepository;
 
@@ -36,12 +34,10 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Optional<PersonOutputDto> getById(String id) {
-        Optional<Person> person = personRepository.findById(id);
+        Person person = personRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
-        if (person.isEmpty())
-            throw new EntityNotFoundException();
-
-        return person.map(Person::personToPersonOutputDto);
+        return Optional.of(person.personToPersonOutputDto());
     }
 
     @Override
@@ -58,22 +54,18 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Optional<PersonOutputDto> save(PersonInputDto personInputDto) {
-            if (isAllFieldsCorrect(personInputDto)) {
-                return Optional.of(personRepository.save(new Person(personInputDto))
-                        .personToPersonOutputDto());
-            }
+        if (isAllFieldsCorrect(personInputDto)) {
+            return Optional.of(personRepository.save(new Person(personInputDto))
+                    .personToPersonOutputDto());
+        }
 
-            return Optional.empty();
+        return Optional.empty();
     }
 
     @Override
     public Optional<PersonOutputDto> update(String id, PersonInputDto personInputDto) {
-        Optional<Person> optPerson = personRepository.findById(id);
-
-        if (optPerson.isEmpty())
-            throw new EntityNotFoundException();
-
-        Person person = optPerson.get();
+        Person person = personRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
         Person personUpdated = getPersonUpdated(personInputDto, person);
 
@@ -84,25 +76,19 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     @Override
     public void delete(String id) {
-        Optional<Person> person = personRepository.findById(id);
-
-        if (person.isEmpty())
-            throw new EntityNotFoundException();
-
-        Person personRemove = person.get();
+        Person person = personRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
         /*Eliminamos todas los asociados a Person como son Teacher, Student y como eliminamos Student a su vez
         también eliminamos los StudentSubject*/
-        Optional<Student> student = studentRepository.findByPersonId(personRemove.getIdPerson());
+        Optional<Student> student = studentRepository.findByPersonId(person.getIdPerson());
 
         if (student.isPresent()) {
             studentSubjectRepository.deleteStudentSubjectByStudentId(student.get().getIdStudent());
-            studentRepository.deleteStudentByPersonId(personRemove.getIdPerson());
+            studentRepository.deleteStudentByPersonId(person.getIdPerson());
         }
 
-        teacherRepository.deleteTeacherByPersonId(personRemove.getIdPerson());
-
-        personRepository.delete(personRemove);
+        personRepository.delete(person);
     }
 
     private Boolean isAllFieldsCorrect(PersonInputDto personInputDto) {
@@ -138,7 +124,8 @@ public class PersonServiceImpl implements PersonService {
 
     private Person getPersonUpdated(PersonInputDto personInputDto, Person person) {
 
-        if (personInputDto.getUser() != null && (personInputDto.getUser().length() < 6 || personInputDto.getUser().length() > 10))
+        if (personInputDto.getUser() != null &&
+                (personInputDto.getUser().length() < 6 || personInputDto.getUser().length() > 10))
             throw new UnprocessableEntityException("The user length cannot be less than 6 characters or greater than 12");
 
 
