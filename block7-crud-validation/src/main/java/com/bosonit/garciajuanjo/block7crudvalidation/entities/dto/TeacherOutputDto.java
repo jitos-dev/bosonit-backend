@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,4 +23,6 @@ public class TeacherOutputDto {
     private Branch branch;
 
     private PersonOutputDto person;
+
+    private List<StudentOutputDto> students;
 }

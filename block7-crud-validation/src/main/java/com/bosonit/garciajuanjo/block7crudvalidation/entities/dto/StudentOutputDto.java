@@ -24,4 +24,6 @@ public class StudentOutputDto {
     private Branch branch;
 
     private PersonOutputDto person;
+
+    private String teacherId;
 }

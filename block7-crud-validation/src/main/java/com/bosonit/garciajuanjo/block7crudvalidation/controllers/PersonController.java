@@ -2,6 +2,7 @@ package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonStudentOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class PersonController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PersonOutputDto getById(@PathVariable String id) {
+    public PersonStudentOutputDto getById(@PathVariable String id) {
         return service.getById(id).orElseThrow();
     }
 

@@ -15,5 +15,5 @@ public class TeacherInputDto {
     private String idTeacher;
     private String comments;
     private Branch branch;
-    private PersonInputDto person;
+    private String personId;
 }

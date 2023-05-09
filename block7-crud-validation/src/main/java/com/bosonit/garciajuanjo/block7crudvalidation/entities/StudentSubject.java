@@ -46,7 +46,6 @@ public class StudentSubject {
         this.initialDate = inputDto.getInitialDate();
         this.finishDate = inputDto.getFinishDate();
         this.subject = inputDto.getSubject();
-        this.student = new Student(inputDto.getStudent());
     }
 
     public StudentSubjectOutputDto studentSubjectToStudentSubjectOutputDto() {
@@ -67,7 +66,7 @@ public class StudentSubject {
                 this.comments,
                 this.initialDate,
                 this.finishDate,
-                this.student.studentToStudentInputDto()
+                this.student.getIdStudent()
         );
     }
 }
