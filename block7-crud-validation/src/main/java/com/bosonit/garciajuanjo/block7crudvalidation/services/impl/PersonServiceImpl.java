@@ -2,13 +2,18 @@ package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.StudentSubject;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonStudentOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentSubjectRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -24,6 +29,7 @@ public class PersonServiceImpl implements PersonService {
     private PersonRepository personRepository;
     private StudentRepository studentRepository;
     private StudentSubjectRepository studentSubjectRepository;
+    private TeacherRepository teacherRepository;
 
     @Override
     public List<PersonOutputDto> getAll() {
@@ -33,11 +39,33 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<PersonOutputDto> getById(String id) {
+    public Optional<PersonStudentOutputDto> getById(String id) {
         Person person = personRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
-        return Optional.of(person.personToPersonOutputDto());
+        PersonStudentOutputDto personStudentOutputDto = new PersonStudentOutputDto();
+        personStudentOutputDto.setPersonOutputDto(person.personToPersonOutputDto());
+
+        //Si person es Student
+        Optional<Student> student = studentRepository.findStudentByPersonId(id);
+
+        student.ifPresent(value -> {
+            personStudentOutputDto.setStudentOutputDto(value.studentToStudentOutputDto());
+
+            List<StudentSubjectOutputDto> studentsSubject = studentSubjectRepository
+                    .getStudentsSubjectByIdStudent(value.getIdStudent())
+                    .stream()
+                    .map(StudentSubject::studentSubjectToStudentSubjectOutputDto)
+                    .toList();
+
+            personStudentOutputDto.setStudentsSubjectOutputDto(studentsSubject);
+        });
+
+        //Si person es Teacher
+        Optional<Teacher> teacher = teacherRepository.findTeacherFromPersonId(id);
+        teacher.ifPresent(value -> personStudentOutputDto.setTeacherOutputDto(teacher.get().teacherToTeacherOutputDto()));
+
+        return Optional.of(personStudentOutputDto);
     }
 
     @Override

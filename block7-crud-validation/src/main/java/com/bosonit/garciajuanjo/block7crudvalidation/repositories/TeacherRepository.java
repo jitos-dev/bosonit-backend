@@ -18,4 +18,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
     @Query(value = "SELECT id_teacher from teachers WHERE person_id = ?1 limit 1", nativeQuery = true)
     Optional<String> findTeacherIdFromIdPerson(String id);
+
+    @Query(value = "SELECT * from teachers WHERE person_id = ?1 limit 1", nativeQuery = true)
+    Optional<Teacher> findTeacherFromPersonId(String personId);
 }

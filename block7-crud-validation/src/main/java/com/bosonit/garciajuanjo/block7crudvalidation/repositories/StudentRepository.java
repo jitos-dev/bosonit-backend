@@ -12,6 +12,9 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     @Query(value = "SELECT id_student FROM students WHERE person_id = ?1 limit 1", nativeQuery = true)
     Optional<String> findStudentIdByPersonId(String personId);
 
+    @Query(value = "SELECT * FROM students WHERE person_id = ?1 limit 1", nativeQuery = true)
+    Optional<Student> findStudentByPersonId(String personId);
+
     /*Esta es una query para eliminar todos los Student por el id de su Person. Como es de
      * eliminación hay que anotarla con @Modifying y el método donde la utilicemos hay
      * que anotarlo con @Transactional para que se inicie una transacción para el borrado si o si*/
