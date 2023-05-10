@@ -4,7 +4,10 @@ import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.StudentSubject;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.*;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectSimpleOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
@@ -17,6 +20,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,46 +34,12 @@ public class PersonServiceImpl implements PersonService {
     private TeacherRepository teacherRepository;
 
     @Override
-    public List<PersonAllOutputDto> getAll(String outputType) {
+    public List<PersonCompleteOutputDto> getAll(String outputType) {
         List<PersonOutputDto> persons = personRepository.findAll()
                 .stream()
                 .map(Person::personToPersonOutputDto).toList();
 
-        //Lista de salida
-        List<PersonAllOutputDto> personAllOutputDto = new ArrayList<>();
-
-        //Lista de Teachers que contengan el id en la lista de ids de personas
-        List<Teacher> teachers = teacherRepository.findAll();
-
-        //Lista de Student que contengan el id en la lista de ids de personas
-        List<Student> students = studentRepository.findAll();
-
-        persons.forEach(personOutputDto -> {
-            //Creamos el objeto y añadimos la persona
-            PersonAllOutputDto dto = new PersonAllOutputDto();
-            dto.setPerson(personOutputDto);
-
-            //Si viene el parámetro full le asignamos el resto de datos
-            if (outputType.equalsIgnoreCase("full")) {
-                //Comprobamos si está en Students o en Teachers para añadirlo
-                Optional<Teacher> teacher = teachers.stream()
-                        .filter(teach -> teach.getPerson().getIdPerson().equals(personOutputDto.getIdPerson()))
-                        .findFirst();
-
-                Optional<Student> student = students.stream()
-                        .filter(stud -> stud.getPerson().getIdPerson().equals(personOutputDto.getIdPerson()))
-                        .findFirst();
-
-                teacher.ifPresent(value -> dto.setTeacherOutputDto(value.teacherToTeacherOutputDto()));
-
-                student.ifPresent(value -> dto.setStudent(value.studentToStudentSimpleOutputDto()));
-            }
-
-            //añadimos el valor a la lista de salida
-            personAllOutputDto.add(dto);
-        });
-
-        return personAllOutputDto;
+        return getPersonAllOutputDtos(outputType, persons);
     }
 
     @Override
@@ -77,31 +47,22 @@ public class PersonServiceImpl implements PersonService {
         Person person = personRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
-        //Creamos el Dto de salida y le asignamos la persona
-        PersonCompleteOutputDto personCompleteOutputDto = new PersonCompleteOutputDto();
-        personCompleteOutputDto.setPerson(person.personToPersonOutputDto());
+        List<PersonOutputDto> persons = Collections.singletonList(person.personToPersonOutputDto());
 
-        //Si person es Student
-        Optional<Student> student = studentRepository.findStudentByPersonId(id);
-        student.ifPresent(value -> personIsStudent(personCompleteOutputDto, value));
-
-        //Si person es Teacher
-        Optional<Teacher> teacher = teacherRepository.findTeacherFromPersonId(id);
-        teacher.ifPresent(value -> personIsTeacher(personCompleteOutputDto, value));
-
-        return Optional.of(personCompleteOutputDto);
+        return getPersonAllOutputDtos(outputType, persons).stream().findFirst();
     }
 
     @Override
-    public List<PersonOutputDto> getByUser(String user, String outputType) {
-        List<Person> personList = personRepository.findByUser(user);
+    public List<PersonCompleteOutputDto> getByUser(String user, String outputType) {
+        List<PersonOutputDto> personList = personRepository.findByUser(user)
+                .stream()
+                .map(Person::personToPersonOutputDto)
+                .toList();
 
         if (personList.isEmpty())
             throw new EntityNotFoundException();
 
-        return personList.stream()
-                .map(Person::personToPersonOutputDto)
-                .toList();
+        return getPersonAllOutputDtos(outputType, personList);
     }
 
     @Override
@@ -141,6 +102,55 @@ public class PersonServiceImpl implements PersonService {
         }
 
         personRepository.delete(person);
+    }
+
+    private List<PersonCompleteOutputDto> getPersonAllOutputDtos(String outputType, List<PersonOutputDto> persons) {
+        //Lista de salida
+        List<PersonCompleteOutputDto> personCompleteList = new ArrayList<>();
+
+        //Lista de Teachers que contengan el id en la lista de ids de personas
+        List<Teacher> teachers = teacherRepository.findAll();
+
+        //Lista de Student que contengan el id en la lista de ids de personas
+        List<Student> students = studentRepository.findAll();
+
+        persons.forEach(personOutputDto -> {
+            //Creamos el objeto y añadimos la persona
+            PersonCompleteOutputDto dto = new PersonCompleteOutputDto();
+            dto.setPerson(personOutputDto);
+
+            //Si viene el parámetro full le asignamos el resto de datos
+            if (outputType.equalsIgnoreCase("full")) {
+                //Comprobamos si está en Students o en Teachers para añadirlo
+                Optional<Teacher> teacher = teachers.stream()
+                        .filter(teach -> teach.getPerson().getIdPerson().equals(personOutputDto.getIdPerson()))
+                        .findFirst();
+
+                Optional<Student> student = students.stream()
+                        .filter(stud -> stud.getPerson().getIdPerson().equals(personOutputDto.getIdPerson()))
+                        .findFirst();
+
+                teacher.ifPresent(value -> dto.setTeacherOutputDto(value.teacherToTeacherOutputDto()));
+
+                //añadimos el estudiante y las asignaturas si las tiene
+                student.ifPresent(value -> {
+                    dto.setStudent(value.studentToStudentSimpleOutputDto());
+
+                    List<StudentSubjectSimpleOutputDto> subjects = studentSubjectRepository.getSubjectsByIdStudent(value.getIdStudent())
+                            .stream()
+                            .map(StudentSubject::studentSubjectToStudentSubjectSimpleOutputDto)
+                            .toList();
+
+                    if (!subjects.isEmpty())
+                        dto.setSubjects(subjects);
+                });
+            }
+
+            //añadimos el valor a la lista de salida
+            personCompleteList.add(dto);
+        });
+
+        return personCompleteList;
     }
 
     private Boolean isAllFieldsCorrect(PersonInputDto personInputDto) {
@@ -193,49 +203,5 @@ public class PersonServiceImpl implements PersonService {
         person.setImageUrl(personInputDto.getImageUrl() == null ? person.getImageUrl() : personInputDto.getImageUrl());
         person.setTerminationDate(personInputDto.getTerminationDate() == null ? person.getTerminationDate() : personInputDto.getTerminationDate());
         return person;
-    }
-
-    private void personIsTeacher(PersonCompleteOutputDto personCompleteOutputDto, Teacher teacher) {
-        //Asignamos el Teacher a la salida
-        personCompleteOutputDto.setTeacherOutputDto(teacher.teacherToTeacherOutputDto());
-
-        //Recorremos su lista de Student para mostrarlos junto con sus StudentsSubject si los tiene
-        teacher.getStudents().forEach(stud -> {
-            StudentAndSubjectsOutputDto studentAndSubjectsOutputDto = new StudentAndSubjectsOutputDto();
-
-            List<StudentSubjectSimpleOutputDto> studentsSubjectOutputDto = studentSubjectRepository
-                    .getSubjectsByIdStudent(stud.getIdStudent())
-                    .stream()
-                    .map(StudentSubject::studentSubjectToStudentSubjectSimpleOutputDto)
-                    .toList();
-
-            studentAndSubjectsOutputDto.setStudent(stud.studentToStudentSimpleOutputDto());
-
-            studentAndSubjectsOutputDto.setSubjects(studentsSubjectOutputDto);
-
-            //lo añadimos a la lista de salida
-            personCompleteOutputDto.getStudentAndSubjectsOutputDtoList().add(studentAndSubjectsOutputDto);
-        });
-    }
-
-    private void personIsStudent(PersonCompleteOutputDto personCompleteOutputDto, Student student) {
-        //Creamos la salida del Student más los StudentSubject
-        StudentAndSubjectsOutputDto studentAndSubjectsOutputDto = new StudentAndSubjectsOutputDto();
-        studentAndSubjectsOutputDto.setStudent(student.studentToStudentSimpleOutputDto());
-
-        //Creamos la lista de StudentSubject del Student por si los tiene mostrarlos en la salida
-        List<StudentSubjectSimpleOutputDto> subjects = studentSubjectRepository
-                .getSubjectsByIdStudent(student.getIdStudent())
-                .stream()
-                .map(StudentSubject::studentSubjectToStudentSubjectSimpleOutputDto)
-                .toList();
-
-        //añadimos los StudentSubject si los tiene y lo añadimos a la salida
-        studentAndSubjectsOutputDto.setSubjects(subjects);
-        personCompleteOutputDto.setStudentAndSubjectsOutputDto(studentAndSubjectsOutputDto);
-
-        //buscamos los datos del profesor asociado
-        TeacherOutputDto teacher = student.getTeacher().teacherToTeacherOutputDto();
-        personCompleteOutputDto.setTeacherOutputDto(teacher);
     }
 }

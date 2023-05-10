@@ -42,19 +42,16 @@ public class StudentServiceImpl implements StudentService {
 
         //Dto para la salida
         PersonCompleteOutputDto outputDto = new PersonCompleteOutputDto();
-
-        //Dto para el estudiante y su lista de asignaturas
-        StudentAndSubjectsOutputDto studentSubjectsDto = new StudentAndSubjectsOutputDto();
-        studentSubjectsDto.setStudent(student.studentToStudentSimpleOutputDto());
+        outputDto.setStudent(student.studentToStudentSimpleOutputDto());
 
         //obtenemos las asignaturas del estudiantes, las mapeamos y las añadimos
-        List<StudentSubjectSimpleOutputDto> subjects = subjectRepository.getSubjectsByIdStudent(student.getIdStudent())
+        List<StudentSubjectSimpleOutputDto> subjects = subjectRepository
+                .getSubjectsByIdStudent(student.getIdStudent())
                 .stream()
                 .map(StudentSubject::studentSubjectToStudentSubjectSimpleOutputDto)
                 .toList();
 
-        studentSubjectsDto.setSubjects(subjects);
-        outputDto.setStudentAndSubjectsOutputDto(studentSubjectsDto);
+        outputDto.setSubjects(subjects);
 
         //si outputType es FULL
         if (outputType.equalsIgnoreCase("full")) {

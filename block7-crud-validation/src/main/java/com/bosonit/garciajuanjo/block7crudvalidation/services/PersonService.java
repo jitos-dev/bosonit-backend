@@ -1,9 +1,8 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonAllOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +13,9 @@ public interface PersonService {
 
     Optional<PersonCompleteOutputDto> getById(String id, String outputType);
 
-    List<PersonOutputDto> getByUser(String name, String outputType);
+    List<PersonCompleteOutputDto> getByUser(String name, String outputType);
 
-    List<PersonAllOutputDto> getAll(String outputType);
+    List<PersonCompleteOutputDto> getAll(String outputType);
 
     void delete(String id);
 
