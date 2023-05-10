@@ -1,5 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentService;
@@ -25,8 +26,11 @@ public class StudentController {
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public StudentOutputDto getById(@PathVariable String id) {
-        return service.getById(id).orElseThrow();
+    public PersonCompleteOutputDto getById(
+            @PathVariable String id,
+            @RequestParam(required = false, defaultValue = "simple") String outputType) {
+
+        return service.getById(id, outputType).orElseThrow();
     }
 
     @PostMapping

@@ -1,5 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
 
@@ -12,7 +13,7 @@ public interface StudentService {
 
     List<StudentOutputDto> findAll();
 
-    Optional<StudentOutputDto> getById(String id);
+    Optional<PersonCompleteOutputDto> getById(String id, String outputType);
 
     Optional<StudentOutputDto> update(String id, StudentInputDto inputDto);
 

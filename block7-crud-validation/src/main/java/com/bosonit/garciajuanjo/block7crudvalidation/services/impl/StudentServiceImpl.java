@@ -2,13 +2,14 @@ package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.StudentSubject;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.*;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentSubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentService;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
     private PersonRepository personRepository;
     private TeacherRepository teacherRepository;
+    private StudentSubjectRepository subjectRepository;
 
     @Override
     public List<StudentOutputDto> findAll() {
@@ -34,11 +36,36 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Optional<StudentOutputDto> getById(String id) {
+    public Optional<PersonCompleteOutputDto> getById(String id, String outputType) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
-        return Optional.of(student.studentToStudentOutputDto());
+        //TODO probar porque me sale el person como null
+        //Dto para la salida
+        PersonCompleteOutputDto outputDto = new PersonCompleteOutputDto();
+
+        //Dto para el estudiante y su lista de asignaturas
+        StudentAndSubjectsOutputDto studentSubjectsDto = new StudentAndSubjectsOutputDto();
+        studentSubjectsDto.setStudent(student.studentToStudentSimpleOutputDto());
+
+        //obtenemos las asignaturas del estudiantes, las mapeamos y las añadimos
+        List<StudentSubjectSimpleOutputDto> subjects = subjectRepository.getSubjectsByIdStudent(student.getIdStudent())
+                .stream()
+                .map(StudentSubject::studentSubjectToStudentSubjectSimpleOutputDto)
+                .toList();
+
+        studentSubjectsDto.setSubjects(subjects);
+        outputDto.setStudentAndSubjectsOutputDto(studentSubjectsDto);
+
+        //si outputType es FULL
+        if (outputType.equalsIgnoreCase("full")) {
+            Person person = personRepository.findById(student.getPerson().getIdPerson())
+                    .orElseThrow(EntityNotFoundException::new);
+
+            outputDto.setPerson(person.personToPersonOutputDto());
+        }
+
+        return Optional.of(outputDto);
     }
 
     @Override

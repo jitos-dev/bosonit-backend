@@ -17,6 +17,7 @@ import java.util.List;
 public class PersonCompleteOutputDto {
 
     @JsonProperty(value = "person")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private PersonOutputDto person;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
