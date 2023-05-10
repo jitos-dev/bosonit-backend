@@ -7,32 +7,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class PersonCompleteOutputDto {
 
-    @JsonProperty(value = "person")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private PersonOutputDto person;
+    PersonOutputDto person;
 
+    @JsonProperty(value = "student")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @JsonProperty(value = "student_subjects")
-    private StudentAndSubjectsOutputDto studentAndSubjectsOutputDto;
+    private StudentSimpleOutputDto student;
+
+    @JsonProperty(value = "subjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<StudentSubjectSimpleOutputDto> subjects;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty(value = "teacher")
     private TeacherOutputDto teacherOutputDto;
-
-    @JsonProperty(value = "student_subjects_list")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StudentAndSubjectsOutputDto> studentAndSubjectsOutputDtoList = new ArrayList<>();
-
-    @JsonProperty(value = "subjects")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StudentSubjectOutputDto> studentsSubjectOutputDto;
 }

@@ -7,6 +7,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputD
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.TeacherService;
 import lombok.AllArgsConstructor;
@@ -20,8 +21,8 @@ import java.util.Optional;
 public class TeacherServiceImpl implements TeacherService {
 
     private TeacherRepository teacherRepository;
-
     private PersonRepository personRepository;
+    private StudentRepository studentRepository;
 
     @Override
     public Optional<TeacherOutputDto> findById(String id) {
@@ -44,11 +45,17 @@ public class TeacherServiceImpl implements TeacherService {
         Person person = personRepository.findById(teacherInputDto.getPersonId())
                 .orElseThrow(() -> new UnprocessableEntityException("The id of the person doesn't correspond to any user"));
 
-        Optional<String> teacherId = teacherRepository.findTeacherIdFromIdPerson(person.getIdPerson());
+        //comprobamos que no sea ya un Student
+        Optional<String> studentId = studentRepository.findStudentIdByPersonId(person.getIdPerson());
+        if (studentId.isPresent())
+            throw new UnprocessableEntityException("The person's id is already associated with a student");
 
+        //Comprobamos que no esté asociado ya a un Teacher
+        Optional<String> teacherId = teacherRepository.findTeacherIdFromIdPerson(person.getIdPerson());
         if (teacherId.isPresent())
                 throw new UnprocessableEntityException("The person's id is already associated with a teacher");
 
+        //Si esta correcto lo guardamos y lo devolvemos
         if (isAllFieldsCorrect(teacherInputDto)) {
             Teacher teacher = new Teacher(teacherInputDto);
             teacher.setPerson(person);
