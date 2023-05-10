@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,14 +30,50 @@ public class PersonServiceImpl implements PersonService {
     private TeacherRepository teacherRepository;
 
     @Override
-    public List<PersonOutputDto> getAll() {
-        return personRepository.findAll()
+    public List<PersonAllOutputDto> getAll(String outputType) {
+        List<PersonOutputDto> persons = personRepository.findAll()
                 .stream()
                 .map(Person::personToPersonOutputDto).toList();
+
+        //Lista de salida
+        List<PersonAllOutputDto> personAllOutputDto = new ArrayList<>();
+
+        //Lista de Teachers que contengan el id en la lista de ids de personas
+        List<Teacher> teachers = teacherRepository.findAll();
+
+        //Lista de Student que contengan el id en la lista de ids de personas
+        List<Student> students = studentRepository.findAll();
+
+        persons.forEach(personOutputDto -> {
+            //Creamos el objeto y añadimos la persona
+            PersonAllOutputDto dto = new PersonAllOutputDto();
+            dto.setPerson(personOutputDto);
+
+            //Si viene el parámetro full le asignamos el resto de datos
+            if (outputType.equalsIgnoreCase("full")) {
+                //Comprobamos si está en Students o en Teachers para añadirlo
+                Optional<Teacher> teacher = teachers.stream()
+                        .filter(teach -> teach.getPerson().getIdPerson().equals(personOutputDto.getIdPerson()))
+                        .findFirst();
+
+                Optional<Student> student = students.stream()
+                        .filter(stud -> stud.getPerson().getIdPerson().equals(personOutputDto.getIdPerson()))
+                        .findFirst();
+
+                teacher.ifPresent(value -> dto.setTeacherOutputDto(value.teacherToTeacherOutputDto()));
+
+                student.ifPresent(value -> dto.setStudent(value.studentToStudentSimpleOutputDto()));
+            }
+
+            //añadimos el valor a la lista de salida
+            personAllOutputDto.add(dto);
+        });
+
+        return personAllOutputDto;
     }
 
     @Override
-    public Optional<PersonCompleteOutputDto> getById(String id) {
+    public Optional<PersonCompleteOutputDto> getById(String id, String outputType) {
         Person person = personRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -56,7 +93,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonOutputDto> getByUser(String user) {
+    public List<PersonOutputDto> getByUser(String user, String outputType) {
         List<Person> personList = personRepository.findByUser(user);
 
         if (personList.isEmpty())

@@ -1,5 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonAllOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
@@ -19,20 +20,24 @@ public class PersonController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<PersonOutputDto> allPersons() {
-        return service.getAll();
+    public List<PersonAllOutputDto> allPersons(@RequestParam(required = false, defaultValue = "simple") String outputType) {
+        return service.getAll(outputType);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PersonCompleteOutputDto getById(@PathVariable String id) {
-        return service.getById(id).orElseThrow();
+    public PersonCompleteOutputDto getById(
+            @PathVariable String id,
+            @RequestParam(required = false, defaultValue = "simple") String outputType) {
+        return service.getById(id, outputType).orElseThrow();
     }
 
     @GetMapping(value = "/user/{user}")
     @ResponseStatus(HttpStatus.OK)
-    public List<PersonOutputDto> personByUser(@PathVariable String user) {
-        return service.getByUser(user);
+    public List<PersonOutputDto> personByUser(
+            @PathVariable String user,
+            @RequestParam(required = false, defaultValue = "simple") String outputType) {
+        return service.getByUser(user, outputType);
     }
 
     @PostMapping

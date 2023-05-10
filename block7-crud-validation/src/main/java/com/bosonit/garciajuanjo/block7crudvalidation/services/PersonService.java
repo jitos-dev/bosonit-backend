@@ -1,5 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonAllOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
@@ -11,11 +12,11 @@ public interface PersonService {
 
     Optional<PersonOutputDto> save(PersonInputDto personInputDto);
 
-    Optional<PersonCompleteOutputDto> getById(String id);
+    Optional<PersonCompleteOutputDto> getById(String id, String outputType);
 
-    List<PersonOutputDto> getByUser(String name);
+    List<PersonOutputDto> getByUser(String name, String outputType);
 
-    List<PersonOutputDto> getAll();
+    List<PersonAllOutputDto> getAll(String outputType);
 
     void delete(String id);
 

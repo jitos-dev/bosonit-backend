@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TeacherRepository extends JpaRepository<Teacher, String> {
@@ -21,4 +22,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
     @Query(value = "SELECT * from teachers WHERE person_id = ?1 limit 1", nativeQuery = true)
     Optional<Teacher> findTeacherFromPersonId(String personId);
+
+    @Query(value = "SELECT * FROM teachers WHERE person_id IN ?1", nativeQuery = true)
+    List<Teacher> findTeachersByPersonsIds(List<String> personIds);
 }

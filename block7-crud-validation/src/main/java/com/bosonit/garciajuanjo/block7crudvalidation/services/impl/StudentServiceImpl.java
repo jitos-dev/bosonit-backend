@@ -40,7 +40,6 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
-        //TODO probar porque me sale el person como null
         //Dto para la salida
         PersonCompleteOutputDto outputDto = new PersonCompleteOutputDto();
 
@@ -74,18 +73,17 @@ public class StudentServiceImpl implements StudentService {
         Person person = personRepository.findById(studentInputDto.getPersonId())
                 .orElseThrow(() -> new UnprocessableEntityException("The id of the person doesn't correspond to any user"));
 
-        //Buscamos el student_id por el id de Person. Si existe es que ya esta asociado la Person con un Student
+        //Comprobamos que no sea ya un Student
         Optional<String> studentId = studentRepository.findStudentIdByPersonId(person.getIdPerson());
-
         if (studentId.isPresent())
                 throw new UnprocessableEntityException("The person's id is already associated with a student");
 
-        //Buscamos el teacher_id por el id de Person. Si existe es que ya esta asociado la Person con un Teacher
+        //Comprobamos que no sea ya un Teacher
         Optional<String> teacherId = teacherRepository.findTeacherIdFromIdPerson(studentInputDto.getPersonId());
-
         if (teacherId.isPresent())
                 throw new UnprocessableEntityException("The person's id is already associated with a teacher");
 
+        //Comprobamos que el teacherId existe en la base de datos asociado a algún Teacher
         Teacher teacher = teacherRepository.findById(studentInputDto.getTeacherId())
                 .orElseThrow(() -> new UnprocessableEntityException("The id of the teacher doesn't correspond any record"));
 

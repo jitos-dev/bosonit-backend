@@ -8,6 +8,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundEx
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentSubjectRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentSubjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
