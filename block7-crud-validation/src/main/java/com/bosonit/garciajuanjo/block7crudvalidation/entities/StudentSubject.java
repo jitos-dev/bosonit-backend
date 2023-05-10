@@ -2,6 +2,7 @@ package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectSimpleOutputDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -56,6 +57,16 @@ public class StudentSubject {
                 this.initialDate,
                 this.finishDate,
                 this.student.studentToStudentOutputDto()
+        );
+    }
+
+    public StudentSubjectSimpleOutputDto studentSubjectToStudentSubjectSimpleOutputDto() {
+        return new StudentSubjectSimpleOutputDto(
+                this.idStudentSubject,
+                this.subject,
+                this.comments,
+                this.initialDate,
+                this.finishDate
         );
     }
 

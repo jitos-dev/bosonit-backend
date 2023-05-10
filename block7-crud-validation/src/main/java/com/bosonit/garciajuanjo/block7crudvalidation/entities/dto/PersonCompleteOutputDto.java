@@ -14,24 +14,24 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonStudentOutputDto {
+public class PersonCompleteOutputDto {
 
     @JsonProperty(value = "person")
-    private PersonOutputDto personOutputDto;
+    private PersonOutputDto person;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @JsonProperty(value = "student_and_subject")
-    private StudentAndSubjectOutputDto studentAndSubjectOutputDto;
+    @JsonProperty(value = "student_subjects")
+    private StudentAndSubjectsOutputDto studentAndSubjectsOutputDto;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty(value = "teacher")
     private TeacherOutputDto teacherOutputDto;
 
-    @JsonProperty(value = "students_and_subject")
+    @JsonProperty(value = "student_subjects_list")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StudentAndSubjectOutputDto> studentAndSubjectOutputDtoList = new ArrayList<>();
+    private List<StudentAndSubjectsOutputDto> studentAndSubjectsOutputDtoList = new ArrayList<>();
 
-    @JsonProperty(value = "students_subject")
+    @JsonProperty(value = "subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<StudentSubjectOutputDto> studentsSubjectOutputDto;
 }
