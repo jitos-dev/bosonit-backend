@@ -1,13 +1,11 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.repositories;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.StudentSubject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface StudentSubjectRepository extends JpaRepository<StudentSubject, String> {
 
@@ -19,5 +17,5 @@ public interface StudentSubjectRepository extends JpaRepository<StudentSubject, 
     void deleteStudentSubjectByStudentId(String studentId);
 
     @Query(value = "SELECT * FROM student_subject WHERE student_id = ?1", nativeQuery = true)
-    List<StudentSubject> getStudentsSubjectByIdStudent(String studentId);
+    List<StudentSubject> getSubjectsByIdStudent(String studentId);
 }

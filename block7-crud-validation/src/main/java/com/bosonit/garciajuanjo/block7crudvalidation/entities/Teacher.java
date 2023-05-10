@@ -1,8 +1,11 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSimpleOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,8 +51,9 @@ public class Teacher {
     }
 
     public TeacherOutputDto teacherToTeacherOutputDto() {
-        List<StudentOutputDto> studentList = this.students.stream()
-                .map(Student::studentToStudentOutputDto)
+        List<StudentSimpleOutputDto> studentsList = this.students
+                .stream()
+                .map(Student::studentToStudentSimpleOutputDto)
                 .toList();
 
         return new TeacherOutputDto(
@@ -57,7 +61,7 @@ public class Teacher {
                 this.comments,
                 this.branch,
                 this.person.personToPersonOutputDto(),
-                studentList
+                studentsList
         );
     }
 

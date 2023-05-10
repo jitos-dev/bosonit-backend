@@ -13,13 +13,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentAndSubjectOutputDto {
+public class StudentAndSubjectsOutputDto {
 
     @JsonProperty(value = "student")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private StudentOutputDto studentOutputDto;
+    private StudentSimpleOutputDto student;
 
     @JsonProperty(value = "subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StudentSubjectOutputDto> studentsSubjectOutputDto;
+    private List<StudentSubjectSimpleOutputDto> subjects;
 }

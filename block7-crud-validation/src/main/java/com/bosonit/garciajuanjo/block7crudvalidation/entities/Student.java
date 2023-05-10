@@ -2,6 +2,7 @@ package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSimpleOutputDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,7 +41,6 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
-    //@JsonIgnoreProperties(value = {"students"})
     private Teacher teacher;
 
     public Student(StudentInputDto dto) {
@@ -57,7 +57,17 @@ public class Student {
                 this.comments,
                 this.branch,
                 this.person.personToPersonOutputDto(),
-                this.teacher.getIdTeacher()
+                this.teacher.teacherToTeacherOutputDto()
+        );
+    }
+
+    public StudentSimpleOutputDto studentToStudentSimpleOutputDto() {
+        return new StudentSimpleOutputDto(
+                this.idStudent,
+                this.numHoursWeek,
+                this.comments,
+                this.branch,
+                this.person.personToPersonOutputDto()
         );
     }
 

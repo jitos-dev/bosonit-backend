@@ -7,13 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherOutputDto {
+public class TeacherSimpleOutputDto {
 
     @JsonProperty(value = "id_teacher")
     private String idTeacher;
@@ -23,7 +21,4 @@ public class TeacherOutputDto {
     private Branch branch;
 
     private PersonOutputDto person;
-
-    @JsonProperty(value = "student_list")
-    private List<StudentSimpleOutputDto> studentList;
 }
