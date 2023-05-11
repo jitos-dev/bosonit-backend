@@ -1,6 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.entities.dto;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.SubjectName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class StudentSubjectSimpleOutputDto {
 
     @JsonProperty(value = "id_subject")
     private String idStudentSubject;
-    private Subject subject;
+    private SubjectName subjectName;
     private String comments;
     @JsonProperty(value = "initial_date")
     private Date initialDate;

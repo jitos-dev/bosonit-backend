@@ -1,6 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.entities.dto;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.SubjectName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.Date;
 public class StudentSubjectInputDto {
 
     private String idStudentSubject;
-    private Subject subject;
+    private SubjectName subjectName;
     private String comments;
     private Date initialDate;
     private Date finishDate;

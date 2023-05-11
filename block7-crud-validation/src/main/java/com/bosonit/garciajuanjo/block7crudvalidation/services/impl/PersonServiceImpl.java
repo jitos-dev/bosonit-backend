@@ -2,7 +2,7 @@ package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.StudentSubject;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
@@ -136,9 +136,9 @@ public class PersonServiceImpl implements PersonService {
                 student.ifPresent(value -> {
                     dto.setStudent(value.studentToStudentSimpleOutputDto());
 
-                    List<StudentSubjectSimpleOutputDto> subjects = studentSubjectRepository.getSubjectsByIdStudent(value.getIdStudent())
+                    List<StudentSubjectSimpleOutputDto> subjects = studentSubjectRepository.findSubjectsByStudentId(value.getIdStudent())
                             .stream()
-                            .map(StudentSubject::studentSubjectToStudentSubjectSimpleOutputDto)
+                            .map(Subject::studentSubjectToStudentSubjectSimpleOutputDto)
                             .toList();
 
                     if (!subjects.isEmpty())

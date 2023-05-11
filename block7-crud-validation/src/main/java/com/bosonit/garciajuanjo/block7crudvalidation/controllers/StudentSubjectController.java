@@ -1,6 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectListOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentSubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class StudentSubjectController {
     @ResponseStatus(HttpStatus.OK)
     public StudentSubjectOutputDto getById(@PathVariable String id) {
         return service.findById(id).orElseThrow();
+    }
+
+    @GetMapping("student/{id}")
+    public StudentSubjectListOutputDto getByUserId(@PathVariable String userId) {
+        return service.findByStudentId(userId).orElseThrow();
     }
 
     @PostMapping

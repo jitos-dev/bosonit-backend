@@ -2,7 +2,7 @@ package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.StudentSubject;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.*;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
@@ -46,9 +46,9 @@ public class StudentServiceImpl implements StudentService {
 
         //obtenemos las asignaturas del estudiantes, las mapeamos y las añadimos
         List<StudentSubjectSimpleOutputDto> subjects = subjectRepository
-                .getSubjectsByIdStudent(student.getIdStudent())
+                .findSubjectsByStudentId(student.getIdStudent())
                 .stream()
-                .map(StudentSubject::studentSubjectToStudentSubjectSimpleOutputDto)
+                .map(Subject::studentSubjectToStudentSubjectSimpleOutputDto)
                 .toList();
 
         outputDto.setSubjects(subjects);

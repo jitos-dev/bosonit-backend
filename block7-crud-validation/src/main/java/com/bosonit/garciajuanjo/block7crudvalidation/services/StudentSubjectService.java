@@ -1,6 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectListOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectOutputDto;
 
 import java.util.List;
@@ -11,6 +12,8 @@ public interface StudentSubjectService {
     List<StudentSubjectOutputDto> findAll();
 
     Optional<StudentSubjectOutputDto> findById(String id);
+
+    Optional<StudentSubjectListOutputDto> findByStudentId(String studentId);
 
     Optional<StudentSubjectOutputDto> save(StudentSubjectInputDto inputDto);
 
