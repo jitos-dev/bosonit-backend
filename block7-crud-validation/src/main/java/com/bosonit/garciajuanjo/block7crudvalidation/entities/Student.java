@@ -51,7 +51,6 @@ public class Student {
     private Set<Subject> subjects = new HashSet<>();
 
     public Student(StudentInputDto dto) {
-        this.idStudent = dto.getIdStudent();
         this.numHoursWeek = dto.getNumHoursWeek();
         this.comments = dto.getComments();
         this.branch = dto.getBranch();
@@ -75,17 +74,6 @@ public class Student {
                 this.comments,
                 this.branch,
                 this.person.personToPersonOutputDto()
-        );
-    }
-
-    public StudentInputDto studentToStudentInputDto() {
-        return new StudentInputDto(
-                this.idStudent,
-                this.numHoursWeek,
-                this.comments,
-                this.branch,
-                this.person.getIdPerson(),
-                this.teacher.getIdTeacher()
         );
     }
 }

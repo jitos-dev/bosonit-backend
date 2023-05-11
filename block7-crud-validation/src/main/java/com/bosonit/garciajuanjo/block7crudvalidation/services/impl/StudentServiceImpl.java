@@ -97,6 +97,8 @@ public class StudentServiceImpl implements StudentService {
         return Optional.empty();
     }
 
+
+
     @Override
     public Optional<StudentOutputDto> update(String id, StudentInputDto inputDto) {
         Student student = studentRepository.findById(id)
@@ -105,6 +107,19 @@ public class StudentServiceImpl implements StudentService {
         Student studentUpdated = getStudentUpdated(inputDto, student);
 
         return Optional.of(studentRepository.save(studentUpdated).studentToStudentOutputDto());
+    }
+
+    @Override
+    public Optional<StudentOutputDto> addSubject(StudentSubjectInputDto studentSubjectInputDto) {
+        Student student = studentRepository.findById(studentSubjectInputDto.getStudentId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        Subject subject = subjectRepository.findById(studentSubjectInputDto.getSubjectId())
+                        .orElseThrow(EntityNotFoundException::new);
+
+        student.getSubjects().add(subject);
+
+        return Optional.of(studentRepository.save(student).studentToStudentOutputDto());
     }
 
     @Override

@@ -14,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class SubjectInputDto {
 
+    private String subjectId;
     private String subjectName;
     private String comments;
     private Date initialDate;

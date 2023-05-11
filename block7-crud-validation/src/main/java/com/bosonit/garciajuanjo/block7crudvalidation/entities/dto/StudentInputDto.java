@@ -12,7 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class StudentInputDto {
 
-    private String idStudent;
     private Integer numHoursWeek;
     private String comments;
     private Branch branch;

@@ -27,7 +27,7 @@ public class Subject {
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
     @Column(name = "id_subject")
     @EqualsAndHashCode.Include
-    private String idStudentSubject;
+    private String idSubject;
 
     private String comments;
 
@@ -46,6 +46,7 @@ public class Subject {
     private Set<Student> students = new HashSet<>();
 
     public Subject(SubjectInputDto inputDto) {
+        this.idSubject = inputDto.getSubjectId();
         this.comments = inputDto.getComments();
         this.initialDate = inputDto.getInitialDate();
         this.finishDate = inputDto.getFinishDate();
@@ -59,7 +60,7 @@ public class Subject {
                 .toList();
 
         return new SubjectOutputDto(
-                this.idStudentSubject,
+                this.idSubject,
                 this.subjectName,
                 this.comments,
                 this.initialDate,
@@ -70,22 +71,11 @@ public class Subject {
 
     public SubjectSimpleOutputDto subjectToSubjectSimpleOutputDto() {
         return new SubjectSimpleOutputDto(
-                this.idStudentSubject,
+                this.idSubject,
                 this.subjectName,
                 this.comments,
                 this.initialDate,
                 this.finishDate
         );
     }
-
-/*    public SubjectInputDto subjectToSubjectInputDto() {
-        return new SubjectInputDto(
-                this.idStudentSubject,
-                this.subjectName,
-                this.comments,
-                this.initialDate,
-                this.finishDate,
-                this.students.getIdStudent()
-        );
-    }*/
 }
