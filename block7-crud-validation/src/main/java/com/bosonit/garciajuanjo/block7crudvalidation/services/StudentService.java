@@ -16,7 +16,9 @@ public interface StudentService {
 
     Optional<StudentOutputDto> update(String id, StudentInputDto inputDto);
 
-    Optional<StudentOutputDto> addSubject(StudentSubjectInputDto studentSubjectInputDto);
+    Optional<StudentOutputDto> addSubjects(List<String> subjectsIds, String studentId);
+
+    void deleteSubjects(List<String> subjectsIds, String studentId);
 
     void delete(String id);
 }
