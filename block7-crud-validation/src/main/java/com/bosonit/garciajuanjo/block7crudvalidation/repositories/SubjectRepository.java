@@ -16,7 +16,11 @@ public interface SubjectRepository extends JpaRepository<Subject, String> {
      * que anotarlo con @Transactional para que se inicie una transacción para el borrado si o si*/
     @Modifying
     @Query(value = "DELETE from subjects WHERE student_id = ?1", nativeQuery = true)
-    void deleteStudentSubjectByStudentId(String studentId);
+    void deleteSubjectByStudentId(String studentId);
+
+    @Modifying
+    @Query(value = "DELETE FROM student_subject WHERE subject_id = ?1", nativeQuery = true)
+    void deleteStudentSubjectBySubjectId(String subjectId);
 
     @Query(value = "SELECT * FROM subjects WHERE student_id = ?1", nativeQuery = true)
     List<Subject> findSubjectsByStudentId(String studentId);

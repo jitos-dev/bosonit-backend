@@ -12,6 +12,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEnt
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.SubjectService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -96,11 +97,13 @@ public class SubjectServiceImpl implements SubjectService {
                 .subjectToSubjectOutputDto());
     }
 
-
+    @Transactional
     @Override
     public void delete(String id) {
         Subject subject = subjectRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
+
+        subjectRepository.deleteStudentSubjectBySubjectId(subject.getIdSubject());
 
         subjectRepository.delete(subject);
     }
