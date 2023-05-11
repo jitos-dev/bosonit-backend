@@ -3,11 +3,13 @@ package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectSimpleOutputDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -57,13 +59,18 @@ public class Student {
     }
 
     public StudentOutputDto studentToStudentOutputDto() {
+        List<SubjectSimpleOutputDto> subjectsList = this.subjects.stream()
+                .map(Subject::subjectToSubjectSimpleOutputDto)
+                .toList();
+
         return new StudentOutputDto(
                 this.idStudent,
                 this.numHoursWeek,
                 this.comments,
                 this.branch,
                 this.person.personToPersonOutputDto(),
-                this.teacher.teacherToTeacherOutputDto()
+                this.teacher.teacherToTeacherOutputDto(),
+                subjectsList
         );
     }
 

@@ -39,7 +39,7 @@ public class PersonServiceImpl implements PersonService {
                 .stream()
                 .map(Person::personToPersonOutputDto).toList();
 
-        return getPersonAllOutputDtos(outputType, persons);
+        return getPersonCompleteOutputDto(outputType, persons);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PersonServiceImpl implements PersonService {
 
         List<PersonOutputDto> persons = Collections.singletonList(person.personToPersonOutputDto());
 
-        return getPersonAllOutputDtos(outputType, persons).stream().findFirst();
+        return getPersonCompleteOutputDto(outputType, persons).stream().findFirst();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class PersonServiceImpl implements PersonService {
         if (personList.isEmpty())
             throw new EntityNotFoundException();
 
-        return getPersonAllOutputDtos(outputType, personList);
+        return getPersonCompleteOutputDto(outputType, personList);
     }
 
     @Override
@@ -104,15 +104,21 @@ public class PersonServiceImpl implements PersonService {
         personRepository.delete(person);
     }
 
-    private List<PersonCompleteOutputDto> getPersonAllOutputDtos(String outputType, List<PersonOutputDto> persons) {
+    private List<PersonCompleteOutputDto> getPersonCompleteOutputDto(String outputType, List<PersonOutputDto> persons) {
         //Lista de salida
         List<PersonCompleteOutputDto> personCompleteList = new ArrayList<>();
 
+        /*Lista de ids de persons. Lo hago de esta forma porque como reutilizo el método puedo estar buscando solo
+        * un Person y así no tengo que traerme todos los Teachers o todos los Student*/
+        List<String> personIds = persons.stream()
+                .map(PersonOutputDto::getIdPerson)
+                .toList();
+
         //Lista de Teachers que contengan el id en la lista de ids de personas
-        List<Teacher> teachers = teacherRepository.findAll();
+        List<Teacher> teachers = teacherRepository.findTeachersByPersonsIds(personIds);
 
         //Lista de Student que contengan el id en la lista de ids de personas
-        List<Student> students = studentRepository.findAll();
+        List<Student> students = studentRepository.findStudentsByPersonsIds(personIds);
 
         persons.forEach(personOutputDto -> {
             //Creamos el objeto y añadimos la persona
@@ -132,18 +138,7 @@ public class PersonServiceImpl implements PersonService {
 
                 teacher.ifPresent(value -> dto.setTeacherOutputDto(value.teacherToTeacherOutputDto()));
 
-                //añadimos el estudiante y las asignaturas si las tiene
-                student.ifPresent(value -> {
-                    dto.setStudent(value.studentToStudentSimpleOutputDto());
-
-                    List<SubjectSimpleOutputDto> subjects = subjectRepository.findSubjectsByStudentId(value.getIdStudent())
-                            .stream()
-                            .map(Subject::subjectToSubjectSimpleOutputDto)
-                            .toList();
-
-                    if (!subjects.isEmpty())
-                        dto.setSubjects(subjects);
-                });
+                student.ifPresent(value -> dto.setStudent(value.studentToStudentOutputDto()));
             }
 
             //añadimos el valor a la lista de salida
