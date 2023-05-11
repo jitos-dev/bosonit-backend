@@ -2,17 +2,17 @@ package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.StudentSubject;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectSimpleOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
-import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentSubjectRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
 import jakarta.transaction.Transactional;
@@ -30,7 +30,7 @@ public class PersonServiceImpl implements PersonService {
 
     private PersonRepository personRepository;
     private StudentRepository studentRepository;
-    private StudentSubjectRepository studentSubjectRepository;
+    private SubjectRepository subjectRepository;
     private TeacherRepository teacherRepository;
 
     @Override
@@ -39,7 +39,7 @@ public class PersonServiceImpl implements PersonService {
                 .stream()
                 .map(Person::personToPersonOutputDto).toList();
 
-        return getPersonAllOutputDtos(outputType, persons);
+        return getPersonCompleteOutputDto(outputType, persons);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PersonServiceImpl implements PersonService {
 
         List<PersonOutputDto> persons = Collections.singletonList(person.personToPersonOutputDto());
 
-        return getPersonAllOutputDtos(outputType, persons).stream().findFirst();
+        return getPersonCompleteOutputDto(outputType, persons).stream().findFirst();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class PersonServiceImpl implements PersonService {
         if (personList.isEmpty())
             throw new EntityNotFoundException();
 
-        return getPersonAllOutputDtos(outputType, personList);
+        return getPersonCompleteOutputDto(outputType, personList);
     }
 
     @Override
@@ -92,27 +92,38 @@ public class PersonServiceImpl implements PersonService {
         Person person = personRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
-        /*Eliminamos todas los asociados a Person como son Teacher, Student y como eliminamos Student a su vez
-        también eliminamos los StudentSubject*/
+        //Si es un Student primero tenemos que eliminar las referencias a Subject si las tuviera
         Optional<Student> student = studentRepository.findByPersonId(person.getIdPerson());
-
         if (student.isPresent()) {
-            studentSubjectRepository.deleteStudentSubjectByStudentId(student.get().getIdStudent());
+            subjectRepository.deleteStudentSubjectByStudentId(student.get().getIdStudent());
             studentRepository.deleteStudentByPersonId(person.getIdPerson());
+        }
+
+        Optional<Teacher> teacher = teacherRepository.findTeacherFromPersonId(person.getIdPerson());
+        if (teacher.isPresent()) {
+            //comprobamos que no tenga referencias con algun Student porque si es así no se puede borrar
+            if (!teacher.get().getStudents().isEmpty())
+                throw new UnprocessableEntityException("The teacher cannot be deleted because it has associated Students");
         }
 
         personRepository.delete(person);
     }
 
-    private List<PersonCompleteOutputDto> getPersonAllOutputDtos(String outputType, List<PersonOutputDto> persons) {
+    private List<PersonCompleteOutputDto> getPersonCompleteOutputDto(String outputType, List<PersonOutputDto> persons) {
         //Lista de salida
         List<PersonCompleteOutputDto> personCompleteList = new ArrayList<>();
 
+        /*Lista de ids de persons. Lo hago de esta forma porque como reutilizo el método puedo estar buscando solo
+        * un Person y así no tengo que traerme todos los Teachers o todos los Student*/
+        List<String> personIds = persons.stream()
+                .map(PersonOutputDto::getIdPerson)
+                .toList();
+
         //Lista de Teachers que contengan el id en la lista de ids de personas
-        List<Teacher> teachers = teacherRepository.findAll();
+        List<Teacher> teachers = teacherRepository.findTeachersByPersonsIds(personIds);
 
         //Lista de Student que contengan el id en la lista de ids de personas
-        List<Student> students = studentRepository.findAll();
+        List<Student> students = studentRepository.findStudentsByPersonsIds(personIds);
 
         persons.forEach(personOutputDto -> {
             //Creamos el objeto y añadimos la persona
@@ -132,18 +143,7 @@ public class PersonServiceImpl implements PersonService {
 
                 teacher.ifPresent(value -> dto.setTeacherOutputDto(value.teacherToTeacherOutputDto()));
 
-                //añadimos el estudiante y las asignaturas si las tiene
-                student.ifPresent(value -> {
-                    dto.setStudent(value.studentToStudentSimpleOutputDto());
-
-                    List<StudentSubjectSimpleOutputDto> subjects = studentSubjectRepository.getSubjectsByIdStudent(value.getIdStudent())
-                            .stream()
-                            .map(StudentSubject::studentSubjectToStudentSubjectSimpleOutputDto)
-                            .toList();
-
-                    if (!subjects.isEmpty())
-                        dto.setSubjects(subjects);
-                });
+                student.ifPresent(value -> dto.setStudent(value.studentToStudentOutputDto()));
             }
 
             //añadimos el valor a la lista de salida

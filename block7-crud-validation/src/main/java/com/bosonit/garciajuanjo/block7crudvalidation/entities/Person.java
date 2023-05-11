@@ -60,7 +60,10 @@ public class Person {
     @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
     private Teacher teacher;
 
-    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToOne(
+            mappedBy = "person",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private Student student;
 
     public Person(PersonInputDto personInputDto) {
@@ -109,5 +112,7 @@ public class Person {
                 this.imageUrl,
                 this.terminationDate);
     }
+
+
 }
 

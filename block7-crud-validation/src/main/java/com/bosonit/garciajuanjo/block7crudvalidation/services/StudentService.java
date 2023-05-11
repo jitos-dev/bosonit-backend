@@ -1,8 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +15,8 @@ public interface StudentService {
     Optional<PersonCompleteOutputDto> getById(String id, String outputType);
 
     Optional<StudentOutputDto> update(String id, StudentInputDto inputDto);
+
+    Optional<StudentOutputDto> addSubject(StudentSubjectInputDto studentSubjectInputDto);
 
     void delete(String id);
 }

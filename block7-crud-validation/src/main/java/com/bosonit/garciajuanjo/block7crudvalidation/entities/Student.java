@@ -3,14 +3,14 @@ package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectSimpleOutputDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "students")
@@ -18,12 +18,14 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Student {
 
     @Id
     @GeneratedValue(generator = "myGenerator")
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
     @Column(name = "id_student")
+    @EqualsAndHashCode.Include
     private String idStudent;
 
     @Column(name = "num_hours_week", nullable = false)
@@ -36,28 +38,39 @@ public class Student {
     private Branch branch;
 
     @OneToOne
-    @JoinColumn(name = "person_id", unique = true)
+    @JoinColumn(name = "person_id")
     private Person person;
 
     @ManyToOne
-    @JoinColumn(name = "teacher_id")
+    @JoinColumn(name = "teacher_id", unique = true)
     private Teacher teacher;
 
+    @ManyToMany
+    @JoinTable(
+            name = "student_subject",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id"))
+    private Set<Subject> subjects = new HashSet<>();
+
     public Student(StudentInputDto dto) {
-        this.idStudent = dto.getIdStudent();
         this.numHoursWeek = dto.getNumHoursWeek();
         this.comments = dto.getComments();
         this.branch = dto.getBranch();
     }
 
     public StudentOutputDto studentToStudentOutputDto() {
+        List<SubjectSimpleOutputDto> subjectsList = this.subjects.stream()
+                .map(Subject::subjectToSubjectSimpleOutputDto)
+                .toList();
+
         return new StudentOutputDto(
                 this.idStudent,
                 this.numHoursWeek,
                 this.comments,
                 this.branch,
                 this.person.personToPersonOutputDto(),
-                this.teacher.teacherToTeacherOutputDto()
+                this.teacher.teacherToTeacherOutputDto(),
+                subjectsList
         );
     }
 
@@ -68,17 +81,6 @@ public class Student {
                 this.comments,
                 this.branch,
                 this.person.personToPersonOutputDto()
-        );
-    }
-
-    public StudentInputDto studentToStudentInputDto() {
-        return new StudentInputDto(
-                this.idStudent,
-                this.numHoursWeek,
-                this.comments,
-                this.branch,
-                this.person.getIdPerson(),
-                this.teacher.getIdTeacher()
         );
     }
 }

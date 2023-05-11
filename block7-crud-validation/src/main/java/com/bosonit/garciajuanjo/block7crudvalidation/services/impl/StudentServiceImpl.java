@@ -2,19 +2,21 @@ package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.StudentSubject;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.*;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
-import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentSubjectRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +27,7 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
     private PersonRepository personRepository;
     private TeacherRepository teacherRepository;
-    private StudentSubjectRepository subjectRepository;
+    private SubjectRepository subjectRepository;
 
     @Override
     public List<StudentOutputDto> findAll() {
@@ -42,16 +44,7 @@ public class StudentServiceImpl implements StudentService {
 
         //Dto para la salida
         PersonCompleteOutputDto outputDto = new PersonCompleteOutputDto();
-        outputDto.setStudent(student.studentToStudentSimpleOutputDto());
-
-        //obtenemos las asignaturas del estudiantes, las mapeamos y las añadimos
-        List<StudentSubjectSimpleOutputDto> subjects = subjectRepository
-                .getSubjectsByIdStudent(student.getIdStudent())
-                .stream()
-                .map(StudentSubject::studentSubjectToStudentSubjectSimpleOutputDto)
-                .toList();
-
-        outputDto.setSubjects(subjects);
+        outputDto.setStudent(student.studentToStudentOutputDto());
 
         //si outputType es FULL
         if (outputType.equalsIgnoreCase("full")) {
@@ -97,6 +90,8 @@ public class StudentServiceImpl implements StudentService {
         return Optional.empty();
     }
 
+
+
     @Override
     public Optional<StudentOutputDto> update(String id, StudentInputDto inputDto) {
         Student student = studentRepository.findById(id)
@@ -108,11 +103,29 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Optional<StudentOutputDto> addSubject(StudentSubjectInputDto studentSubjectInputDto) {
+        Student student = studentRepository.findById(studentSubjectInputDto.getStudentId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        Subject subject = subjectRepository.findById(studentSubjectInputDto.getSubjectId())
+                        .orElseThrow(EntityNotFoundException::new);
+
+        student.getSubjects().add(subject);
+
+        return Optional.of(studentRepository.save(student).studentToStudentOutputDto());
+    }
+
+    @Transactional
+    @Override
     public void delete(String id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
-        studentRepository.delete(student);
+        //Modificamos Student antes para poder borrarlo
+        student.getSubjects().clear();
+        studentRepository.save(student);
+
+        studentRepository.deleteStudentByPersonId(student.getPerson().getIdPerson());
     }
 
 

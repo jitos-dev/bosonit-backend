@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,4 +29,6 @@ public class StudentOutputDto {
     private PersonOutputDto person;
 
     private TeacherOutputDto teacher;
+
+    private List<SubjectSimpleOutputDto> subjects;
 }

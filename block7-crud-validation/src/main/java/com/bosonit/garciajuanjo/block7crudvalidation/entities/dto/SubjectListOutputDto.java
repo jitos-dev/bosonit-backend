@@ -5,12 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class StudentSubjectInputDto {
+@AllArgsConstructor
+public class SubjectListOutputDto {
 
-    private String studentId;
-    private String subjectId;
+    private StudentSimpleOutputDto student;
+
+    private List<SubjectSimpleOutputDto> subjects;
 }
