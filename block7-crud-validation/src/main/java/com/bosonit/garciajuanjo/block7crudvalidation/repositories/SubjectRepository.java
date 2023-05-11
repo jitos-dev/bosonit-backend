@@ -22,6 +22,10 @@ public interface SubjectRepository extends JpaRepository<Subject, String> {
     @Query(value = "DELETE FROM student_subject WHERE subject_id = ?1", nativeQuery = true)
     void deleteStudentSubjectBySubjectId(String subjectId);
 
+    @Modifying
+    @Query(value = "DELETE FROM student_subject WHERE student_id = ?1", nativeQuery = true)
+    void deleteStudentSubjectByStudentId(String studentId);
+
     @Query(value = "SELECT * FROM subjects WHERE student_id = ?1", nativeQuery = true)
     List<Subject> findSubjectsByStudentId(String studentId);
 

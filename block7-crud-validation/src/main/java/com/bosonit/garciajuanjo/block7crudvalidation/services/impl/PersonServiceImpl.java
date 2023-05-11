@@ -92,11 +92,18 @@ public class PersonServiceImpl implements PersonService {
         Person person = personRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
-        /*Eliminamos todas los asociados a Person como son Teacher, Student y como eliminamos Student a su vez
-        también eliminamos los StudentSubject*/
+        //Si es un Student primero tenemos que eliminar las referencias a Subject si las tuviera
         Optional<Student> student = studentRepository.findByPersonId(person.getIdPerson());
         if (student.isPresent()) {
+            subjectRepository.deleteStudentSubjectByStudentId(student.get().getIdStudent());
             studentRepository.deleteStudentByPersonId(person.getIdPerson());
+        }
+
+        Optional<Teacher> teacher = teacherRepository.findTeacherFromPersonId(person.getIdPerson());
+        if (teacher.isPresent()) {
+            //comprobamos que no tenga referencias con algun Student porque si es así no se puede borrar
+            if (!teacher.get().getStudents().isEmpty())
+                throw new UnprocessableEntityException("The teacher cannot be deleted because it has associated Students");
         }
 
         personRepository.delete(person);
