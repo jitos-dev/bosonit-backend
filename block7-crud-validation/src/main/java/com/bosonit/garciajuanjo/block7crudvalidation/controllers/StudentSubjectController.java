@@ -1,9 +1,9 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectListOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentSubjectService;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectListOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.services.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,37 +16,37 @@ import java.util.Optional;
 public class StudentSubjectController {
 
     @Autowired
-    private StudentSubjectService service;
+    private SubjectService service;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<StudentSubjectOutputDto> getAll() {
+    public List<SubjectOutputDto> getAll() {
         return service.findAll();
     }
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public StudentSubjectOutputDto getById(@PathVariable String id) {
+    public SubjectOutputDto getById(@PathVariable String id) {
         return service.findById(id).orElseThrow();
     }
 
     @GetMapping("student/{id}")
-    public StudentSubjectListOutputDto getByUserId(@PathVariable String userId) {
+    public SubjectListOutputDto getByUserId(@PathVariable String userId) {
         return service.findByStudentId(userId).orElseThrow();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StudentSubjectOutputDto addStudentSubject(@RequestBody StudentSubjectInputDto studentSubjectInputDto) {
-        Optional<StudentSubjectOutputDto> optional = service.save(studentSubjectInputDto);
+    public SubjectOutputDto addStudentSubject(@RequestBody SubjectInputDto subjectInputDto) {
+        Optional<SubjectOutputDto> optional = service.save(subjectInputDto);
 
         return optional.orElseThrow();
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public StudentSubjectOutputDto update(@RequestBody StudentSubjectInputDto studentSubjectInputDto, @PathVariable String id) {
-        return service.update(id, studentSubjectInputDto).orElseThrow();
+    public SubjectOutputDto update(@RequestBody SubjectInputDto subjectInputDto, @PathVariable String id) {
+        return service.update(id, subjectInputDto).orElseThrow();
     }
 
     @DeleteMapping("{id}")

@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentSubjectSimpleOutputDto {
+public class SubjectSimpleOutputDto {
 
     @JsonProperty(value = "id_subject")
     private String idStudentSubject;

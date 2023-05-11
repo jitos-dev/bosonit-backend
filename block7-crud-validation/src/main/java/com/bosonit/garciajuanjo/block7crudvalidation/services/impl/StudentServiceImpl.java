@@ -9,7 +9,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundEx
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
-import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentSubjectRepository;
+import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentService;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
     private PersonRepository personRepository;
     private TeacherRepository teacherRepository;
-    private StudentSubjectRepository subjectRepository;
+    private SubjectRepository subjectRepository;
 
     @Override
     public List<StudentOutputDto> findAll() {
@@ -45,10 +45,10 @@ public class StudentServiceImpl implements StudentService {
         outputDto.setStudent(student.studentToStudentSimpleOutputDto());
 
         //obtenemos las asignaturas del estudiantes, las mapeamos y las añadimos
-        List<StudentSubjectSimpleOutputDto> subjects = subjectRepository
+        List<SubjectSimpleOutputDto> subjects = subjectRepository
                 .findSubjectsByStudentId(student.getIdStudent())
                 .stream()
-                .map(Subject::studentSubjectToStudentSubjectSimpleOutputDto)
+                .map(Subject::subjectToSubjectSimpleOutputDto)
                 .toList();
 
         outputDto.setSubjects(subjects);

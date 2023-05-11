@@ -1,29 +1,32 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSubjectSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectSimpleOutputDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "student_subject")
+@Table(name = "subjects")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Subject {
 
     @Id
     @GeneratedValue(generator = "myGenerator")
     @GenericGenerator(name = "myGenerator", strategy = "com.bosonit.garciajuanjo.block7crudvalidation.utils.MyIdentifierGenerator")
     @Column(name = "id_subject")
+    @EqualsAndHashCode.Include
     private String idStudentSubject;
 
     private String comments;
@@ -35,33 +38,39 @@ public class Subject {
     private Date finishDate;
 
     @Enumerated(EnumType.STRING)
+    @EqualsAndHashCode.Include
+    @Column(name = "subject_name", unique = true, nullable = false)
     private SubjectName subjectName;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
+    @ManyToMany(mappedBy = "subjects")
+    private Set<Student> students = new HashSet<>();
 
-    public Subject(StudentSubjectInputDto inputDto) {
+    public Subject(SubjectInputDto inputDto) {
         this.idStudentSubject = inputDto.getIdStudentSubject();
         this.comments = inputDto.getComments();
         this.initialDate = inputDto.getInitialDate();
         this.finishDate = inputDto.getFinishDate();
-        this.subjectName = inputDto.getSubjectName();
+        this.subjectName = SubjectName.valueOf(inputDto.getSubjectName());
     }
 
-    public StudentSubjectOutputDto studentSubjectToStudentSubjectOutputDto() {
-        return new StudentSubjectOutputDto(
+    public SubjectOutputDto subjectToSubjectOutputDto() {
+        List<StudentOutputDto> studentsDto = this.students
+                .stream()
+                .map(Student::studentToStudentOutputDto)
+                .toList();
+
+        return new SubjectOutputDto(
                 this.idStudentSubject,
                 this.subjectName,
                 this.comments,
                 this.initialDate,
                 this.finishDate,
-                this.student.studentToStudentOutputDto()
+                studentsDto
         );
     }
 
-    public StudentSubjectSimpleOutputDto studentSubjectToStudentSubjectSimpleOutputDto() {
-        return new StudentSubjectSimpleOutputDto(
+    public SubjectSimpleOutputDto subjectToSubjectSimpleOutputDto() {
+        return new SubjectSimpleOutputDto(
                 this.idStudentSubject,
                 this.subjectName,
                 this.comments,
@@ -70,14 +79,14 @@ public class Subject {
         );
     }
 
-    public StudentSubjectInputDto studentSubjectToStudentSubjectInputDto() {
-        return new StudentSubjectInputDto(
+/*    public SubjectInputDto subjectToSubjectInputDto() {
+        return new SubjectInputDto(
                 this.idStudentSubject,
                 this.subjectName,
                 this.comments,
                 this.initialDate,
                 this.finishDate,
-                this.student.getIdStudent()
+                this.students.getIdStudent()
         );
-    }
+    }*/
 }

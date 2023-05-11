@@ -24,7 +24,7 @@ public class PersonCompleteOutputDto {
 
     @JsonProperty(value = "subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StudentSubjectSimpleOutputDto> subjects;
+    private List<SubjectSimpleOutputDto> subjects;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty(value = "teacher")

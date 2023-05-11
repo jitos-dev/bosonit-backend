@@ -11,9 +11,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentSubjectListOutputDto {
+public class SubjectListOutputDto {
 
     private StudentSimpleOutputDto student;
 
-    private List<StudentSubjectSimpleOutputDto> subjects;
+    private List<SubjectSimpleOutputDto> subjects;
 }
