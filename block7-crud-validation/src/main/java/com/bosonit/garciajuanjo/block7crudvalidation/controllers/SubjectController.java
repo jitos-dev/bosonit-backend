@@ -30,7 +30,7 @@ public class SubjectController {
         return service.findById(id).orElseThrow();
     }
 
-    @GetMapping("student/{id}")
+    @GetMapping("student/{userId}")
     public SubjectListOutputDto getByUserId(@PathVariable String userId) {
         return service.findByStudentId(userId).orElseThrow();
     }

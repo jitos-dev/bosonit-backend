@@ -95,9 +95,7 @@ public class PersonServiceImpl implements PersonService {
         /*Eliminamos todas los asociados a Person como son Teacher, Student y como eliminamos Student a su vez
         también eliminamos los StudentSubject*/
         Optional<Student> student = studentRepository.findByPersonId(person.getIdPerson());
-
         if (student.isPresent()) {
-            subjectRepository.deleteStudentSubjectByStudentId(student.get().getIdStudent());
             studentRepository.deleteStudentByPersonId(person.getIdPerson());
         }
 

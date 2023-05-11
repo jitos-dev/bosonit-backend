@@ -46,8 +46,7 @@ public class SubjectServiceImpl implements SubjectService {
         Student student = studentRepository.findById(studentId)
                         .orElseThrow(EntityNotFoundException::new);
 
-        List<SubjectSimpleOutputDto> subjects = subjectRepository
-                .findSubjectsByStudentId(studentId)
+        List<SubjectSimpleOutputDto> subjects = student.getSubjects()
                 .stream()
                 .map(Subject::subjectToSubjectSimpleOutputDto)
                 .toList();

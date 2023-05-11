@@ -12,9 +12,11 @@ import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentReposit
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,12 +115,17 @@ public class StudentServiceImpl implements StudentService {
         return Optional.of(studentRepository.save(student).studentToStudentOutputDto());
     }
 
+    @Transactional
     @Override
     public void delete(String id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
-        studentRepository.delete(student);
+        //Modificamos Student antes para poder borrarlo
+        student.getSubjects().clear();
+        studentRepository.save(student);
+
+        studentRepository.deleteStudentByPersonId(student.getPerson().getIdPerson());
     }
 
 

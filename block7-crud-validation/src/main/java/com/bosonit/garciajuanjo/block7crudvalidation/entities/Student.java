@@ -38,11 +38,11 @@ public class Student {
     private Branch branch;
 
     @OneToOne
-    @JoinColumn(name = "person_id", unique = true)
+    @JoinColumn(name = "person_id")
     private Person person;
 
     @ManyToOne
-    @JoinColumn(name = "teacher_id")
+    @JoinColumn(name = "teacher_id", unique = true)
     private Teacher teacher;
 
     @ManyToMany
