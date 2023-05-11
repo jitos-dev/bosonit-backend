@@ -18,6 +18,7 @@ public class SubjectOutputDto {
 
     @JsonProperty(value = "id_subject")
     private String idStudentSubject;
+    @JsonProperty(value = "subject_name")
     private SubjectName subjectName;
     private String comments;
     @JsonProperty(value = "initial_date")

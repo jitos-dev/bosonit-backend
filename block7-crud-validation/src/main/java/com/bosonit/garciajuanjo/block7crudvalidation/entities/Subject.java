@@ -46,7 +46,6 @@ public class Subject {
     private Set<Student> students = new HashSet<>();
 
     public Subject(SubjectInputDto inputDto) {
-        this.idStudentSubject = inputDto.getIdStudentSubject();
         this.comments = inputDto.getComments();
         this.initialDate = inputDto.getInitialDate();
         this.finishDate = inputDto.getFinishDate();

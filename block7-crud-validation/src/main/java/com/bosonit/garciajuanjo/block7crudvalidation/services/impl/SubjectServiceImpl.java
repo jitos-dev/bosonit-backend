@@ -70,6 +70,8 @@ public class SubjectServiceImpl implements SubjectService {
         if (inputDto.getInitialDate() == null)
             throw new UnprocessableEntityException("The initial date field cannot be null");
 
+        SubjectName subjectName = SubjectName.valueOf(inputDto.getSubjectName());
+
         return Optional.of(subjectRepository
                 .save(new Subject(inputDto))
                 .subjectToSubjectOutputDto());

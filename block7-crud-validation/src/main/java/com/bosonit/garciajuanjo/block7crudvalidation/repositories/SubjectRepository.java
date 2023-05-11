@@ -21,6 +21,6 @@ public interface SubjectRepository extends JpaRepository<Subject, String> {
     @Query(value = "SELECT * FROM subjects WHERE student_id = ?1", nativeQuery = true)
     List<Subject> findSubjectsByStudentId(String studentId);
 
-    //@Query(value = "SELECT * FROM subjects WHERE subject_name = :1", nativeQuery = true)
+    @Query(value = "SELECT * FROM subjects WHERE subject_name = ?1", nativeQuery = true)
     Optional<Subject> findSubjectBySubjectName(String subjectName);
 }

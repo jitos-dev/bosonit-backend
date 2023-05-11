@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("student-subject")
-public class StudentSubjectController {
+@RequestMapping("subject")
+public class SubjectController {
 
     @Autowired
     private SubjectService service;
