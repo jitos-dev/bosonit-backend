@@ -98,6 +98,27 @@ public class Block7CrudValidationApplication {
 				new HashSet<>()
         );
 
+        Subject subject2 = new Subject(
+                null,
+                "Comentarios de la asignatura",
+                new Date(),
+                new Date(),
+                SubjectName.Angular,
+                new HashSet<>()
+        );
+
+        Subject subject3 = new Subject(
+                null,
+                "Comentarios de la asignatura",
+                new Date(),
+                new Date(),
+                SubjectName.CSS,
+                new HashSet<>()
+        );
+
+        subjectRepository.save(subject2);
+        subjectRepository.save(subject3);
+
         return subjectRepository.save(subject);
     }
 

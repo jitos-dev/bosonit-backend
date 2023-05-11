@@ -39,10 +39,12 @@ public class StudentController {
         return optional.orElseThrow();
     }
 
-    @PutMapping("subject")
+    @PutMapping("subject/{studentId}")
     @ResponseStatus(HttpStatus.OK)
-    public StudentOutputDto addSubject(@RequestBody StudentSubjectInputDto studentSubjectInputDto) {
-        return service.addSubject(studentSubjectInputDto).orElseThrow();
+    public StudentOutputDto addSubject(
+            @RequestBody List<String> subjectsIds,
+            @PathVariable String studentId) {
+        return service.addSubjects(subjectsIds, studentId).orElseThrow();
     }
 
     @PutMapping("{id}")
@@ -55,5 +57,13 @@ public class StudentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id) {
         service.delete(id);
+    }
+
+    @DeleteMapping("subject/{studentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByIds(
+            @PathVariable String studentId,
+            @RequestBody List<String> subjectIds) {
+        service.deleteSubjects(subjectIds, studentId);
     }
 }

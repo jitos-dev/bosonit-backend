@@ -103,16 +103,33 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Optional<StudentOutputDto> addSubject(StudentSubjectInputDto studentSubjectInputDto) {
-        Student student = studentRepository.findById(studentSubjectInputDto.getStudentId())
+    public Optional<StudentOutputDto> addSubjects(List<String> subjectsIds, String studentId) {
+        if (subjectsIds.isEmpty())
+            throw new UnprocessableEntityException("There are not subjects to associate the student with");
+
+        Student student = studentRepository.findById(studentId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        Subject subject = subjectRepository.findById(studentSubjectInputDto.getSubjectId())
-                        .orElseThrow(EntityNotFoundException::new);
+        Long count = subjectRepository.countExistingSubjectsByIds(subjectsIds);
+        if (count != subjectsIds.size())
+            throw new UnprocessableEntityException("The ids provided do not correspond to the subjects");
 
-        student.getSubjects().add(subject);
+        List<Subject> subjects = subjectRepository.findAllByIds(subjectsIds);
+        student.getSubjects().addAll(subjects);
 
         return Optional.of(studentRepository.save(student).studentToStudentOutputDto());
+    }
+
+    @Transactional
+    @Override
+    public void deleteSubjects(List<String> subjectsIds, String studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        List<Subject> subjects = subjectRepository.findAllByIds(subjectsIds);
+        subjects.forEach(student.getSubjects()::remove);
+
+        studentRepository.save(student);
     }
 
     @Transactional
@@ -127,6 +144,7 @@ public class StudentServiceImpl implements StudentService {
 
         studentRepository.deleteStudentByPersonId(student.getPerson().getIdPerson());
     }
+
 
 
     private Boolean isAllFieldsCorrect(StudentInputDto dto) {
