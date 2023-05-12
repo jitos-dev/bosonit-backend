@@ -14,12 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
+@EnableFeignClients
 @SpringBootApplication
 public class Block7CrudValidationApplication {
 
@@ -31,7 +33,7 @@ public class Block7CrudValidationApplication {
     @Bean
     CommandLineRunner commandLineRunner(String... args) {
         return value -> {
-            Person person = addPerson();
+/*            Person person = addPerson();
             Teacher teacher = addTeacher(person);
             Person personStudent = addPerson();
             Student student = addStudent(teacher, personStudent);
@@ -39,7 +41,7 @@ public class Block7CrudValidationApplication {
 
             //le añadimos la asignatura al estudiante
             student.getSubjects().add(subject);
-            studentRepository.save(student);
+            studentRepository.save(student);*/
         };
     }
 
@@ -121,7 +123,6 @@ public class Block7CrudValidationApplication {
 
         return subjectRepository.save(subject);
     }
-
 
     @Autowired
     public PersonRepository personRepository;

@@ -1,13 +1,11 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.client.TeacherFeignClient;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.*;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
@@ -15,14 +13,18 @@ import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentReposit
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -32,6 +34,8 @@ public class PersonServiceImpl implements PersonService {
     private StudentRepository studentRepository;
     private SubjectRepository subjectRepository;
     private TeacherRepository teacherRepository;
+
+    private TeacherFeignClient teacherFeignClient;
 
     @Override
     public List<PersonCompleteOutputDto> getAll(String outputType) {
@@ -64,6 +68,32 @@ public class PersonServiceImpl implements PersonService {
 
         return getPersonCompleteOutputDto(outputType, personList);
     }
+
+    @Override
+    public Optional<TeacherOutputDto> getTeacherByIdTeacher(String teacherId) {
+        try {
+/*            ResponseEntity<TeacherOutputDto> responseEntity = new RestTemplate()
+                    .getForEntity("http://localhost:8081/teacher/" + teacherId, TeacherOutputDto.class);*/
+
+            ResponseEntity<TeacherOutputDto> responseEntity = ResponseEntity.of(Optional.of(teacherFeignClient.getById(teacherId)));
+
+            if (responseEntity.getStatusCode() != HttpStatus.OK) {
+                String message = "The answer wasn't correct." +
+                        "\nHttpCode: " + responseEntity.getStatusCode();
+
+                throw new UnprocessableEntityException(message);
+            }
+
+            return Optional.of(Objects.requireNonNull(responseEntity.getBody()));
+
+        } catch (HttpClientErrorException hcee) {
+            throw new EntityNotFoundException();
+
+        } catch (Exception e) {
+            throw new UnprocessableEntityException(e.getMessage());
+        }
+    }
+
 
     @Override
     public Optional<PersonOutputDto> save(PersonInputDto personInputDto) {
@@ -114,7 +144,7 @@ public class PersonServiceImpl implements PersonService {
         List<PersonCompleteOutputDto> personCompleteList = new ArrayList<>();
 
         /*Lista de ids de persons. Lo hago de esta forma porque como reutilizo el método puedo estar buscando solo
-        * un Person y así no tengo que traerme todos los Teachers o todos los Student*/
+         * un Person y así no tengo que traerme todos los Teachers o todos los Student*/
         List<String> personIds = persons.stream()
                 .map(PersonOutputDto::getIdPerson)
                 .toList();

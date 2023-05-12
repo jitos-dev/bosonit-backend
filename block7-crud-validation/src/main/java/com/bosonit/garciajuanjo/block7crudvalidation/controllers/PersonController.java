@@ -3,6 +3,7 @@ package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,12 @@ public class PersonController {
             @PathVariable String user,
             @RequestParam(required = false, defaultValue = "simple") String outputType) {
         return service.getByUser(user, outputType);
+    }
+
+    @GetMapping("teacher/{teacherId}")
+    @ResponseStatus(HttpStatus.OK)
+    public TeacherOutputDto getTeacherById(@PathVariable String teacherId) {
+        return service.getTeacherByIdTeacher(teacherId).orElseThrow();
     }
 
     @PostMapping
