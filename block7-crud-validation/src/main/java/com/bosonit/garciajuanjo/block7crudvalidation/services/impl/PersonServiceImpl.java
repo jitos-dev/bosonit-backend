@@ -1,5 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.client.TeacherFeignClient;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
@@ -12,6 +13,8 @@ import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentReposit
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,8 @@ public class PersonServiceImpl implements PersonService {
     private StudentRepository studentRepository;
     private SubjectRepository subjectRepository;
     private TeacherRepository teacherRepository;
+
+    private TeacherFeignClient teacherFeignClient;
 
     @Override
     public List<PersonCompleteOutputDto> getAll(String outputType) {
@@ -67,8 +72,10 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Optional<TeacherOutputDto> getTeacherByIdTeacher(String teacherId) {
         try {
-            ResponseEntity<TeacherOutputDto> responseEntity = new RestTemplate()
-                    .getForEntity("http://localhost:8081/teacher/" + teacherId, TeacherOutputDto.class);
+/*            ResponseEntity<TeacherOutputDto> responseEntity = new RestTemplate()
+                    .getForEntity("http://localhost:8081/teacher/" + teacherId, TeacherOutputDto.class);*/
+
+            ResponseEntity<TeacherOutputDto> responseEntity = ResponseEntity.of(Optional.of(teacherFeignClient.getById(teacherId)));
 
             if (responseEntity.getStatusCode() != HttpStatus.OK) {
                 String message = "The answer wasn't correct." +
@@ -82,8 +89,8 @@ public class PersonServiceImpl implements PersonService {
         } catch (HttpClientErrorException hcee) {
             throw new EntityNotFoundException();
 
-        } catch (RestClientException rce) {
-            throw new UnprocessableEntityException(rce.getMessage());
+        } catch (Exception e) {
+            throw new UnprocessableEntityException(e.getMessage());
         }
     }
 
