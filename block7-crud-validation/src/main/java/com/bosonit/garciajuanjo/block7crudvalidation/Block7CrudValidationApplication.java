@@ -31,7 +31,7 @@ public class Block7CrudValidationApplication {
     @Bean
     CommandLineRunner commandLineRunner(String... args) {
         return value -> {
-            Person person = addPerson();
+/*            Person person = addPerson();
             Teacher teacher = addTeacher(person);
             Person personStudent = addPerson();
             Student student = addStudent(teacher, personStudent);
@@ -39,7 +39,7 @@ public class Block7CrudValidationApplication {
 
             //le añadimos la asignatura al estudiante
             student.getSubjects().add(subject);
-            studentRepository.save(student);
+            studentRepository.save(student);*/
         };
     }
 
@@ -121,7 +121,6 @@ public class Block7CrudValidationApplication {
 
         return subjectRepository.save(subject);
     }
-
 
     @Autowired
     public PersonRepository personRepository;
