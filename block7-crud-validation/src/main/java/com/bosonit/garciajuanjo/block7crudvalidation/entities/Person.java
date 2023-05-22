@@ -1,5 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.entities;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCodepenInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
 import jakarta.persistence.*;
@@ -81,6 +82,21 @@ public class Person {
         this.terminationDate = personInputDto.getTerminationDate();
     }
 
+    public Person (PersonCodepenInputDto personInputDto) {
+        this.idPerson = personInputDto.getIdPerson();
+        this.user = personInputDto.getUser();
+        this.password = personInputDto.getPassword();
+        this.name = personInputDto.getName();
+        this.surname = personInputDto.getSurname();
+        this.companyEmail = personInputDto.getCompanyEmail();
+        this.personalEmail = personInputDto.getPersonalEmail();
+        this.city = personInputDto.getCity();
+        this.active = personInputDto.getActive();
+        this.createdDate = personInputDto.getCreatedDate();
+        this.imageUrl = personInputDto.getImageUrl();
+        this.terminationDate = personInputDto.getTerminationDate();
+    }
+
     public PersonOutputDto personToPersonOutputDto() {
         return new PersonOutputDto(
                 this.idPerson,
@@ -112,7 +128,5 @@ public class Person {
                 this.imageUrl,
                 this.terminationDate);
     }
-
-
 }
 
