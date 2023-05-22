@@ -4,11 +4,13 @@ import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.exceptions.FileExistE
 import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.services.FileService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,6 +28,7 @@ public class FileServiceImpl implements FileService {
     public void store(MultipartFile file) throws IOException, FileExistException {
         Path directory = Paths.get(pathFiles).toAbsolutePath();
 
+        //Compruebo que no exista el fichero antes de guardarlo porque si no da error
         File fileStore = new File(directory.toFile() + File.separator + file.getOriginalFilename());
         if (fileStore.exists())
             throw new FileExistException("The file " + file.getOriginalFilename() + " already exist in the directory " + directory);
@@ -49,8 +52,9 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Path load(String filename) {
-        return null;
+    public Resource load(String filename) throws MalformedURLException {
+        Path file = Paths.get(pathFiles).toAbsolutePath().resolve(filename);
+        return new UrlResource(file.toUri());
     }
 
     @Override
