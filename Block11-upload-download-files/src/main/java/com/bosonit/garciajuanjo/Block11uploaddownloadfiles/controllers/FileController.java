@@ -1,6 +1,7 @@
 package com.bosonit.garciajuanjo.Block11uploaddownloadfiles.controllers;
 
 import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.entities.Fichero;
+import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.exceptions.FileExistException;
 import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.services.FileService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -23,7 +24,7 @@ public class FileController {
     @PostMapping(value = "upload/{type}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> upload(
             @RequestParam("file") MultipartFile file,
-            @PathVariable("type") String type) throws IOException {
+            @PathVariable("type") String type) throws IOException, FileExistException {
 
         //Guardamos el file
         fileService.store(file);

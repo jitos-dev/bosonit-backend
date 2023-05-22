@@ -21,4 +21,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleIOException(IOException ioe) {
         return new ResponseEntity<>("Error type IOException: \n" + ioe.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(FileExistException.class)
+    public ResponseEntity<String> handleFileExistException(FileExistException fee) {
+        return new ResponseEntity<>("Error type FileExistException: \n" + fee.getMessage(), HttpStatus.CONFLICT);
+    }
 }
