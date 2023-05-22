@@ -17,6 +17,7 @@ public interface PersonService {
     List<PersonCompleteOutputDto> getByUser(String name, String outputType);
 
     List<PersonCompleteOutputDto> getAll(String outputType);
+    List<PersonCompleteOutputDto> getAll();
 
     Optional<TeacherOutputDto> getTeacherByIdTeacher(String teacherId);
 

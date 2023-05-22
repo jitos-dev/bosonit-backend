@@ -47,6 +47,16 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public List<PersonCompleteOutputDto> getAll() {
+        List<PersonOutputDto> persons = personRepository.findAll()
+                .stream()
+                .map(Person::personToPersonOutputDto).toList();
+
+        //si cambio las comillas por "full" nos da los datos de si es profesor...
+        return getPersonCompleteOutputDto("", persons);
+    }
+
+    @Override
     public Optional<PersonCompleteOutputDto> getById(String id, String outputType) {
         Person person = personRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
