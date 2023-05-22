@@ -1,6 +1,7 @@
 package com.bosonit.garciajuanjo.Block11uploaddownloadfiles.services;
 
 import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.entities.Fichero;
+import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.entities.FileOutputDto;
 import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.exceptions.FileExistException;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,11 +18,11 @@ public interface FileService {
 
     void store(List<MultipartFile> files) throws IOException, FileExistException;
 
-    Stream<Path> loadAll();
+    List<FileOutputDto> loadAll() throws IOException;
 
-    Resource load(String filename) throws MalformedURLException;
+    Path load(String filename) throws MalformedURLException;
 
-    Resource loadAsResource(String filename);
+    Resource loadAsResource(String filename) throws MalformedURLException;
 
-    void deleteAll();
+    void deleteAll() throws IOException;
 }
