@@ -20,7 +20,7 @@
         </filter>
     </appender>
 
-    <!--Filtros para los mensajes del fichero de log-->
+    <!--Filtros para los mensajes del fileEntity de log-->
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/myapp.log</file>
         <!--Crea un archivo cada vez que se arranca la aplicacion-->

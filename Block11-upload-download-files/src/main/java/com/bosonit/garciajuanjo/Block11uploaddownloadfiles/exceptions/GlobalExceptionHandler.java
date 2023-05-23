@@ -24,6 +24,18 @@ public class GlobalExceptionHandler {
                 status);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<CustomError> handleException(RuntimeException ex) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        return new ResponseEntity<>(
+                new CustomError(status,
+                        status.value(),
+                        "Error type RuntimeException: " + ex.getMessage()),
+                status);
+    }
+
     @ExceptionHandler(IOException.class)
     public ResponseEntity<CustomError> handleIOException(IOException ioe) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -35,8 +47,8 @@ public class GlobalExceptionHandler {
                 status);
     }
 
-    @ExceptionHandler(FileExistException.class)
-    public ResponseEntity<CustomError> handleFileExistException(FileExistException fee) {
+    @ExceptionHandler(FileAlreadyExistException.class)
+    public ResponseEntity<CustomError> handleFileExistException(FileAlreadyExistException fee) {
         HttpStatus status = HttpStatus.CONFLICT;
 
         return new ResponseEntity<>(
@@ -55,5 +67,16 @@ public class GlobalExceptionHandler {
                         status.value(),
                         "Error type MalformedURLException: " + mue.getMessage()),
                 status);
+    }
+
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<CustomError> handleFileNotFoundException(FileNotFoundException fnf) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+
+        return new ResponseEntity<>(
+                new CustomError(status,
+                        status.value(),
+                        "Error type FileNotFoundException: " + fnf.getMessage())
+                , status);
     }
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-public class FileOutputDto {
+public class FileInputDto {
 
     @JsonProperty("file_id")
     private Long fileId;
