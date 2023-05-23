@@ -1,8 +1,9 @@
 package com.bosonit.garciajuanjo.Block11uploaddownloadfiles.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -11,6 +12,8 @@ import java.util.Date;
 @Table(name = "file")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FileEntity {
 
     @Id
@@ -19,6 +22,7 @@ public class FileEntity {
     private Long fileId;
     private String filename;
     @Column(name = "upload_date")
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date uploadDate;
     private String category;
 
@@ -34,8 +38,7 @@ public class FileEntity {
                 this.fileId,
                 this.filename,
                 this.uploadDate,
-                this.category,
-                null
+                this.category
         );
     }
 }

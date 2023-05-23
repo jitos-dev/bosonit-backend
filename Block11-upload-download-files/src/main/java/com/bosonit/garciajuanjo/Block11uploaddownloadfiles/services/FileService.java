@@ -1,5 +1,6 @@
 package com.bosonit.garciajuanjo.Block11uploaddownloadfiles.services;
 
+import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.entities.FieldSearch;
 import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.entities.FileOutputDto;
 import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.exceptions.FileAlreadyExistException;
 import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.exceptions.FileNotFoundException;
@@ -20,7 +21,9 @@ public interface FileService {
 
     Path load(String filename) throws MalformedURLException;
 
-    Resource loadAsResource(String filename) throws MalformedURLException, FileNotFoundException;
+    Resource loadAsResource(String value, FieldSearch fieldSearch) throws MalformedURLException, FileNotFoundException;
 
     void deleteAll() throws IOException;
+
+    void setPath(String path) throws IOException;
 }
