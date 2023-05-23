@@ -10,12 +10,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 public interface FileService {
 
-    void store(MultipartFile file) throws IOException, FileAlreadyExistException;
-
-    void store(List<MultipartFile> files) throws IOException, FileAlreadyExistException;
+    Optional<FileOutputDto> store(MultipartFile file, String category) throws IOException, FileAlreadyExistException;
 
     List<FileOutputDto> loadAll() throws IOException;
 

@@ -1,7 +1,6 @@
 package com.bosonit.garciajuanjo.Block11uploaddownloadfiles.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-public class FileOutputDto {
+public class FileInputDto {
 
     @JsonProperty("file_id")
     private Long fileId;
@@ -19,5 +18,4 @@ public class FileOutputDto {
     @JsonProperty("upload_date")
     private Date uploadDate;
     private String category;
-    private String url;
 }

@@ -25,6 +25,18 @@ public class GlobalExceptionHandler {
                 status);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<CustomError> handleException(RuntimeException ex) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        return new ResponseEntity<>(
+                new CustomError(status,
+                        status.value(),
+                        "Error type RuntimeException: " + ex.getMessage()),
+                status);
+    }
+
     @ExceptionHandler(IOException.class)
     public ResponseEntity<CustomError> handleIOException(IOException ioe) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;

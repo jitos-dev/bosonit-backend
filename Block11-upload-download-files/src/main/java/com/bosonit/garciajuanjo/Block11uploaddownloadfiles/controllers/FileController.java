@@ -1,6 +1,7 @@
 package com.bosonit.garciajuanjo.Block11uploaddownloadfiles.controllers;
 
-import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.entities.Fichero;
+import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.entities.FileEntity;
+import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.entities.FileOutputDto;
 import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.exceptions.FileAlreadyExistException;
 import com.bosonit.garciajuanjo.Block11uploaddownloadfiles.services.FileService;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Date;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -23,17 +25,18 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping(value = "upload/{type}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> upload(
+    @ResponseStatus(HttpStatus.OK)
+    public FileOutputDto upload(
             @RequestParam("file") MultipartFile file,
             @PathVariable("type") String type) throws IOException, FileAlreadyExistException {
 
+        String originalName = file.getOriginalFilename();
+
+        if (originalName == null || !originalName.endsWith(type))
+            throw new RuntimeException("The chosen type is not same type of the file");
+
         //Guardamos el file
-        fileService.store(file);
-
-        String message = "The file saved successfully";
-        Fichero fichero = new Fichero(message, type, file.getOriginalFilename(), new Date(), file);
-
-        return ResponseEntity.ok().body(fichero);
+        return fileService.store(file, type).orElseThrow();
     }
 
     @GetMapping(value = "/all")
