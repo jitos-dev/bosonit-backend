@@ -50,12 +50,14 @@ public class Person {
     private Boolean active;
 
     @Column(name = "created_date", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date createdDate;
 
     @Column(name = "image_url")
     private String imageUrl;
 
     @Column(name = "termination_date")
+    @Temporal(TemporalType.DATE)
     private Date terminationDate;
 
     @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)

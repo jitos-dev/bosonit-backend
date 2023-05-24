@@ -1,0 +1,698 @@
+{
+	"info": {
+		"_postman_id": "172bd1bb-9fbf-4982-b4d7-8a43c483e223",
+		"name": "block7-crud-validation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18357187"
+	},
+	"item": [
+		{
+			"name": "student",
+			"item": [
+				{
+					"name": "addStudent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"numHoursWeek\" : 20,\r\n    \"comments\": \"Comentarios del estudiante OTRO\",\r\n    \"branch\" : \"BACK\",\r\n    \"personId\" : \"a4bf1864-271d-4f8f-b073-7cfe9b4c06f1\",\r\n    \"teacherId\" : \"58597c2b-552d-40c8-8fbc-c5a03be15663\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getStudentById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/student/3d3a9766-cb68-40ef-886c-23ec53c12991?outputType=full",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"student",
+								"3d3a9766-cb68-40ef-886c-23ec53c12991"
+							],
+							"query": [
+								{
+									"key": "outputType",
+									"value": "full"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllStudents",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateStudent",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"numHoursWeek\" : 20,\r\n    \"comments\": \"Comentarios del estudiante\",\r\n    \"branch\" : \"BACK\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/student/75d6df34-0291-4236-8ab9-37834d07f49d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"student",
+								"75d6df34-0291-4236-8ab9-37834d07f49d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteStudent",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/student/c4783a34-4ca6-40f7-af69-50861340e2ae",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"student",
+								"c4783a34-4ca6-40f7-af69-50861340e2ae"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addSubjectToStudent",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    \"1cfca407-448f-482c-8839-f62ab9bf17a2\",\r\n    \"c78d5dd0-0561-4e7c-b11c-34044752757b\"\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/student/subject/c5ff622b-80a5-498d-bae7-e881477958ba",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"student",
+								"subject",
+								"c5ff622b-80a5-498d-bae7-e881477958ba"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteBySubjectIds",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    \"67e97ef6-9586-445a-a153-d9699d4283d1\",\r\n    \"0afec669-2184-42b2-b889-445ae7c5af11\"\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/student/subject/2b605b80-3c52-43e0-8414-a5495383a2a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"student",
+								"subject",
+								"2b605b80-3c52-43e0-8414-a5495383a2a4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subject",
+			"item": [
+				{
+					"name": "addSubject",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"subjectName\" : \"Angular\",\r\n    \"comments\": \"Comentarios del student subject\",\r\n    \"initialDate\" : \"2023-05-08\",\r\n    \"finishDate\" : \"2023-05-08\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/subject",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSubjectById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/subject/8e33572c-6305-4346-ad07-68b061df14a8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subject",
+								"8e33572c-6305-4346-ad07-68b061df14a8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllSubject",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/subject",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateSubject",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"subjectName\" : \"Angular\",\r\n    \"comments\": \"Comentarios del student subject modificado\",\r\n    \"initialDate\" : \"2023-05-08\",\r\n    \"finishDate\" : \"2023-05-08\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/subject/be547b0a-2b9a-4377-8139-3860ed578852",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subject",
+								"be547b0a-2b9a-4377-8139-3860ed578852"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSubject",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/subject/c52cb19f-c73c-4eb9-a37d-a5d4e2d8b6ea",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subject",
+								"c52cb19f-c73c-4eb9-a37d-a5d4e2d8b6ea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findSubjectsByStudentId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/subject/student/ce6c5e4b-5e3f-499b-a165-f04476d24a26",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subject",
+								"student",
+								"ce6c5e4b-5e3f-499b-a165-f04476d24a26"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "person",
+			"item": [
+				{
+					"name": "addPerson",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\" : \"usuario\",\r\n    \"password\" : \"123456\",\r\n    \"name\" : \"juanjo\",\r\n    \"surname\" : \"Garcia\",\r\n    \"companyEmail\" : \"juanjose.garcia@bosonit.com\",\r\n    \"personalEmail\" : \"jitos@jitos.dev\",\r\n    \"city\" : \"Sabiote\",\r\n    \"active\" : true,\r\n    \"createdDate\" : \"2023-05-04\",\r\n    \"imageUrl\" : \"http://localhost:8080/imagenes/1\",\r\n    \"terminationDate\" : \"2023-05-04\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/person",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPersonById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/person/6ab9463f-8312-4ae8-b117-1667d6972441?outputType=full",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"person",
+								"6ab9463f-8312-4ae8-b117-1667d6972441"
+							],
+							"query": [
+								{
+									"key": "outputType",
+									"value": "full"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePerson",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\" : \"usuario1\",\r\n    \"password\" : \"123456\",\r\n    \"name\" : \"juanjo\",\r\n    \"surname\" : \"Garcia\",\r\n    \"companyEmail\" : \"juanjose.garcia@bosonit.com\",\r\n    \"personalEmail\" : \"jitos@jitos.dev\",\r\n    \"city\" : \"Sabiote\",\r\n    \"active\" : true,\r\n    \"createdDate\" : \"2023-05-04\",\r\n    \"imageUrl\" : \"http://localhost:8080/imagenes/1\",\r\n    \"terminationDate\" : \"2023-05-04\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/person/4bf7621e-cdcf-4371-971c-528e3a6e5282",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"person",
+								"4bf7621e-cdcf-4371-971c-528e3a6e5282"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletePerson",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/person/5b3ea2c0-eacb-440d-9fda-f2b5bd0f88ad",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"person",
+								"5b3ea2c0-eacb-440d-9fda-f2b5bd0f88ad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllPersons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/person",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"person"
+							],
+							"query": [
+								{
+									"key": "outputType",
+									"value": "full",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPersonByUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/person/user/usuario?outputType=full",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"person",
+								"user",
+								"usuario"
+							],
+							"query": [
+								{
+									"key": "outputType",
+									"value": "full"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTeacherByIdTeacher",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/person/teacher/87a8212e-c219-4d7d-bce5-414ace83ffdc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"person",
+								"teacher",
+								"87a8212e-c219-4d7d-bce5-414ace83ffdc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findPersonsBy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/person/findBy?name=juan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"person",
+								"findBy"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "juan"
+								},
+								{
+									"key": "user",
+									"value": "pepito",
+									"disabled": true
+								},
+								{
+									"key": "surname",
+									"value": "G",
+									"disabled": true
+								},
+								{
+									"key": "createdDate",
+									"value": "2023-04-14",
+									"disabled": true
+								},
+								{
+									"key": "greaterOrLess",
+									"value": "less",
+									"disabled": true
+								},
+								{
+									"key": "orderByUser",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "orderByName",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "teacher",
+			"item": [
+				{
+					"name": "addTeacher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comments\": \"Comentarios del profesor\",\r\n    \"branch\" : \"BACK\",\r\n    \"personId\" : \"bfb73595-d465-4f8b-8b2d-ad353b23c2c5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/teacher",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTeacherById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/teacher/141594ad-9324-47cf-875a-9a473c58d352",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teacher",
+								"141594ad-9324-47cf-875a-9a473c58d352"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllTeachers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/teacher",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateTeacher",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comments\": \"Comentarios del estudiante\",\r\n    \"branch\" : \"FRONT\",\r\n    \"person\" : {\r\n        \"idPerson\" : \"caa644d3-4ccb-4f\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/teacher/141594ad-9324-47cf-875a-9a473c58d352",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teacher",
+								"141594ad-9324-47cf-875a-9a473c58d352"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTeacher",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/teacher/5fa5383c-a7f0-474c-853a-86699f3487d4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teacher",
+								"5fa5383c-a7f0-474c-853a-86699f3487d4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.bosonit.garciajuanjo.block7crudvalidation.utils.Constants.*;
 
 @RestController
 @RequestMapping("/person")
@@ -50,17 +53,28 @@ public class PersonController {
     @GetMapping("findBy")
     @ResponseStatus(HttpStatus.OK)
     public List<PersonOutputDto> findPersonsBy(
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "user", required = false) String user,
-            @RequestParam(value = "surname", required = false) String surname,
-            @RequestParam(value = "created_date", required = false) Date createdDate,
-            @RequestParam(value = "order_created_date_by", required = false, defaultValue = "asc") String orderDate,
-            @RequestParam(value = "order_by_user", required = false) Boolean orderByUser,
-            @RequestParam(value = "order_by_name", required = false) Boolean orderByName
+            @RequestParam(value = NAME, required = false) String name,
+            @RequestParam(value = USER, required = false) String user,
+            @RequestParam(value = SURNAME, required = false) String surname,
+            @RequestParam(value = CREATED_DATE, required = false) String createdDate,
+            @RequestParam(value = GREATER_OR_LESS, required = false, defaultValue = GREATER) String greaterOrLess,
+            @RequestParam(value = ORDER_BY_USER, required = false) Boolean orderByUser,
+            @RequestParam(value = ORDER_BY_NAME, required = false) Boolean orderByName
     ) {
 
-        
-        return null;
+        Map<String, Object> values = new HashMap<>();
+
+        if (name != null) values.put(NAME, name);
+        if (user != null) values.put(USER, user);
+        if (surname != null) values.put(SURNAME, surname);
+        if (createdDate != null) {
+            values.put(CREATED_DATE, createdDate);
+            values.put(GREATER_OR_LESS, greaterOrLess);
+        }
+        if (orderByUser != null) values.put(ORDER_BY_USER, orderByUser);
+        if (orderByName != null) values.put(ORDER_BY_NAME, orderByName);
+
+        return service.getBy(values);
     }
 
     @PostMapping

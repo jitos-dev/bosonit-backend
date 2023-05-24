@@ -80,6 +80,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public List<PersonOutputDto> getBy(Map<String , Object> values){
+        return personRepository.findPersonsBy(values);
+    }
+
+    @Override
     public Optional<TeacherOutputDto> getTeacherByIdTeacher(String teacherId) {
         try {
 /*            ResponseEntity<TeacherOutputDto> responseEntity = new RestTemplate()
