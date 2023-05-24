@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -44,6 +45,22 @@ public class PersonController {
     @ResponseStatus(HttpStatus.OK)
     public TeacherOutputDto getTeacherById(@PathVariable String teacherId) {
         return service.getTeacherByIdTeacher(teacherId).orElseThrow();
+    }
+
+    @GetMapping("findBy")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PersonOutputDto> findPersonsBy(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "user", required = false) String user,
+            @RequestParam(value = "surname", required = false) String surname,
+            @RequestParam(value = "created_date", required = false) Date createdDate,
+            @RequestParam(value = "order_created_date_by", required = false, defaultValue = "asc") String orderDate,
+            @RequestParam(value = "order_by_user", required = false) Boolean orderByUser,
+            @RequestParam(value = "order_by_name", required = false) Boolean orderByName
+    ) {
+
+        
+        return null;
     }
 
     @PostMapping
