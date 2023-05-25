@@ -2,13 +2,11 @@ package com.bosonit.garciajuanjo.block7crudvalidation;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.*;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,10 +14,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
+import java.io.File;
+import java.io.IOException;;
+import java.util.*;
 
 @EnableFeignClients
 @SpringBootApplication
@@ -33,6 +33,7 @@ public class Block7CrudValidationApplication {
     @Bean
     CommandLineRunner commandLineRunner(String... args) {
         return value -> {
+            //mockData();
 /*            Person person = addPerson();
             Teacher teacher = addTeacher(person);
             Person personStudent = addPerson();
@@ -43,6 +44,18 @@ public class Block7CrudValidationApplication {
             student.getSubjects().add(subject);
             studentRepository.save(student);*/
         };
+    }
+
+    private void mockData() throws IOException {
+        Resource resource = resourceLoader.getResource("classpath:mockData.json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        File jsonFile = resource.getFile();
+
+        PersonInputDto[] personList = objectMapper.readValue(jsonFile, PersonInputDto[].class);
+
+        for (PersonInputDto person:personList) {
+            personRepository.save(new Person(person));
+        }
     }
 
     private Person addPerson() {
@@ -96,8 +109,8 @@ public class Block7CrudValidationApplication {
                 "Comentarios de la asignatura",
                 new Date(),
                 new Date(),
-				SubjectName.HTML,
-				new HashSet<>()
+                SubjectName.HTML,
+                new HashSet<>()
         );
 
         Subject subject2 = new Subject(
@@ -135,4 +148,7 @@ public class Block7CrudValidationApplication {
 
     @Autowired
     public SubjectRepository subjectRepository;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 }

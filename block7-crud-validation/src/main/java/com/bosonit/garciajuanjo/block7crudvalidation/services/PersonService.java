@@ -6,6 +6,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDt
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface PersonService {
@@ -17,7 +18,10 @@ public interface PersonService {
     List<PersonCompleteOutputDto> getByUser(String name, String outputType);
 
     List<PersonCompleteOutputDto> getAll(String outputType);
+
     List<PersonCompleteOutputDto> getAll();
+
+    List<PersonOutputDto> getBy(Map<String , Object> values);
 
     Optional<TeacherOutputDto> getTeacherByIdTeacher(String teacherId);
 
