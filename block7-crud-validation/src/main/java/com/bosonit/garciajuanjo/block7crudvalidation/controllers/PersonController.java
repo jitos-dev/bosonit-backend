@@ -5,10 +5,14 @@ import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
+import jakarta.persistence.TemporalType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Temporal;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,16 +54,18 @@ public class PersonController {
         return service.getTeacherByIdTeacher(teacherId).orElseThrow();
     }
 
-    @GetMapping("findBy")
+    @GetMapping("findBy/{numberPage}")
     @ResponseStatus(HttpStatus.OK)
     public List<PersonOutputDto> findPersonsBy(
-            @RequestParam(value = NAME, required = false) String name,
-            @RequestParam(value = USER, required = false) String user,
-            @RequestParam(value = SURNAME, required = false) String surname,
-            @RequestParam(value = CREATED_DATE, required = false) String createdDate,
-            @RequestParam(value = GREATER_OR_LESS, required = false, defaultValue = GREATER) String greaterOrLess,
-            @RequestParam(value = ORDER_BY_USER, required = false) Boolean orderByUser,
-            @RequestParam(value = ORDER_BY_NAME, required = false) Boolean orderByName
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String user,
+            @RequestParam(required = false) String surname,
+            @RequestParam(required = false) @DateTimeFormat(pattern = FORMAT_DATE) Date createdDate,
+            @RequestParam(required = false, defaultValue = GREATER) String greaterOrLess,
+            @RequestParam(required = false) Boolean orderByUser,
+            @RequestParam(required = false) Boolean orderByName,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @PathVariable Integer numberPage
     ) {
 
         Map<String, Object> values = new HashMap<>();
@@ -73,6 +79,9 @@ public class PersonController {
         }
         if (orderByUser != null) values.put(ORDER_BY_USER, orderByUser);
         if (orderByName != null) values.put(ORDER_BY_NAME, orderByName);
+
+        values.put(PAGE_SIZE, pageSize);
+        values.put(NUMBER_PAGE, numberPage);
 
         return service.getBy(values);
     }

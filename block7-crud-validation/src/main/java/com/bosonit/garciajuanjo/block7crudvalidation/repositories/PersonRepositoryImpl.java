@@ -6,8 +6,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,13 +35,13 @@ public class PersonRepositoryImpl {
 
                 case CREATED_DATE -> {
                     String criteria = values.get(GREATER_OR_LESS).toString();
-                    Date parseDate = dateStringToDate(value.toString());
+                    Date parseDate = (Date) value;
 
                     if (criteria.equals(GREATER))
-                        predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(CREATED_DATE), parseDate));
+                        predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(CREATED_DATE), (Date) value));
 
                     if (criteria.equals(LESS))
-                        predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(CREATED_DATE), parseDate));
+                        predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(CREATED_DATE), (Date) value));
 
                 }
                 case ORDER_BY_NAME -> {
@@ -61,27 +59,28 @@ public class PersonRepositoryImpl {
             }
         });
 
+        /*Estos son datos para la paginación. Tenemos el numberPage que hace referencia al número de página por el que
+        * queremos empezar. Empiezan por 0 como los arrays. Por otro lado tenemos pageSize que es el número de elementos
+        * que queremos que tenga la página.
+        * Con esto después de crear la query (en el return) establecemos setMaxResults con el valor de pageSize ya que
+        * hace referencia al numero máximo de elementos que queremos devolver por página y por otro lado setFirstResult
+        * que multiplicamos el numerPage por pageSize. En esta parte le indicamos en que elemento queremos empezar a
+        * recuperar por lo que si por ejemplo el pageSize es 5 y numberPage 2 el resultado seria 10 por lo que nos
+        * va a devolver empezando por el elemento 10 (incluido) un total de 5 elementos (hasta el 14)*/
+        Integer numberPage = (Integer) values.get(NUMBER_PAGE);
+        Integer pageSize = (Integer) values.get(PAGE_SIZE);
+
         query.select(root)
                 .where(predicates.toArray(new Predicate[0]))
                 .orderBy(orders);
 
         return entityManager
                 .createQuery(query)
+                .setMaxResults(pageSize)
+                .setFirstResult(numberPage * pageSize)
                 .getResultList()
                 .stream()
                 .map(Person::personToPersonOutputDto)
                 .toList();
-    }
-
-    private Date dateStringToDate(String value) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
-        //Esto es para que tenga que cumplir el formato exacto
-        dateFormat.setLenient(false);
-
-        try {
-            return dateFormat.parse(value);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

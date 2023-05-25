@@ -521,7 +521,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/person/findBy?name=juan",
+							"raw": "http://localhost:8080/person/findBy/2?pageSize=5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -529,12 +529,14 @@
 							"port": "8080",
 							"path": [
 								"person",
-								"findBy"
+								"findBy",
+								"2"
 							],
 							"query": [
 								{
 									"key": "name",
-									"value": "juan"
+									"value": "juan",
+									"disabled": true
 								},
 								{
 									"key": "user",
@@ -548,7 +550,7 @@
 								},
 								{
 									"key": "createdDate",
-									"value": "2023-04-14",
+									"value": "2023-04-166",
 									"disabled": true
 								},
 								{
@@ -565,6 +567,10 @@
 									"key": "orderByName",
 									"value": "true",
 									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "5"
 								}
 							]
 						}
