@@ -1,5 +1,6 @@
-package com.bosonit.garciajuanjo.Block13mongodb.models.daos;
+package com.bosonit.garciajuanjo.Block13mongodb.models.dtos;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,12 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonOutputDto {
+public class PersonInputDto {
 
     private String idPerson;
+    @NotNull(message = "The field user cannot be null")
     private String user;
+    @NotNull //si no se pone message pone este: password: 'no debe ser nulo'
     private String password;
     private String name;
     private String surname;

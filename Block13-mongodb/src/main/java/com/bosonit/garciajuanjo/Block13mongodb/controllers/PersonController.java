@@ -1,8 +1,9 @@
 package com.bosonit.garciajuanjo.Block13mongodb.controllers;
 
-import com.bosonit.garciajuanjo.Block13mongodb.models.daos.PersonInputDto;
-import com.bosonit.garciajuanjo.Block13mongodb.models.daos.PersonOutputDto;
+import com.bosonit.garciajuanjo.Block13mongodb.models.dtos.PersonInputDto;
+import com.bosonit.garciajuanjo.Block13mongodb.models.dtos.PersonOutputDto;
 import com.bosonit.garciajuanjo.Block13mongodb.services.PersonService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PersonOutputDto add(@RequestBody PersonInputDto inputDto) {
+    public PersonOutputDto add(@Valid @RequestBody PersonInputDto inputDto) {
         return personService.save(inputDto);
     }
 }

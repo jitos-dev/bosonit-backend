@@ -1,4 +1,4 @@
-package com.bosonit.garciajuanjo.Block13mongodb.models.daos;
+package com.bosonit.garciajuanjo.Block13mongodb.models.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonInputDto {
+public class PersonOutputDto {
 
     private String idPerson;
     private String user;

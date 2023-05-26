@@ -1,10 +1,9 @@
 package com.bosonit.garciajuanjo.Block13mongodb.services;
 
-import com.bosonit.garciajuanjo.Block13mongodb.models.daos.PersonInputDto;
-import com.bosonit.garciajuanjo.Block13mongodb.models.daos.PersonOutputDto;
+import com.bosonit.garciajuanjo.Block13mongodb.models.dtos.PersonInputDto;
+import com.bosonit.garciajuanjo.Block13mongodb.models.dtos.PersonOutputDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PersonService {
 

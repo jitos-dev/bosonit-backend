@@ -1,7 +1,7 @@
 package com.bosonit.garciajuanjo.Block13mongodb.models;
 
-import com.bosonit.garciajuanjo.Block13mongodb.models.daos.PersonInputDto;
-import com.bosonit.garciajuanjo.Block13mongodb.models.daos.PersonOutputDto;
+import com.bosonit.garciajuanjo.Block13mongodb.models.dtos.PersonInputDto;
+import com.bosonit.garciajuanjo.Block13mongodb.models.dtos.PersonOutputDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

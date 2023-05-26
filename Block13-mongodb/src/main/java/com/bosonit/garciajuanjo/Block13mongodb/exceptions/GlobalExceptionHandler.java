@@ -1,12 +1,14 @@
 package com.bosonit.garciajuanjo.Block13mongodb.exceptions;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.text.ParseException;
-import java.util.Date;
+import java.util.*;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -39,6 +41,33 @@ public class GlobalExceptionHandler {
         customError.setMessage(pe.getMessage());
 
         return new ResponseEntity<>(customError, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Este metodo se ejecuta cuando salta una excepcion si utilizamos la anotación @Valid y luego en la entidad
+     * por ejemplo la anotacion @NotNull
+     * @param ex MethodArgumentNotValidException
+     * @return ResponseEntity<CustomError>
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<CustomError> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+        HttpStatusCode statusCode = ex.getStatusCode();
+        Object[] details = ex.getDetailMessageArguments();
+        List<Object> detailsList;
+
+        String message = "The field cannot be null";
+
+        if (details != null && details.length > 0) {
+            detailsList = Arrays.asList(details);
+            message = detailsList.get(1).toString();
+        }
+
+        CustomError customError = new CustomError();
+        customError.setTimestamp(new Date());
+        customError.setHttpCode(statusCode.value());
+        customError.setMessage(message);
+
+        return new ResponseEntity<>(customError, Objects.requireNonNull(HttpStatus.resolve(statusCode.value())));
     }
 
     @ExceptionHandler(RuntimeException.class)
