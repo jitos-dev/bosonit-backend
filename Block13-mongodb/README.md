@@ -34,6 +34,13 @@ Páginas importantes que podemos visitar para este proyecto:
 * [Cambios en Mongodb Shell](https://www.mongodb.com/docs/mongodb-shell/reference/compatibility/#std-label-compatibility)
 * [Comando mas utilizados](https://geekflare.com/es/mongodb-queries-examples/)
 
+### Importante antes de ejecutar la aplicación
+Antes de ejecutar la aplicación tenemos que crearnos un usuario para la base de datos porque el usuario que especificamos
+(root) se crea sobre la base de datos admin y no lo podemos utilizar. Para esto ejecutamos:
+* Primero nos situamos sobre la base de datos que queremos crear: use nombre_base_datos
+* Segundo creamos el usuario de la siguiente forma:
+
+db.createUser({user: "root",pwd: "root",roles: [{role: "readWrite", db: "block13-mongodb"}]})
 
 # Getting Started
 

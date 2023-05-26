@@ -2,7 +2,6 @@ package com.bosonit.garciajuanjo.Block13mongodb.models;
 
 import com.bosonit.garciajuanjo.Block13mongodb.models.daos.PersonInputDto;
 import com.bosonit.garciajuanjo.Block13mongodb.models.daos.PersonOutputDto;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +19,7 @@ import java.util.Date;
 public class Person {
 
     @Id
-    @JsonProperty("id_person")
-    private Long idPerson;
+    private String idPerson;
     private String user;
     private String password;
     private String name;

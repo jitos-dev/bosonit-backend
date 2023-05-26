@@ -12,9 +12,11 @@ public interface PersonService {
 
     List<PersonOutputDto> findAllPaginated(int pageNumber, int pageSize);
 
-    Optional<PersonOutputDto> findById(Long personId);
+    PersonOutputDto findById(String personId);
 
-    Optional<PersonOutputDto> update(PersonInputDto inputDto);
+    PersonOutputDto update(PersonInputDto inputDto);
 
     void delete(Long personId);
+
+    PersonOutputDto save(PersonInputDto inputDto);
 }

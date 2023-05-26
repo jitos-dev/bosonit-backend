@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class PersonOutputDto {
 
-    private Long idPerson;
+    private String idPerson;
     private String user;
     private String password;
     private String name;
