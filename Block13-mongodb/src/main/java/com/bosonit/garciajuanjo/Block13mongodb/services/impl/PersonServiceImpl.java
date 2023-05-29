@@ -44,17 +44,17 @@ public class PersonServiceImpl implements PersonService {
         Person person = Optional.ofNullable(mongoTemplate.findById(inputDto.getIdPerson(), Person.class))
                 .orElseThrow(() -> new EntityNotFoundException("Person not found for this id: " + inputDto.getIdPerson()));
 
-        person.setUser(inputDto.getUser());
-        person.setPassword(inputDto.getPassword());
-        person.setName(inputDto.getName());
-        person.setSurname(inputDto.getSurname());
-        person.setCompanyEmail(inputDto.getCompanyEmail());
-        person.setPersonalEmail(inputDto.getPersonalEmail());
-        person.setCity(inputDto.getCity());
-        person.setActive(inputDto.getActive());
-        person.setCreatedDate(inputDto.getCreatedDate());
-        person.setImageUrl(inputDto.getImageUrl());
-        person.setTerminationDate(inputDto.getTerminationDate());
+        person.setUser(inputDto.getUser() == null ? person.getUser() : inputDto.getUser());
+        person.setPassword(inputDto.getPassword() == null ? person.getPassword() : inputDto.getPassword());
+        person.setName(inputDto.getName() == null ? person.getName() : inputDto.getName());
+        person.setSurname(inputDto.getSurname() == null ? person.getSurname() : inputDto.getSurname());
+        person.setCompanyEmail(inputDto.getCompanyEmail() == null ? person.getCompanyEmail() : inputDto.getCompanyEmail());
+        person.setPersonalEmail(inputDto.getPersonalEmail() == null ? person.getPersonalEmail() : inputDto.getPersonalEmail());
+        person.setCity(inputDto.getCity() == null ? person.getCity() : inputDto.getCity());
+        person.setActive(inputDto.getActive() == null ? person.getActive() : inputDto.getActive());
+        person.setCreatedDate(inputDto.getCreatedDate() == null ? person.getCreatedDate() : inputDto.getCreatedDate());
+        person.setImageUrl(inputDto.getImageUrl() == null ? person.getImageUrl() : inputDto.getImageUrl());
+        person.setTerminationDate(inputDto.getTerminationDate() == null ? person.getTerminationDate() : inputDto.getTerminationDate());
 
         return mongoTemplate.save(person).personToPersonOutputDto();
     }

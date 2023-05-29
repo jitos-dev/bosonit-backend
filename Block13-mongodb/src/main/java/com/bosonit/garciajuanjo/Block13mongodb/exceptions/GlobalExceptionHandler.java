@@ -23,8 +23,8 @@ public class GlobalExceptionHandler {
         error.setTimestamp(new Date());
         error.setHttpCode(HttpStatus.NOT_FOUND.value());
 
-        String message = ex.getMessage();
-        error.setMessage(message == null ? "No record exist for the request resource" : ex.getMessage());
+        String message = ex.getMessage() == null ? "No record exist for the request resource" : ex.getMessage();
+        error.setMessage(message);
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
