@@ -1,11 +1,15 @@
 package com.bosonit.garciajuanjo.Block13mongodb.exceptions;
 
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 import java.text.ParseException;
 import java.util.*;
@@ -14,11 +18,13 @@ import java.util.*;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<CustomError> handleEntityNotFoundException() {
+    public ResponseEntity<CustomError> handleEntityNotFoundException(EntityNotFoundException ex) {
         CustomError error = new CustomError();
         error.setTimestamp(new Date());
         error.setHttpCode(HttpStatus.NOT_FOUND.value());
-        error.setMessage("No record exist for the request resource");
+
+        String message = ex.getMessage();
+        error.setMessage(message == null ? "No record exist for the request resource" : ex.getMessage());
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
@@ -52,15 +58,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<CustomError> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
         HttpStatusCode statusCode = ex.getStatusCode();
-        Object[] details = ex.getDetailMessageArguments();
-        List<Object> detailsList;
-
-        String message = "The field cannot be null";
-
-        if (details != null && details.length > 0) {
-            detailsList = Arrays.asList(details);
-            message = detailsList.get(1).toString();
-        }
+        ObjectError error = ex.getAllErrors().get(0);
+        String message = error.getDefaultMessage();
 
         CustomError customError = new CustomError();
         customError.setTimestamp(new Date());

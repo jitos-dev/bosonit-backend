@@ -34,4 +34,18 @@ public class PersonController {
     public PersonOutputDto add(@Valid @RequestBody PersonInputDto inputDto) {
         return personService.save(inputDto);
     }
+
+    @PutMapping("{personId}")
+    @ResponseStatus(HttpStatus.OK)
+    public PersonOutputDto update(@Valid @RequestBody PersonInputDto inputDto, @PathVariable String personId) {
+        inputDto.setIdPerson(personId);
+        return personService.update(inputDto);
+    }
+
+    @DeleteMapping("{personId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable String personId) {
+        personService.delete(personId);
+    }
+
 }

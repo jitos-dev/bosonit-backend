@@ -15,7 +15,7 @@ public interface PersonService {
 
     PersonOutputDto update(PersonInputDto inputDto);
 
-    void delete(Long personId);
+    void delete(String personId);
 
     PersonOutputDto save(PersonInputDto inputDto);
 }

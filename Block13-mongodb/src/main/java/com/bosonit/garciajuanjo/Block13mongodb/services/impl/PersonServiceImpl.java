@@ -41,11 +41,26 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonOutputDto update(PersonInputDto inputDto) {
-        return null;
+        Person person = Optional.ofNullable(mongoTemplate.findById(inputDto.getIdPerson(), Person.class))
+                .orElseThrow(() -> new EntityNotFoundException("Person not found for this id: " + inputDto.getIdPerson()));
+
+        person.setUser(inputDto.getUser());
+        person.setPassword(inputDto.getPassword());
+        person.setName(inputDto.getName());
+        person.setSurname(inputDto.getSurname());
+        person.setCompanyEmail(inputDto.getCompanyEmail());
+        person.setPersonalEmail(inputDto.getPersonalEmail());
+        person.setCity(inputDto.getCity());
+        person.setActive(inputDto.getActive());
+        person.setCreatedDate(inputDto.getCreatedDate());
+        person.setImageUrl(inputDto.getImageUrl());
+        person.setTerminationDate(inputDto.getTerminationDate());
+
+        return mongoTemplate.save(person).personToPersonOutputDto();
     }
 
     @Override
-    public void delete(Long personId) {
+    public void delete(String personId) {
 
     }
 
