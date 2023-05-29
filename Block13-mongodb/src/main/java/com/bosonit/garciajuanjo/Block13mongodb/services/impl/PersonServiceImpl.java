@@ -6,6 +6,7 @@ import com.bosonit.garciajuanjo.Block13mongodb.models.Person;
 import com.bosonit.garciajuanjo.Block13mongodb.models.dtos.PersonInputDto;
 import com.bosonit.garciajuanjo.Block13mongodb.models.dtos.PersonOutputDto;
 import com.bosonit.garciajuanjo.Block13mongodb.services.PersonService;
+import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,12 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void delete(String personId) {
+        Person person = Optional.ofNullable(mongoTemplate.findById(personId, Person.class))
+                .orElseThrow(()-> new EntityNotFoundException("Person not found fot this id: " + personId));
 
+        DeleteResult result = mongoTemplate.remove(person);
+        if (result.getDeletedCount() == 0)
+            throw new RuntimeException("Person object with id " + personId + " could not be deleted");
     }
 
     @Override
