@@ -42,6 +42,8 @@ Antes de ejecutar la aplicación tenemos que crearnos un usuario para la base de
 
 db.createUser({user: "root",pwd: "root",roles: [{role: "readWrite", db: "block13-mongodb"}]})
 
+Para ejecutar los distintos empoints estan las configuraciones de Postman guardadas en el directorio /postman
+
 # Getting Started
 
 ### Reference Documentation

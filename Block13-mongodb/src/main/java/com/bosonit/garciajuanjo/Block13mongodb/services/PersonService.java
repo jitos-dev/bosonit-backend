@@ -9,7 +9,7 @@ public interface PersonService {
 
     List<PersonOutputDto> findAll();
 
-    List<PersonOutputDto> findAllPaginated(int pageNumber, int pageSize);
+    List<PersonOutputDto> findAll(Integer numberPage, Integer pageSize);
 
     PersonOutputDto findById(String personId);
 

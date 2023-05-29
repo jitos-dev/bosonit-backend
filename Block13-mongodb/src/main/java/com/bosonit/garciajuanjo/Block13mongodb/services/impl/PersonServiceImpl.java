@@ -8,7 +8,12 @@ import com.bosonit.garciajuanjo.Block13mongodb.models.dtos.PersonOutputDto;
 import com.bosonit.garciajuanjo.Block13mongodb.services.PersonService;
 import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +34,17 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonOutputDto> findAllPaginated(int pageNumber, int pageSize) {
-        return null;
+    public List<PersonOutputDto> findAll(Integer numberPage, Integer pageSize) {
+        Query query = new Query();
+        Pageable pageable = PageRequest.of(numberPage, pageSize);
+
+        //Podemos aplicar filtros dinamicos como haciamos con Criteria API
+        //query.addCriteria(Criteria.where("user").is("usuario10"));
+
+        return mongoTemplate.find(query.with(pageable), Person.class)
+                .stream()
+                .map(Person::personToPersonOutputDto)
+                .toList();
     }
 
     @Override
@@ -63,7 +77,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void delete(String personId) {
         Person person = Optional.ofNullable(mongoTemplate.findById(personId, Person.class))
-                .orElseThrow(()-> new EntityNotFoundException("Person not found fot this id: " + personId));
+                .orElseThrow(() -> new EntityNotFoundException("Person not found fot this id: " + personId));
 
         DeleteResult result = mongoTemplate.remove(person);
         if (result.getDeletedCount() == 0)
@@ -73,7 +87,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonOutputDto save(PersonInputDto inputDto) {
         return Optional.of(mongoTemplate.save(new Person(inputDto)).personToPersonOutputDto())
-                .orElseThrow(()->
+                .orElseThrow(() ->
                         new UnprocessableEntityException("A problem has occurred and the record could not be saved"));
     }
 }

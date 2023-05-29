@@ -23,6 +23,14 @@ public class PersonController {
         return personService.findAll();
     }
 
+    @GetMapping("page/{numberPage}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PersonOutputDto> findAll(
+            @PathVariable Integer numberPage,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+            return personService.findAll(numberPage, pageSize);
+    }
+
     @GetMapping("/{personId}")
     @ResponseStatus(HttpStatus.OK)
     public PersonOutputDto findById(@PathVariable String personId) {
