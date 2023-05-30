@@ -1,12 +1,12 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.SubjectName;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectListOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.Student;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.Subject;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.SubjectName;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectListOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectSimpleOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;

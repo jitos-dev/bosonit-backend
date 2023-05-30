@@ -1,8 +1,8 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.entities;
+package com.bosonit.garciajuanjo.block7crudvalidation.models;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCodepenInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonCodepenInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

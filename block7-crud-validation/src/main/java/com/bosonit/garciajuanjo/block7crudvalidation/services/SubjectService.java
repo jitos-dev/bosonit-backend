@@ -1,8 +1,8 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectListOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectListOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectOutputDto;
 
 import java.util.List;
 import java.util.Optional;

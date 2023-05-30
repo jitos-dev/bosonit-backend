@@ -17,8 +17,22 @@ Para probar este programa había que simular un cliente y un servidor donde el c
 el puerto 8081. Para hacer esto cree un perfil (application-server.properties) con las configuraciones de la base de
 datos y el puerto para hacer de servidor. Luego configuré IntellyIdea para poder ejecutar varias veces un mismo programa
 y lo ejecuté primero como servidor con una variable de entorno (spring.profiles.active=server) para que se levantara
-como servidor y otra vez como cliente con una configuración normal. Estas configuraciones no las guardé en su momento
-por lo que si se quiere probar hay que volver a su commit correspondiente y ejecutarlo con las configuraciones mencionadas.
+como servidor y otra vez como cliente con una configuración normal. Estas configuraciones las guardé (/runConfigurations)  
+después por lo que si se quiere probar hay que ejecutarlo con las configuraciones mencionadas.
+
+### Bloque 10 Docker
+Para realizar este ejercicio lo que hacemos es primero cambiar de base de datos la aplicación por la base de datos de
+Postgre. Una vez que la tenemos cambiada y nos funciona en local tenemos que crear el jar de la aplicación que lo hago
+con Maven pero hay que hacerlo sin que ejecute los tests porque la url de la base de datos en el .properties ya no será
+localhost si no el nombre del contenedor que vamos a utilizar en Docker (podemos ver las dos url en el archivo .properties)
+y si ejecuta los test falla. Para esto hacemos:
+* mvn clean package -DskipTests
+
+Una vez que tenemos el .jar ya podemos crear el DockerFile y crear la imagen del proyecto así:
+* docker build -t block7-crud-validation:v1 .
+
+Para ejecutrar la aplicación hay que levantar un contenedor de Postgres en la misma 'Network' que el contenedor que
+contendrá la imagen de nuestra aplicación.
 
 ### Bloque 11 Spring Web (Avanzado) Cors
 Este ejercicio consiste en crear un controlador nuevo que llamo PersonCorsController el cual puede recibir peticiones 

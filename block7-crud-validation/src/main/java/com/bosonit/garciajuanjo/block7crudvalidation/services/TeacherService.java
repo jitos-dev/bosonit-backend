@@ -1,7 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherOutputDto;
 
 import java.util.List;
 import java.util.Optional;

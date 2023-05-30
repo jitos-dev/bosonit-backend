@@ -1,7 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

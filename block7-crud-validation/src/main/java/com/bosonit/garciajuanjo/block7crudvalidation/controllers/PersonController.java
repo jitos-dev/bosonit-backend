@@ -1,13 +1,11 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonCompleteOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
-import jakarta.persistence.TemporalType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

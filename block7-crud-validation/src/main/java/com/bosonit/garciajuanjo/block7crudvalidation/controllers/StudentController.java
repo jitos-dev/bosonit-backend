@@ -1,6 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.*;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.*;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

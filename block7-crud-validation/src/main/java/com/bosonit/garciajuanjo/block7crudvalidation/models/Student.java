@@ -1,9 +1,9 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.entities;
+package com.bosonit.garciajuanjo.block7crudvalidation.models;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSimpleOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectSimpleOutputDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

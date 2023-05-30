@@ -1,10 +1,10 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.*;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.Person;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.Student;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.Subject;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.Teacher;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.*;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
@@ -16,7 +16,6 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 

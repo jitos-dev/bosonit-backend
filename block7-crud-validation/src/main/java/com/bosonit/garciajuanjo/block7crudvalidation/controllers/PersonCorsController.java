@@ -1,10 +1,9 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCodepenInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonCompleteOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.Person;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonCodepenInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonCompleteOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

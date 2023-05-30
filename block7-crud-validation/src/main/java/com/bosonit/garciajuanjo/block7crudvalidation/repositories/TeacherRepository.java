@@ -1,6 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.repositories;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

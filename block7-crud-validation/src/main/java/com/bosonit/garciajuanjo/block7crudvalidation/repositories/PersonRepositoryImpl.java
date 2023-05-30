@@ -1,7 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.repositories;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.Person;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;

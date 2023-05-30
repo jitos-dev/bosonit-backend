@@ -1,7 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.*;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.PersonInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.*;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
