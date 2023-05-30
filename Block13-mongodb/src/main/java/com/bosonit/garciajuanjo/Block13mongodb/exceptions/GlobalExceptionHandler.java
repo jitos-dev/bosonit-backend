@@ -18,22 +18,22 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CustomError> handleEntityNotFoundException(EntityNotFoundException ex) {
         CustomError error = new CustomError();
         error.setTimestamp(new Date());
-        error.setHttpCode(HttpStatus.NOT_FOUND.value());
+        error.setHttpCode(ex.getHttpStatus().value());
 
         String message = ex.getMessage() == null ? "No record exist for the request resource" : ex.getMessage();
         error.setMessage(message);
 
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(error, ex.getHttpStatus());
     }
 
     @ExceptionHandler(UnprocessableEntityException.class)
     public ResponseEntity<CustomError> handleUnprocessableEntityException(UnprocessableEntityException exception) {
         CustomError error = new CustomError();
         error.setTimestamp(new Date());
-        error.setHttpCode(HttpStatus.NO_CONTENT.value());
+        error.setHttpCode(exception.getHttpStatus().value());
         error.setMessage(exception.getMessage());
 
-        return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(error, exception.getHttpStatus());
     }
 
     @ExceptionHandler(ParseException.class)

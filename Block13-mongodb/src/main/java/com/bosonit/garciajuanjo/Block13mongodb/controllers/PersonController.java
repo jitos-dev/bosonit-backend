@@ -51,7 +51,7 @@ public class PersonController {
     }
 
     @DeleteMapping("{personId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable String personId) {
         personService.delete(personId);
     }

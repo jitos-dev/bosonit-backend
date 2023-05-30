@@ -54,13 +54,13 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable String id) {
         service.delete(id);
     }
 
     @DeleteMapping("subject/{studentId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void deleteByIds(
             @PathVariable String studentId,
             @RequestBody List<String> subjectIds) {
