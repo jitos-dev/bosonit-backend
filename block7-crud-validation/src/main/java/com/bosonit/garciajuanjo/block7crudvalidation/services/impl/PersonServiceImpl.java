@@ -75,7 +75,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonOutputDto> getBy(Map<String , Object> values){
+    public List<PersonOutputDto> getBy(Map<String, Object> values) {
         return personRepository.findPersonsBy(values);
     }
 
@@ -125,7 +125,6 @@ public class PersonServiceImpl implements PersonService {
         return Optional.of(personRepository.save(personUpdated).personToPersonOutputDto());
     }
 
-
     @Transactional
     @Override
     public void delete(String id) {
@@ -140,10 +139,9 @@ public class PersonServiceImpl implements PersonService {
         }
 
         Optional<Teacher> teacher = teacherRepository.findTeacherFromPersonId(person.getIdPerson());
-        if (teacher.isPresent()) {
-            //comprobamos que no tenga referencias con algun Student porque si es así no se puede borrar
-            if (!teacher.get().getStudents().isEmpty())
-                throw new UnprocessableEntityException("The teacher cannot be deleted because it has associated Students");
+        //comprobamos que no tenga referencias con algun Student porque si es así no se puede borrar
+        if (teacher.isPresent() && !teacher.get().getStudents().isEmpty()) {
+            throw new UnprocessableEntityException("The teacher cannot be deleted because it has associated Students");
         }
 
         personRepository.delete(person);
@@ -193,12 +191,15 @@ public class PersonServiceImpl implements PersonService {
         return personCompleteList;
     }
 
-    private Boolean isAllFieldsCorrect(PersonInputDto personInputDto) {
+    public boolean isAllFieldsCorrect(PersonInputDto personInputDto) {
+        if (personInputDto == null)
+            throw new UnprocessableEntityException("The input of person cannot be null");
+
         if (personInputDto.getUser() == null)
             throw new UnprocessableEntityException("The user field cannot be null");
 
         if (personInputDto.getUser().length() < 6 || personInputDto.getUser().length() > 10)
-            throw new UnprocessableEntityException("The user length cannot be less than 6 characters or greater than 12");
+            throw new UnprocessableEntityException("The user length cannot be less than 6 characters or greater than 10");
 
         if (personInputDto.getPassword() == null)
             throw new UnprocessableEntityException("The password field cannot be null");
