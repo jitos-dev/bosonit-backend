@@ -75,8 +75,8 @@ public class PersonController {
             values.put(CREATED_DATE, createdDate);
             values.put(GREATER_OR_LESS, greaterOrLess);
         }
-        if (orderByUser != null) values.put(ORDER_BY_USER, orderByUser);
-        if (orderByName != null) values.put(ORDER_BY_NAME, orderByName);
+        if (orderByUser != null) values.put(ORDER_BY_USER, true);
+        if (orderByName != null) values.put(ORDER_BY_NAME, true);
 
         values.put(PAGE_SIZE, pageSize);
         values.put(NUMBER_PAGE, numberPage);

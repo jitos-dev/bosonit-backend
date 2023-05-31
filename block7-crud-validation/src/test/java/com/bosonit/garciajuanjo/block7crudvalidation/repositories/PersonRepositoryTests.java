@@ -4,7 +4,6 @@ import com.bosonit.garciajuanjo.block7crudvalidation.models.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -76,7 +75,7 @@ public class PersonRepositoryTests {
      */
     @DisplayName("Test save Person")
     @Test
-    public void save() {
+    void save() {
         //given
         //Aquí inicializaríamos el objeto PersonInputDto pero que se inicialice una vez antes de cada metodo
 
@@ -90,7 +89,7 @@ public class PersonRepositoryTests {
 
     @Test
     @DisplayName("Test all Persons")
-    public void all() {
+    void all() {
         //Given
         PersonInputDto personInputDto = PersonInputDto.builder()
                 .idPerson(null)
@@ -123,7 +122,7 @@ public class PersonRepositoryTests {
 
     @DisplayName("Test find Person by id")
     @Test
-    public void byId() {
+    void byId() {
         //Given
         PersonOutputDto outputDto = personRepository.save(new Person(inputDto)).personToPersonOutputDto();
 
@@ -137,7 +136,7 @@ public class PersonRepositoryTests {
 
     @DisplayName("Test update Person")
     @Test
-    public void update() {
+    void update() {
         //Given
         Person person = personRepository.save(new Person(inputDto));
 
@@ -184,7 +183,7 @@ public class PersonRepositoryTests {
 
     @DisplayName("Test delete Person")
     @Test
-    public void delete() {
+    void delete() {
         //Given
         Person person = personRepository.save(new Person(inputDto));
 
@@ -199,7 +198,7 @@ public class PersonRepositoryTests {
 
     @DisplayName("Test find Person by user")
     @Test
-    public void byUser() {
+    void byUser() {
         //Given
         Person person = personRepository.save(new Person(inputDto));
 
@@ -215,7 +214,7 @@ public class PersonRepositoryTests {
 
     @DisplayName("Test find Persons by distinct parameters")
     @Test
-    public void findPersonsBy() {
+    void findPersonsBy() {
         try {
             //Given
             mockData();
@@ -224,12 +223,14 @@ public class PersonRepositoryTests {
             Map<String, Object> values2 = getValues2();
             Map<String, Object> values3 = getValues3();
             Map<String, Object> values4 = getValues4();
+            Map<String, Object> values5 = getValues5();
 
             //When
             List<PersonOutputDto> list1 = personRepository.findPersonsBy(values1);
             List<PersonOutputDto> list2 = personRepository.findPersonsBy(values2);
             List<PersonOutputDto> list3 = personRepository.findPersonsBy(values3);
             List<PersonOutputDto> list4 = personRepository.findPersonsBy(values4);
+            List<PersonOutputDto> list5 = personRepository.findPersonsBy(values5);
 
             //Then
             assertThat(list1, notNullValue());
@@ -241,12 +242,22 @@ public class PersonRepositoryTests {
             assertThat(list4, notNullValue());
             assertThat(list4.size(), equalTo(10));
             assertThat(list4.get(0).getUser(), equalTo("usuario11"));
+            assertThat(list5.size(), equalTo(10));
+            assertThat(list5.get(0).getName(), equalTo("Ana"));
 
         } catch (IOException e) {
             fail("Fail to load mock data in findPersonsBy. Url mock data file: " + URL_MOCK_DATA);
         } catch (ParseException e) {
             fail("Fail to parse String date to Date. Date String: " + date);
         }
+    }
+
+    private static Map<String, Object> getValues5() throws ParseException {
+        Map<String, Object> values = new HashMap<>();
+        values.put(NUMBER_PAGE, 0);
+        values.put(PAGE_SIZE, 10);
+        values.put(ORDER_BY_NAME, false);
+        return values;
     }
 
     private static Map<String, Object> getValues4() throws ParseException {
