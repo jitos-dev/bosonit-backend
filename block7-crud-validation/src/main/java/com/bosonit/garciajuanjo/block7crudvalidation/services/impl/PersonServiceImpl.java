@@ -148,6 +148,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private List<PersonCompleteOutputDto> getPersonCompleteOutputDto(String outputType, List<PersonOutputDto> persons) {
+        if (outputType == null || persons == null)
+            return new ArrayList<>();
+
+        if (persons.isEmpty())
+            return new ArrayList<>();
+
         //Lista de salida
         List<PersonCompleteOutputDto> personCompleteList = new ArrayList<>();
 
@@ -225,15 +231,12 @@ public class PersonServiceImpl implements PersonService {
         return true;
     }
 
-    private Person getPersonUpdated(PersonInputDto personInputDto, Person person) {
-
-        if (personInputDto.getUser() != null &&
-                (personInputDto.getUser().length() < 6 || personInputDto.getUser().length() > 10))
-            throw new UnprocessableEntityException("The user length cannot be less than 6 characters or greater than 12");
-
+    public Person getPersonUpdated(PersonInputDto personInputDto, Person person) {
+        //Check that inputs fields are valid
+        checkInputsAreValid(personInputDto, person);
 
         person.setName(personInputDto.getName() == null ? person.getName() : personInputDto.getName());
-        person.setUser(personInputDto.getUser() == null ? person.getUser() : personInputDto.getUser());
+        person.setUser(person.getUser());
         person.setPassword(personInputDto.getPassword() == null ? person.getPassword() : personInputDto.getPassword());
         person.setSurname(personInputDto.getSurname() == null ? person.getSurname() : personInputDto.getSurname());
         person.setCompanyEmail(personInputDto.getCompanyEmail() == null ? person.getCompanyEmail() : personInputDto.getCompanyEmail());
@@ -244,5 +247,19 @@ public class PersonServiceImpl implements PersonService {
         person.setImageUrl(personInputDto.getImageUrl() == null ? person.getImageUrl() : personInputDto.getImageUrl());
         person.setTerminationDate(personInputDto.getTerminationDate() == null ? person.getTerminationDate() : personInputDto.getTerminationDate());
         return person;
+    }
+
+    public void checkInputsAreValid(PersonInputDto personInputDto, Person person) {
+        if (personInputDto == null || person == null)
+            throw new UnprocessableEntityException("The inputs values cannot be null");
+
+        if (personInputDto.getUser() == null)
+            throw new UnprocessableEntityException("The user value of inputDto cannot be null");
+
+        if (personInputDto.getUser().length() < 6)
+            throw new UnprocessableEntityException("The user length cannot be less than 6 characters");
+
+        if (personInputDto.getUser().length() > 10)
+            throw new UnprocessableEntityException("The user length cannot be greater than 10 characters");
     }
 }

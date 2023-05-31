@@ -1,7 +1,10 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.models.*;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonCompleteOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
@@ -10,18 +13,23 @@ import com.bosonit.garciajuanjo.block7crudvalidation.services.impl.PersonService
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonServiceImplTest {
@@ -70,10 +78,52 @@ public class PersonServiceImplTest {
                 null);
     }
 
-    @DisplayName("Test isAllFieldsCorrect when param is null")
+    //private List<PersonCompleteOutputDto> getPersonCompleteOutputDto(String outputType, List<PersonOutputDto> persons)
+
+    //TODO hay que hacer uno solo para probar cuando sea una persona, otro para cuando sea estudiante y otro para profesor
+    void methodGetPersonCompleteOutputDtoTest() {
+        //Give
+        List<PersonOutputDto> persons = List.of(
+                PersonOutputDto.builder().idPerson("1").user("usuario1").password("123456").name("juanjo")
+                        .surname("garcia").companyEmail("bosonit@bosonit.com").personalEmail("jitos86@gmail.com")
+                        .city("Sabiote").active(true).createdDate(new Date()).imageUrl("http://localhost:8080/imagen1")
+                        .terminationDate(new Date()).build());
+
+        String outputType = "full";
+
+        List<String> personIds = List.of("1");
+
+        //When
+        //Mockito.when(teacherRepository.findTeachersByPersonsIds(personIds)).thenReturn()
+        //Then
+    }
+
+    private Student getStudent(Person person, Teacher teacher, Set<Subject> subjects) {
+        return Student.builder()
+                .idStudent("1")
+                .numHoursWeek(20)
+                .comments("comentarios")
+                .branch(Branch.BACK)
+                .person(person)
+                .teacher(teacher)
+                .subjects(subjects)
+                .build();
+    }
+
+    private Teacher getTeacher(Person person, List<Student> students) {
+        return Teacher.builder()
+                .idTeacher("1")
+                .comments("comentarios")
+                .branch(Branch.FULL_STACK)
+                .person(person)
+                .students(students)
+                .build();
+    }
+
+    @DisplayName("Test for the isAllFieldsCorrect method")
     @ParameterizedTest(name = "Test #{index}: with PersonInputDto, correct value {1}")
     @MethodSource("argumentsForTestingIsAllFieldsCorrectMethod")
-    void testWhenPersonInputDtoIsNull(PersonInputDto inputDto, Boolean correctValue) {
+    void methodIsAllFieldsCorrectTest(PersonInputDto inputDto, Boolean correctValue) {
         if (correctValue)
             assertTrue(personService.isAllFieldsCorrect(inputDto));
 
@@ -81,6 +131,72 @@ public class PersonServiceImplTest {
             Assertions.assertThrows(UnprocessableEntityException.class, () -> {
                 personService.isAllFieldsCorrect(inputDto);
             });
+    }
+
+
+    @DisplayName("Test to check that inputs fields are valid in personUpdated method")
+    @ParameterizedTest(name = "Test #{index}: PersonInput: {0}, Person: {1}")
+    @MethodSource("argumentsForTestingInputsFieldAreValid")
+    void checkThatInputsFieldsAreValidInPersonUpdatedTest(PersonInputDto inputDto, Person person) {
+        Assertions.assertThrows(UnprocessableEntityException.class, () -> {
+            personService.checkInputsAreValid(inputDto, person);
+        });
+
+    }
+
+
+    @DisplayName("Test for the getPersonUpdated method")
+    @Test
+    void methodGetPersonUpdatedTest() {
+        //Given
+        PersonInputDto nullInputDto = PersonInputDto.builder()
+                .idPerson(null)
+                .user("usuario")
+                .password(null)
+                .name(null)
+                .surname(null)
+                .companyEmail(null)
+                .personalEmail(null)
+                .city(null)
+                .active(true)
+                .createdDate(null)
+                .imageUrl(null)
+                .terminationDate(null).build();
+
+        //When
+        Person personUpdated = personService.getPersonUpdated(nullInputDto, new Person(personInputDto));
+
+        //Then
+        assertThat(personUpdated.getName(), notNullValue());
+        assertThat(personUpdated.getName(), equalTo("juanjo"));
+        assertThat(personUpdated.getUser(), equalTo("usuario1"));
+        assertThat(personUpdated.getPassword(), notNullValue());
+        assertThat(personUpdated.getPassword(), equalTo("123456"));
+        assertThat(personUpdated.getSurname(), notNullValue());
+        assertThat(personUpdated.getSurname(), equalTo("garcia"));
+        assertThat(personUpdated.getCompanyEmail(), notNullValue());
+        assertThat(personUpdated.getCompanyEmail(), equalTo("juanjose.garcia@bosonit.com"));
+        assertThat(personUpdated.getPersonalEmail(), notNullValue());
+        assertThat(personUpdated.getPersonalEmail(), equalTo("jitos86@gmail.com"));
+        assertThat(personUpdated.getCity(), notNullValue());
+        assertThat(personUpdated.getCity(), equalTo("Sabiote"));
+        assertThat(personUpdated.getActive(), notNullValue());
+        assertTrue(personUpdated.getActive());
+        assertThat(personUpdated.getCreatedDate(), notNullValue());
+        assertThat(personUpdated.getTerminationDate(), notNullValue());
+        assertThat(personUpdated.getImageUrl(), notNullValue());
+        assertThat(personUpdated.getImageUrl(), equalTo("http://localhost:8080/imagen1"));
+    }
+
+    private static List<Arguments> argumentsForTestingInputsFieldAreValid() {
+        return List.of(
+                Arguments.of(null, null),
+                Arguments.of(null, new Person()),
+                Arguments.of(personInputDto, null),
+                Arguments.of(getInputDtoUserNull(), new Person()),
+                Arguments.of(getInputDtoUserLessThanSix(), new Person()),
+                Arguments.of(getInputDtoUserMoreThanTen(), new Person())
+        );
     }
 
     private static List<Arguments> argumentsForTestingIsAllFieldsCorrectMethod() {

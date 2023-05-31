@@ -4,10 +4,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonCodepenInp
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
@@ -18,6 +15,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@ToString
 public class Person {
 
     @Id

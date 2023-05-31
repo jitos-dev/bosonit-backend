@@ -4,10 +4,7 @@ import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentSimpleOut
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherOutputDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
@@ -19,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Teacher {
 
     @Id
