@@ -1,9 +1,10 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
+import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.*;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonCompleteOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
@@ -25,19 +26,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
-public class PersonServiceImplTest {
+class PersonServiceImplTest {
 
     @Mock
     private PersonRepository personRepository;
     @Mock
     private StudentRepository studentRepository;
-    @Mock
-    private SubjectRepository subjectRepository;
     @Mock
     private TeacherRepository teacherRepository;
     @InjectMocks
@@ -74,6 +74,57 @@ public class PersonServiceImplTest {
                 null,
                 null,
                 null);
+    }
+
+
+
+    @DisplayName("Test fot the delete method when throw exception")
+    @Test
+    void whenMethodDeleteThrowException() {
+        //When
+        Mockito.when(personRepository.findById("1")).thenThrow(EntityNotFoundException.class);
+
+        //Then
+        assertThrows(EntityNotFoundException.class, () -> {
+            personRepository.findById("1");
+        });
+    }
+
+    @DisplayName("Test fot the delete method when is teacher throw exception")
+    @Test
+    void whenMethodDeleteTeacherHasStudentsThrowException() {
+        //Give
+        Person person = Person.builder().idPerson("1").user("usuario1").password("123456").name("juanjo")
+                .surname("garcia").companyEmail("bosonit@bosonit.com").personalEmail("jitos86@gmail.com")
+                .city("Sabiote").active(true).createdDate(new Date()).imageUrl("http://localhost:8080/imagen1")
+                .terminationDate(new Date()).build();
+
+        Teacher teacher = Teacher.builder().idTeacher("2").comments("comentarios").branch(Branch.FULL_STACK)
+                .person(new Person(personInputDto)).students(List.of(new Student())).build();
+
+        //When
+        Mockito.when(personRepository.findById("1")).thenReturn(Optional.of(person));
+        Mockito.when(studentRepository.findByPersonId(person.getIdPerson())).thenReturn(Optional.empty());
+        Mockito.when(teacherRepository.findTeacherFromPersonId(person.getIdPerson())).thenReturn(Optional.of(teacher));
+
+        //Then
+        assertThrows(UnprocessableEntityException.class, () -> {
+            personService.delete("1");
+        });
+    }
+
+    @DisplayName("Test for the getAll method without params")
+    @Test
+    void whenMethodGetAllWithoutParam() {
+        //When
+        Mockito.when(personRepository.findAll()).thenReturn(List.of(new Person(personInputDto)));
+        List<PersonCompleteOutputDto> list = personService.getAll();
+
+        //Then
+        assertThat(list, notNullValue());
+        assertThat(list.size(), equalTo(1));
+        assertThat(list.get(0).getTeacher(), nullValue());
+        assertThat(list.get(0).getTeacher(), nullValue());
     }
 
     @DisplayName("Test for the getPersonCompleteOutputDto when the params are null")

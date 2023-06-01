@@ -1,5 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
+import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.Student;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.Subject;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.SubjectName;
@@ -7,8 +9,6 @@ import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectListOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectSimpleOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
-import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.SubjectService;
@@ -70,8 +70,6 @@ public class SubjectServiceImpl implements SubjectService {
         if (inputDto.getInitialDate() == null)
             throw new UnprocessableEntityException("The initial date field cannot be null");
 
-        SubjectName subjectName = SubjectName.valueOf(inputDto.getSubjectName());
-
         return Optional.of(subjectRepository
                 .save(new Subject(inputDto))
                 .subjectToSubjectOutputDto());
@@ -121,7 +119,7 @@ public class SubjectServiceImpl implements SubjectService {
      * @param subjectName String con el valor de SubjectName
      * @return true o false
      */
-    private Boolean isValidSubjectName(String subjectName) {
+    private boolean isValidSubjectName(String subjectName) {
         try {
             SubjectName.valueOf(subjectName);
             return true;

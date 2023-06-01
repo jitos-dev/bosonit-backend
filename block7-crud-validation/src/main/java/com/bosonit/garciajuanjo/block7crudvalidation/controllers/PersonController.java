@@ -46,6 +46,11 @@ public class PersonController {
         return service.getByUser(user, outputType);
     }
 
+    /**
+     * Este metodo es el que se encarga de realizar la llamada por medio de FeignClient
+     * @param teacherId String id del Teacher que queremos recuperar
+     * @return TeacherOutputDto
+     */
     @GetMapping("teacher/{teacherId}")
     @ResponseStatus(HttpStatus.OK)
     public TeacherOutputDto getTeacherById(@PathVariable String teacherId) {

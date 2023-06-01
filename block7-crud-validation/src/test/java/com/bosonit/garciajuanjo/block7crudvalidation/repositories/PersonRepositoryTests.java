@@ -4,7 +4,9 @@ import com.bosonit.garciajuanjo.block7crudvalidation.models.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Profile;
@@ -16,10 +18,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.MatcherAssert.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static com.bosonit.garciajuanjo.block7crudvalidation.utils.Constants.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Esta clase nos va a servir para realizar los test en el repositorio de PersonRepository. La anotamos con @DataJapTest
@@ -30,7 +32,7 @@ import static com.bosonit.garciajuanjo.block7crudvalidation.utils.Constants.*;
  */
 @DataJpaTest
 @Profile("test")
-public class PersonRepositoryTests {
+class PersonRepositoryTests {
     @Autowired
     private PersonRepository personRepository;
 

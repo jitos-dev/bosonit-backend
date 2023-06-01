@@ -1,5 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.TeacherService;
@@ -26,7 +27,7 @@ public class TeacherController {
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public TeacherOutputDto getById(@PathVariable String id) {
-        return service.findById(id).orElseThrow();
+        return service.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @PostMapping
