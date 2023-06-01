@@ -1,6 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.client.TeacherFeignClient;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.OutputType;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.Student;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.Teacher;
@@ -33,11 +34,12 @@ public class PersonServiceImpl implements PersonService {
     private TeacherFeignClient teacherFeignClient;
 
     @Override
-    public List<PersonCompleteOutputDto> getAll(String outputType) {
+    public List<PersonCompleteOutputDto> getAll(String output) {
         List<PersonOutputDto> persons = personRepository.findAll()
                 .stream()
                 .map(Person::personToPersonOutputDto).toList();
 
+        OutputType outputType = OutputType.valueOf(output.toUpperCase());
         return getPersonCompleteOutputDto(outputType, persons);
     }
 
@@ -48,21 +50,22 @@ public class PersonServiceImpl implements PersonService {
                 .map(Person::personToPersonOutputDto).toList();
 
         //si cambio las comillas por "full" nos da los datos de si es profesor...
-        return getPersonCompleteOutputDto("", persons);
+        return getPersonCompleteOutputDto(OutputType.SIMPLE, persons);
     }
 
     @Override
-    public Optional<PersonCompleteOutputDto> getById(String id, String outputType) {
+    public Optional<PersonCompleteOutputDto> getById(String id, String output) {
         Person person = personRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
         List<PersonOutputDto> persons = Collections.singletonList(person.personToPersonOutputDto());
+        OutputType outputType = OutputType.valueOf(output.toUpperCase());
 
         return getPersonCompleteOutputDto(outputType, persons).stream().findFirst();
     }
 
     @Override
-    public List<PersonCompleteOutputDto> getByUser(String user, String outputType) {
+    public List<PersonCompleteOutputDto> getByUser(String user, String output) {
         List<PersonOutputDto> personList = personRepository.findByUser(user)
                 .stream()
                 .map(Person::personToPersonOutputDto)
@@ -70,6 +73,8 @@ public class PersonServiceImpl implements PersonService {
 
         if (personList.isEmpty())
             throw new EntityNotFoundException();
+
+        OutputType outputType = OutputType.valueOf(output.toUpperCase());
 
         return getPersonCompleteOutputDto(outputType, personList);
     }
@@ -148,15 +153,15 @@ public class PersonServiceImpl implements PersonService {
     }
 
     /**
-     * Este método se encarga de cuando le pasemos una lista PersonOutputDto y el parámetro outputType si es 'full'
+     * Este método se encarga de cuando le pasemos una lista PersonOutputDto y el parámetro outputType si es FULL
      * comprobar cada una de esas 'person' si es un Teacher o Student y agregarle todos sus datos para devolver un
      * objeto de tipo PersonCompleteOutputDto
      *
-     * @param outputType String con los valores full o simple
+     * @param outputType Enum con los valores FULL o SIMPLE
      * @param persons    List de PersonOutputDto
      * @return List de PersonCompleteOutputDto en función del parámetro outputType
      */
-    public List<PersonCompleteOutputDto> getPersonCompleteOutputDto(String outputType, List<PersonOutputDto> persons) {
+    public List<PersonCompleteOutputDto> getPersonCompleteOutputDto(OutputType outputType, List<PersonOutputDto> persons) {
         if (outputType == null || persons == null || persons.isEmpty())
             return new ArrayList<>();
 
@@ -169,20 +174,25 @@ public class PersonServiceImpl implements PersonService {
                 .map(PersonOutputDto::getIdPerson)
                 .toList();
 
-        //TODO ver si puedo quitar el hacer siempre la consulta y hacerla solo cuando outputType sea full
-        //Lista de Teachers que contengan el id en la lista de ids de personas
-        List<Teacher> teachers = teacherRepository.findTeachersByPersonsIds(personIds);
+        //Lista de Teachers que contengan los ids en la lista de ids de personas
+        List<Teacher> teachers = new ArrayList<>();
 
-        //Lista de Student que contengan el id en la lista de ids de personas
-        List<Student> students = studentRepository.findStudentsByPersonsIds(personIds);
+        //Lista de Student que contengan los ids en la lista de ids de personas
+        List<Student> students = new ArrayList<>();
 
+        if (outputType == OutputType.FULL) {
+            students.addAll(studentRepository.findStudentsByPersonsIds(personIds));
+            teachers.addAll(teacherRepository.findTeachersByPersonsIds(personIds));
+        }
+
+        //Recorremos la lista de personas para ir añadiendo los datos
         persons.forEach(personOutputDto -> {
             //Creamos el objeto y añadimos la persona
             PersonCompleteOutputDto dto = new PersonCompleteOutputDto();
             dto.setPerson(personOutputDto);
 
             //Si viene el parámetro full le asignamos el resto de datos
-            if (outputType.equalsIgnoreCase("full")) {
+            if (outputType == OutputType.FULL) {
                 //Comprobamos si está en Students o en Teachers para añadirlo
                 Optional<Teacher> teacher = teachers.stream()
                         .filter(teach -> teach.getPerson().getIdPerson().equals(personOutputDto.getIdPerson()))

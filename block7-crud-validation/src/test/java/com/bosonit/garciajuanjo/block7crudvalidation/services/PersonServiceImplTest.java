@@ -76,20 +76,37 @@ public class PersonServiceImplTest {
                 null);
     }
 
+    @DisplayName("Test for the getPersonCompleteOutputDto when the params are null")
+    @Test
+    void whenGetPersonCompleteOutputDtoOutputParamsAreNull() {
+        //Give
+        List<PersonOutputDto> persons = List.of();
+
+        //When
+        List<PersonCompleteOutputDto> personCompleteList1 =
+                personService.getPersonCompleteOutputDto(null, persons);
+        List<PersonCompleteOutputDto> personCompleteList2 =
+                personService.getPersonCompleteOutputDto(null, null);
+        List<PersonCompleteOutputDto> personCompleteList3 =
+                personService.getPersonCompleteOutputDto(OutputType.FULL, null);
+
+        //Then
+        assertThat(personCompleteList1, notNullValue());
+        assertThat(personCompleteList1.size(), equalTo(0));
+        assertThat(personCompleteList2, notNullValue());
+        assertThat(personCompleteList2.size(), equalTo(0));
+        assertThat(personCompleteList3, notNullValue());
+        assertThat(personCompleteList3.size(), equalTo(0));
+    }
+
     @DisplayName("Test for the getPersonCompleteOutputDto when is only Person")
     @Test
     void whenGetPersonCompleteOutputDtoOutputTypeSimpleTest() {
         //Give
         List<PersonOutputDto> persons = List.of(getPersonOutputDto());
 
-        String outputType = "simple";
-
-        List<String> personIds = List.of("1");
-
         //When
-        Mockito.when(teacherRepository.findTeachersByPersonsIds(personIds)).thenReturn(new ArrayList<>());
-        Mockito.when(studentRepository.findStudentsByPersonsIds(personIds)).thenReturn(new ArrayList<>());
-        List<PersonCompleteOutputDto> personCompleteList = personService.getPersonCompleteOutputDto(outputType, persons);
+        List<PersonCompleteOutputDto> personCompleteList = personService.getPersonCompleteOutputDto(OutputType.SIMPLE, persons);
 
         //Then
         assertThat(personCompleteList, notNullValue());
@@ -112,14 +129,12 @@ public class PersonServiceImplTest {
         Teacher teacher = Teacher.builder().idTeacher("2").comments("comentarios").branch(Branch.FULL_STACK)
                 .person(person).students(new ArrayList<>()).build();
 
-        String outputType = "full";
-
         List<String> personIds = List.of("1");
 
         //When
         Mockito.when(teacherRepository.findTeachersByPersonsIds(personIds)).thenReturn(List.of(teacher));
         Mockito.when(studentRepository.findStudentsByPersonsIds(personIds)).thenReturn(new ArrayList<>());
-        List<PersonCompleteOutputDto> personCompleteList = personService.getPersonCompleteOutputDto(outputType, persons);
+        List<PersonCompleteOutputDto> personCompleteList = personService.getPersonCompleteOutputDto(OutputType.FULL, persons);
 
         //Then
         assertThat(personCompleteList, notNullValue());
@@ -147,14 +162,12 @@ public class PersonServiceImplTest {
         Student student = Student.builder().idStudent("aaa").numHoursWeek(20).comments("comentarios").branch(Branch.BACK)
                 .person(person).teacher(teacher).subjects(new HashSet<>()).build();
 
-        String outputType = "full";
-
         List<String> personIds = List.of("1");
 
         //When
         Mockito.when(teacherRepository.findTeachersByPersonsIds(personIds)).thenReturn(new ArrayList<>());
         Mockito.when(studentRepository.findStudentsByPersonsIds(personIds)).thenReturn(List.of(student));
-        List<PersonCompleteOutputDto> personCompleteList = personService.getPersonCompleteOutputDto(outputType, persons);
+        List<PersonCompleteOutputDto> personCompleteList = personService.getPersonCompleteOutputDto(OutputType.FULL, persons);
 
         //Then
         assertThat(personCompleteList, notNullValue());
