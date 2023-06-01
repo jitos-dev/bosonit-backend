@@ -22,5 +22,5 @@ public class PersonCompleteOutputDto {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty(value = "teacher")
-    private TeacherOutputDto teacherOutputDto;
+    private TeacherOutputDto teacher;
 }

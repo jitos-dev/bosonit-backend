@@ -147,11 +147,17 @@ public class PersonServiceImpl implements PersonService {
         personRepository.delete(person);
     }
 
-    private List<PersonCompleteOutputDto> getPersonCompleteOutputDto(String outputType, List<PersonOutputDto> persons) {
-        if (outputType == null || persons == null)
-            return new ArrayList<>();
-
-        if (persons.isEmpty())
+    /**
+     * Este método se encarga de cuando le pasemos una lista PersonOutputDto y el parámetro outputType si es 'full'
+     * comprobar cada una de esas 'person' si es un Teacher o Student y agregarle todos sus datos para devolver un
+     * objeto de tipo PersonCompleteOutputDto
+     *
+     * @param outputType String con los valores full o simple
+     * @param persons    List de PersonOutputDto
+     * @return List de PersonCompleteOutputDto en función del parámetro outputType
+     */
+    public List<PersonCompleteOutputDto> getPersonCompleteOutputDto(String outputType, List<PersonOutputDto> persons) {
+        if (outputType == null || persons == null || persons.isEmpty())
             return new ArrayList<>();
 
         //Lista de salida
@@ -163,6 +169,7 @@ public class PersonServiceImpl implements PersonService {
                 .map(PersonOutputDto::getIdPerson)
                 .toList();
 
+        //TODO ver si puedo quitar el hacer siempre la consulta y hacerla solo cuando outputType sea full
         //Lista de Teachers que contengan el id en la lista de ids de personas
         List<Teacher> teachers = teacherRepository.findTeachersByPersonsIds(personIds);
 
@@ -185,7 +192,7 @@ public class PersonServiceImpl implements PersonService {
                         .filter(stud -> stud.getPerson().getIdPerson().equals(personOutputDto.getIdPerson()))
                         .findFirst();
 
-                teacher.ifPresent(value -> dto.setTeacherOutputDto(value.teacherToTeacherOutputDto()));
+                teacher.ifPresent(value -> dto.setTeacher(value.teacherToTeacherOutputDto()));
 
                 student.ifPresent(value -> dto.setStudent(value.studentToStudentOutputDto()));
             }
