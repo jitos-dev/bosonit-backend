@@ -53,17 +53,17 @@ public class TeacherServiceImpl implements TeacherService {
         //Comprobamos que no esté asociado ya a un Teacher
         Optional<String> teacherId = teacherRepository.findTeacherIdFromIdPerson(person.getIdPerson());
         if (teacherId.isPresent())
-                throw new UnprocessableEntityException("The person's id is already associated with a teacher");
+            throw new UnprocessableEntityException("The person's id is already associated with a teacher");
 
-        //Si esta correcto lo guardamos y lo devolvemos
-        if (isAllFieldsCorrect(teacherInputDto)) {
-            Teacher teacher = new Teacher(teacherInputDto);
-            teacher.setPerson(person);
+        //Si está correcto lo guardamos y lo devolvemos. Si hay algún problema se lanza una excepción
+        checkIsAllFieldsCorrect(teacherInputDto);
 
-            return Optional.of(teacherRepository.save(teacher).teacherToTeacherOutputDto());
-        }
+        Teacher teacher = new Teacher(teacherInputDto);
+        teacher.setPerson(person);
 
-        return Optional.empty();
+        Teacher teacherDb = teacherRepository.save(teacher);
+
+        return Optional.of(teacherDb.teacherToTeacherOutputDto());
     }
 
     @Override
@@ -78,22 +78,23 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public void delete(String id) {
         //no necesito guardar el Teacher, solo que si no lo encuentra que lance una excepcion
-        teacherRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Teacher teacher = teacherRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        teacherRepository.deleteById(id);
+        teacherRepository.deleteById(teacher.getIdTeacher());
     }
 
-    private Boolean isAllFieldsCorrect(TeacherInputDto inputDto) {
+    public void checkIsAllFieldsCorrect(TeacherInputDto inputDto) {
         if (inputDto == null)
             throw new UnprocessableEntityException("The object is null");
 
         if (inputDto.getBranch() == null)
             throw new UnprocessableEntityException("The field branch cannot be null");
-
-        return true;
     }
 
-    private Teacher getTeacherUpdated(TeacherInputDto inputDto, Teacher teacherDb) {
+    public Teacher getTeacherUpdated(TeacherInputDto inputDto, Teacher teacherDb) {
+        if (inputDto == null || teacherDb == null)
+            throw new UnprocessableEntityException("The inputs values cannot be null");
+
         teacherDb.setBranch(inputDto.getBranch() == null ? teacherDb.getBranch() : inputDto.getBranch());
         teacherDb.setComments(inputDto.getComments() == null ? teacherDb.getComments() : inputDto.getComments());
 

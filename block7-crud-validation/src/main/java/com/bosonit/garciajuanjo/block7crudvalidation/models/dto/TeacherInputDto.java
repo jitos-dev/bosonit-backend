@@ -1,15 +1,14 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.models.dto;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.models.Branch;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@ToString
 public class TeacherInputDto {
 
     private String idTeacher;
