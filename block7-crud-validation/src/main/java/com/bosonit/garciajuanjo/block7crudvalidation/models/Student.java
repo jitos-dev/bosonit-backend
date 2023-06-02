@@ -20,6 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
+@ToString
 public class Student {
 
     @Id

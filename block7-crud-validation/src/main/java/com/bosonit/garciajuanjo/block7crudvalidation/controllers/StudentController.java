@@ -1,5 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.models.OutputType;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonCompleteOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentOutputDto;
@@ -30,7 +31,9 @@ public class StudentController {
             @PathVariable String id,
             @RequestParam(required = false, defaultValue = "simple") String outputType) {
 
-        return service.getById(id, outputType).orElseThrow();
+        OutputType output = OutputType.valueOf(outputType.toUpperCase());
+
+        return service.getById(id, output).orElseThrow();
     }
 
     @PostMapping

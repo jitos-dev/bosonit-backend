@@ -8,7 +8,6 @@ import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonInputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
-import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.impl.PersonServiceImpl;
 import org.junit.jupiter.api.Assertions;
