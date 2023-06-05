@@ -11,7 +11,6 @@ import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentReposit
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.TeacherRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.impl.StudentServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,6 +48,7 @@ class StudentServiceImplTest {
     private static Student student;
     private static Person personStudent;
     private static Teacher teacher;
+    private static Subject subject;
 
     @BeforeAll
     static void initValues() {
@@ -95,6 +95,14 @@ class StudentServiceImplTest {
                 .person(personStudent)
                 .teacher(teacher)
                 .subjects(new HashSet<>()).build();
+
+        subject = Subject.builder()
+                .idSubject("1")
+                .comments("comentarios")
+                .initialDate(new Date())
+                .finishDate(new Date())
+                .subjectName(SubjectName.HTML)
+                .students(Set.of(student)).build();
     }
 
     @DisplayName("Test for the getStudentUpdated with null params")
@@ -113,29 +121,6 @@ class StudentServiceImplTest {
                 studentService.checkIsAllFieldsCorrect(inputDto));
     }
 
-    @DisplayName("Test for the getStudentUpdated with valid params")
-    @Test
-    void whenGetStudentUpdated_returnValidStudent() {
-        //Give
-        StudentInputDto studentInputDtoNull = StudentInputDto.builder()
-                .personId("1")
-                .branch(null)
-                .comments(null)
-                .numHoursWeek(null)
-                .teacherId("1").build();
-
-        //When
-        Student studentUpdated = studentService.getStudentUpdated(studentInputDtoNull, student);
-
-        //Then
-        assertThat(studentUpdated, notNullValue());
-        assertThat(studentUpdated.getBranch(), notNullValue());
-        assertThat(studentUpdated.getBranch(), equalTo(Branch.BACK));
-        assertThat(studentUpdated.getComments(), notNullValue());
-        assertThat(studentUpdated.getComments(), equalTo("comentarios"));
-        assertThat(studentUpdated.getNumHoursWeek(), notNullValue());
-        assertThat(studentUpdated.getNumHoursWeek(), equalTo(20));
-    }
 
     @DisplayName("Test for the getById method")
     @Test
@@ -175,9 +160,12 @@ class StudentServiceImplTest {
 
         //Caso1
         assertThrows(EntityNotFoundException.class, ()-> studentService.getById("1", outputType));
+        verify(studentRepository, times(1)).findById("1");
 
         //Caso2
         assertThrows(EntityNotFoundException.class, ()-> studentService.getById("2", outputType));
+        verify(studentRepository, times(1)).findById("2");
+        verify(personRepository, times(1)).findById(student.getPerson().getIdPerson());
 
         //Caso bueno
         personStudent.setIdPerson("3");
@@ -185,59 +173,8 @@ class StudentServiceImplTest {
 
         assertThat(optional, notNullValue());
         assertTrue(optional.isPresent());
-
         verify(studentRepository, times(1)).findById("3");
         verify(personRepository, times(1)).findById("3");
-    }
-
-    @DisplayName("Test for the addSubjects method when throw exception")
-    @Test
-    void whenAddSubjects_throwException() {
-        //Give
-        Subject subject = Subject.builder()
-                .idSubject("1")
-                .comments("comentarios")
-                .initialDate(new Date())
-                .finishDate(new Date())
-                .subjectName(SubjectName.HTML)
-                .students(Set.of(student)).build();
-
-        student.getSubjects().add(subject);
-        teacher.setStudents(List.of(student));
-
-        //When
-        //Caso1: Cuando pase el id 2 retorna vacio para probar el EntityNotFoundException
-        when(studentRepository.findById("2")).thenReturn(Optional.empty());
-
-        //Caso2: Cuando pasa el 3 devuelve un Student y en subjectRepository devuelve 0
-        when(studentRepository.findById("3")).thenReturn(Optional.of(student));
-        when(subjectRepository.countExistingSubjectsByIds(List.of("3"))).thenReturn(0L);
-
-        //El caso bueno cuando introduce el id 4
-        when(studentRepository.findById("4")).thenReturn(Optional.of(student));
-        when(subjectRepository.countExistingSubjectsByIds(List.of("4"))).thenReturn(1L);
-        when(subjectRepository.findAllByIds(List.of("4"))).thenReturn(List.of(subject));
-        when(studentRepository.save(student)).thenReturn((student));
-
-        //Then
-        //Caso1
-        List<String> list2 = List.of("2");
-        assertThrows(EntityNotFoundException.class, () -> studentService.addSubjects(list2, "2"));
-
-        //Caso2
-        List<String> list3 = List.of("3");
-        assertThrows(UnprocessableEntityException.class, () -> studentService.addSubjects(list3, "3"));
-
-        //Caso bueno
-        Optional<StudentOutputDto> optionalStudent = studentService.addSubjects(List.of("4"), "4");
-
-        assertThat(optionalStudent, notNullValue());
-        assertTrue(optionalStudent.isPresent());
-
-        verify(studentRepository, times(1)).findById(("4"));
-        verify(subjectRepository, times(1)).countExistingSubjectsByIds(List.of("4"));
-        verify(subjectRepository, times(1)).findAllByIds(List.of("4"));
-        verify(studentRepository, times(1)).save(student);
     }
 
     @DisplayName("Test for the save method")
@@ -295,22 +232,34 @@ class StudentServiceImplTest {
         //Then
         //Caso 1
         assertThrows(UnprocessableEntityException.class, () -> studentService.save(studentInputDto));
+        verify(personRepository, times(1)).findById("1");
 
         //caso2
         studentInputDto.setPersonId("2");
         assertThrows(UnprocessableEntityException.class, () -> studentService.save(studentInputDto));
+        verify(personRepository, times(1)).findById("2");
+        verify(studentRepository, times(1)).findStudentIdByPersonId("2");
 
         //caso3
         assert person != null;
         person.setIdPerson("3");
         studentInputDto.setPersonId("3");
-        Assertions.assertThrows(UnprocessableEntityException.class, () -> studentService.save(studentInputDto));
+
+        assertThrows(UnprocessableEntityException.class, () -> studentService.save(studentInputDto));
+        verify(personRepository, times(1)).findById("3");
+        verify(studentRepository, times(1)).findStudentIdByPersonId("3");
+        verify(teacherRepository, times(1)).findTeacherIdFromIdPerson("3");
 
         //caso4
         person.setIdPerson("4");
         studentInputDto.setPersonId("4");
         studentInputDto.setTeacherId("4");
+
         assertThrows(UnprocessableEntityException.class, () -> studentService.save(studentInputDto));
+        verify(personRepository, times(1)).findById("4");
+        verify(studentRepository, times(1)).findStudentIdByPersonId("4");
+        verify(teacherRepository, times(1)).findTeacherIdFromIdPerson("4");
+        verify(teacherRepository, times(1)).findById("4");
 
         //Caso5: Caso bueno
         person.setIdPerson("5");
@@ -322,12 +271,81 @@ class StudentServiceImplTest {
 
         assertThat(optional, notNullValue());
         assertTrue(optional.isPresent());
-
         verify(personRepository, times(1)).findById(("5"));
         verify(studentRepository, times(1)).findStudentIdByPersonId("5");
         verify(teacherRepository, times(1)).findTeacherIdFromIdPerson("5");
         verify(teacherRepository, times(1)).findById(studentInputDto.getTeacherId());
         verify(studentRepository, times(1)).save(new Student(studentInputDto));
+    }
+
+    @DisplayName("Test for the addSubjects method")
+    @Test
+    void whenAddSubjects_returnOptionalOfStudentOutputDto() {
+        //Give
+        student.getSubjects().add(subject);
+        teacher.setStudents(List.of(student));
+
+        //When
+        //Caso1: Cuando pase el id 1 retorna vacío para probar el EntityNotFoundException
+        when(studentRepository.findById("1")).thenReturn(Optional.empty());
+
+        //Caso2: Cuando pasa el 2 devuelve un Student y en subjectRepository devuelve 0
+        when(studentRepository.findById("2")).thenReturn(Optional.of(student));
+        when(subjectRepository.countExistingSubjectsByIds(List.of("2"))).thenReturn(0L);
+
+        //El caso bueno cuando introduce el id 3
+        when(studentRepository.findById("3")).thenReturn(Optional.of(student));
+        when(subjectRepository.countExistingSubjectsByIds(List.of("3"))).thenReturn(1L);
+        when(subjectRepository.findAllByIds(List.of("3"))).thenReturn(List.of(subject));
+        when(studentRepository.save(student)).thenReturn((student));
+
+        //Then
+        //Caso1
+        List<String> list2 = List.of("1");
+
+        assertThrows(EntityNotFoundException.class, () -> studentService.addSubjects(list2, "1"));
+        verify(studentRepository, times(1)).findById("1");
+
+        //Caso2
+        List<String> list3 = List.of("2");
+
+        assertThrows(UnprocessableEntityException.class, () -> studentService.addSubjects(list3, "2"));
+        verify(studentRepository, times(1)).findById("2");
+        verify(subjectRepository, times(1)).countExistingSubjectsByIds(List.of("2"));
+
+        //Caso bueno
+        Optional<StudentOutputDto> optionalStudent = studentService.addSubjects(List.of("3"), "3");
+
+        assertThat(optionalStudent, notNullValue());
+        assertTrue(optionalStudent.isPresent());
+        verify(studentRepository, times(1)).findById(("3"));
+        verify(subjectRepository, times(1)).countExistingSubjectsByIds(List.of("3"));
+        verify(subjectRepository, times(1)).findAllByIds(List.of("3"));
+        verify(studentRepository, times(1)).save(student);
+    }
+
+    @DisplayName("Test for the getStudentUpdated with valid params")
+    @Test
+    void whenGetStudentUpdated_returnValidStudent() {
+        //Give
+        StudentInputDto studentInputDtoNull = StudentInputDto.builder()
+                .personId("1")
+                .branch(null)
+                .comments(null)
+                .numHoursWeek(null)
+                .teacherId("1").build();
+
+        //When
+        Student studentUpdated = studentService.getStudentUpdated(studentInputDtoNull, student);
+
+        //Then
+        assertThat(studentUpdated, notNullValue());
+        assertThat(studentUpdated.getBranch(), notNullValue());
+        assertThat(studentUpdated.getBranch(), equalTo(Branch.BACK));
+        assertThat(studentUpdated.getComments(), notNullValue());
+        assertThat(studentUpdated.getComments(), equalTo("comentarios"));
+        assertThat(studentUpdated.getNumHoursWeek(), notNullValue());
+        assertThat(studentUpdated.getNumHoursWeek(), equalTo(20));
     }
 
     public static List<Arguments> argumentsForCheckIsAllFieldsCorrect() {
