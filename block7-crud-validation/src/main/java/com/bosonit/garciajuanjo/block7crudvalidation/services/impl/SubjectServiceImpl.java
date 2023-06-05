@@ -44,6 +44,9 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Optional<SubjectListOutputDto> findByStudentId(String studentId) {
+        if (studentId == null)
+            throw new UnprocessableEntityException("The input field cannot be null");
+
         Student student = studentRepository.findById(studentId)
                         .orElseThrow(EntityNotFoundException::new);
 
@@ -58,6 +61,9 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Optional<SubjectOutputDto> save(SubjectInputDto inputDto) {
+        if (inputDto == null)
+            throw new UnprocessableEntityException("The input field cannot be null");
+
         //si el valor del campo subject_name no es válido
         if (!isValidSubjectName(inputDto.getSubjectName()))
             throw new UnprocessableEntityException("The value of subject name isn't valid");
@@ -70,13 +76,17 @@ public class SubjectServiceImpl implements SubjectService {
         if (inputDto.getInitialDate() == null)
             throw new UnprocessableEntityException("The initial date field cannot be null");
 
-        return Optional.of(subjectRepository
-                .save(new Subject(inputDto))
-                .subjectToSubjectOutputDto());
+        Subject subjectSave = new Subject(inputDto);
+        Subject subjectDb = subjectRepository.save(subjectSave);
+
+        return Optional.of(subjectDb.subjectToSubjectOutputDto());
     }
 
     @Override
     public Optional<SubjectOutputDto> update(String id, SubjectInputDto inputDto) {
+        if (id == null || inputDto == null)
+            throw new UnprocessableEntityException("The input fields cannot be null");
+
         Subject subject = subjectRepository.findById(id)
                 .orElseThrow(() -> new UnprocessableEntityException("The id of the subject doesn't correspond to any subject"));
 
@@ -90,9 +100,9 @@ public class SubjectServiceImpl implements SubjectService {
             throw new UnprocessableEntityException("The subject name already exist in the data base");
 
         Subject subjectUpdated = getStudentSubjectUpdated(subject, inputDto);
+        Subject subjectDb = subjectRepository.save(subjectUpdated);
 
-        return Optional.of(subjectRepository.save(subjectUpdated)
-                .subjectToSubjectOutputDto());
+        return Optional.of(subjectDb.subjectToSubjectOutputDto());
     }
 
     @Transactional
@@ -106,7 +116,10 @@ public class SubjectServiceImpl implements SubjectService {
         subjectRepository.delete(subject);
     }
 
-    private Subject getStudentSubjectUpdated(Subject subject, SubjectInputDto inputDto) {
+    public Subject getStudentSubjectUpdated(Subject subject, SubjectInputDto inputDto) {
+        if (subject == null || inputDto == null)
+            throw new UnprocessableEntityException("The input fields cannot be null");
+
         subject.setSubjectName(SubjectName.valueOf(inputDto.getSubjectName()));
         subject.setComments(inputDto.getComments() == null ? subject.getComments() : inputDto.getComments());
         subject.setFinishDate(inputDto.getFinishDate() == null ? subject.getFinishDate() : inputDto.getFinishDate());

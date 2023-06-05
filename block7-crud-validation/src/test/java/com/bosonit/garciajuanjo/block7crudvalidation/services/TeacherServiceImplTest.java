@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-public class TeacherServiceImplTest {
+class TeacherServiceImplTest {
 
     @Mock
     private TeacherRepository teacherRepository;
@@ -97,7 +97,7 @@ public class TeacherServiceImplTest {
         Mockito.when(studentRepository.findStudentIdByPersonId("4")).thenReturn(Optional.empty());
         Mockito.when(teacherRepository.findTeacherIdFromIdPerson("4")).thenReturn(Optional.empty());
 
-        //La parte de save la tengo que hacer de la siguiente forma porque me da un error de que no es el mismo obejeto
+        //La parte de save la tengo que hacer de la siguiente forma porque me da un error de que no es el mismo objeto
         //el que se guarda que el que se devuelve. La opción del error la dejo comentada
         //Mockito.when(teacherRepository.save(teacherDB)).thenReturn(teacherDB);
         Teacher teacherDB = new Teacher(teacherInputDto);
@@ -120,9 +120,6 @@ public class TeacherServiceImplTest {
         assertThrows(UnprocessableEntityException.class, ()-> teacherService.save(teacherInputDto));
 
         //Caso bueno
-       /* teacherInputDto.setPersonId("4");
-        personTeacher.setIdPerson("4");*/
-
         teacher.getPerson().setIdPerson("4");
         Optional<TeacherOutputDto> optional = teacherService.save(teacher.teacherToTeacherInputDto());
 
