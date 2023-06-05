@@ -27,8 +27,8 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PersonServiceImplTest {
@@ -75,23 +75,25 @@ class PersonServiceImplTest {
                 null);
     }
 
-
-
-    @DisplayName("Test fot the delete method when throw exception")
+    @DisplayName("Test for the getAll method")
     @Test
-    void whenMethodDeleteThrowException() {
+    void whenGetAll_returnListPersonCompleteOutputDto() {
         //When
-        Mockito.when(personRepository.findById("1")).thenThrow(EntityNotFoundException.class);
+        Mockito.when(personRepository.findAll()).thenReturn(List.of(new Person(personInputDto)));
 
         //Then
-        assertThrows(EntityNotFoundException.class, () -> {
-            personRepository.findById("1");
-        });
+        List<PersonCompleteOutputDto> list = personService.getAll();
+
+        assertThat(list, notNullValue());
+        assertThat(list.size(), equalTo(1));
+        assertThat(list.get(0).getTeacher(), nullValue());
+        assertThat(list.get(0).getTeacher(), nullValue());
+        verify(personRepository, times(1)).findAll();
     }
 
-    @DisplayName("Test fot the delete method when is teacher throw exception")
+    @DisplayName("Test fo the delete method")
     @Test
-    void whenMethodDeleteTeacherHasStudentsThrowException() {
+    void whenDelete_void() {
         //Give
         Person person = Person.builder().idPerson("1").user("usuario1").password("123456").name("juanjo")
                 .surname("garcia").companyEmail("bosonit@bosonit.com").personalEmail("jitos86@gmail.com")
@@ -102,28 +104,24 @@ class PersonServiceImplTest {
                 .person(new Person(personInputDto)).students(List.of(new Student())).build();
 
         //When
-        Mockito.when(personRepository.findById("1")).thenReturn(Optional.of(person));
+        //Caso1: Cuando no encuentra la persona por el nombre
+        Mockito.when(personRepository.findById("1")).thenReturn(Optional.empty());
+
+        //Caso2: Cuando el que quiere borrar es un profesor y tine estudiantes asociados
+        Mockito.when(personRepository.findById("2")).thenReturn(Optional.of(person));
         Mockito.when(studentRepository.findByPersonId(person.getIdPerson())).thenReturn(Optional.empty());
         Mockito.when(teacherRepository.findTeacherFromPersonId(person.getIdPerson())).thenReturn(Optional.of(teacher));
 
         //Then
-        assertThrows(UnprocessableEntityException.class, () -> {
-            personService.delete("1");
-        });
-    }
+        //Caso1
+        assertThrows(EntityNotFoundException.class, () -> personService.delete("1"));
+        verify(personRepository, times(1)).findById("1");
 
-    @DisplayName("Test for the getAll method without params")
-    @Test
-    void whenMethodGetAllWithoutParam() {
-        //When
-        Mockito.when(personRepository.findAll()).thenReturn(List.of(new Person(personInputDto)));
-        List<PersonCompleteOutputDto> list = personService.getAll();
-
-        //Then
-        assertThat(list, notNullValue());
-        assertThat(list.size(), equalTo(1));
-        assertThat(list.get(0).getTeacher(), nullValue());
-        assertThat(list.get(0).getTeacher(), nullValue());
+        //Caso2
+        assertThrows(UnprocessableEntityException.class, () -> personService.delete("2"));
+        verify(personRepository, times(1)).findById("2");
+        verify(studentRepository, times(1)).findByPersonId(person.getIdPerson());
+        verify(teacherRepository, times(1)).findTeacherFromPersonId(person.getIdPerson());
     }
 
     @DisplayName("Test for the getPersonCompleteOutputDto when the params are null")
@@ -165,6 +163,43 @@ class PersonServiceImplTest {
         assertThat(personCompleteList.get(0).getStudent(), nullValue());
     }
 
+    @DisplayName("Test for the getPersonCompleteOutputDto when is Student")
+    @Test
+    void whenGetPersonCompleteOutputDtoOutputTypeFull_whenIsStudent() {
+        //Give
+        List<PersonOutputDto> persons = List.of(getPersonOutputDto());
+
+        Person person = Person.builder().idPerson("1").user("usuario1").password("123456").name("juanjo")
+                .surname("garcia").companyEmail("bosonit@bosonit.com").personalEmail("jitos86@gmail.com")
+                .city("Sabiote").active(true).createdDate(new Date()).imageUrl("http://localhost:8080/imagen1")
+                .terminationDate(new Date()).build();
+
+        Teacher teacher = Teacher.builder().idTeacher("2").comments("comentarios").branch(Branch.FULL_STACK)
+                .person(new Person(personInputDto)).students(new ArrayList<>()).build();
+
+        Student student = Student.builder().idStudent("aaa").numHoursWeek(20).comments("comentarios").branch(Branch.BACK)
+                .person(person).teacher(teacher).subjects(new HashSet<>()).build();
+
+        List<String> personIds = List.of("1");
+
+        //When
+        Mockito.when(teacherRepository.findTeachersByPersonsIds(personIds)).thenReturn(new ArrayList<>());
+        Mockito.when(studentRepository.findStudentsByPersonsIds(personIds)).thenReturn(List.of(student));
+
+        //Then
+        List<PersonCompleteOutputDto> personCompleteList = personService.getPersonCompleteOutputDto(OutputType.FULL, persons);
+
+        assertThat(personCompleteList, notNullValue());
+        assertThat(personCompleteList.size(), equalTo(1));
+        assertThat(personCompleteList.get(0).getStudent(), notNullValue());
+        assertThat(personCompleteList.get(0).getTeacher(), nullValue());
+        assertThat(personCompleteList.get(0).getStudent().getPerson().getIdPerson(),
+                equalTo(personCompleteList.get(0).getPerson().getIdPerson()));
+
+        verify(teacherRepository, times(1)).findTeachersByPersonsIds(personIds);
+        verify(studentRepository, times(1)).findStudentsByPersonsIds(personIds);
+    }
+
     @DisplayName("Test for the getPersonCompleteOutputDto when is Teacher")
     @Test
     void whenGetPersonCompleteOutputDtoOutputTypeFull_whenIsTeacher() {
@@ -195,46 +230,6 @@ class PersonServiceImplTest {
                 equalTo(personCompleteList.get(0).getPerson().getIdPerson()));
     }
 
-    @DisplayName("Test for the getPersonCompleteOutputDto when is Student")
-    @Test
-    void whenGetPersonCompleteOutputDtoOutputTypeFull_whenIsStudent() {
-        //Give
-        List<PersonOutputDto> persons = List.of(getPersonOutputDto());
-
-        Person person = Person.builder().idPerson("1").user("usuario1").password("123456").name("juanjo")
-                .surname("garcia").companyEmail("bosonit@bosonit.com").personalEmail("jitos86@gmail.com")
-                .city("Sabiote").active(true).createdDate(new Date()).imageUrl("http://localhost:8080/imagen1")
-                .terminationDate(new Date()).build();
-
-        Teacher teacher = Teacher.builder().idTeacher("2").comments("comentarios").branch(Branch.FULL_STACK)
-                .person(new Person(personInputDto)).students(new ArrayList<>()).build();
-
-        Student student = Student.builder().idStudent("aaa").numHoursWeek(20).comments("comentarios").branch(Branch.BACK)
-                .person(person).teacher(teacher).subjects(new HashSet<>()).build();
-
-        List<String> personIds = List.of("1");
-
-        //When
-        Mockito.when(teacherRepository.findTeachersByPersonsIds(personIds)).thenReturn(new ArrayList<>());
-        Mockito.when(studentRepository.findStudentsByPersonsIds(personIds)).thenReturn(List.of(student));
-        List<PersonCompleteOutputDto> personCompleteList = personService.getPersonCompleteOutputDto(OutputType.FULL, persons);
-
-        //Then
-        assertThat(personCompleteList, notNullValue());
-        assertThat(personCompleteList.size(), equalTo(1));
-        assertThat(personCompleteList.get(0).getStudent(), notNullValue());
-        assertThat(personCompleteList.get(0).getTeacher(), nullValue());
-        assertThat(personCompleteList.get(0).getStudent().getPerson().getIdPerson(),
-                equalTo(personCompleteList.get(0).getPerson().getIdPerson()));
-    }
-
-    private PersonOutputDto getPersonOutputDto() {
-        return PersonOutputDto.builder().idPerson("1").user("usuario1").password("123456").name("juanjo")
-                .surname("garcia").companyEmail("bosonit@bosonit.com").personalEmail("jitos86@gmail.com")
-                .city("Sabiote").active(true).createdDate(new Date()).imageUrl("http://localhost:8080/imagen1")
-                .terminationDate(new Date()).build();
-    }
-
     @DisplayName("Test for the isAllFieldsCorrect method")
     @ParameterizedTest(name = "Test #{index}: with PersonInputDto, correct value {1}")
     @MethodSource("argumentsForTestingIsAllFieldsCorrectMethod")
@@ -248,15 +243,19 @@ class PersonServiceImplTest {
             });
     }
 
-
-    @DisplayName("Test to check that inputs fields are valid in personUpdated method")
-    @ParameterizedTest(name = "Test #{index}: PersonInput: {0}, Person: {1}")
-    @MethodSource("argumentsForTestingInputsFieldAreValid")
-    void checkThatInputsFieldsAreValidInPersonUpdatedTest(PersonInputDto inputDto, Person person) {
-        Assertions.assertThrows(UnprocessableEntityException.class, () -> {
-            personService.checkInputsAreValid(inputDto, person);
-        });
-
+    private static List<Arguments> argumentsForTestingIsAllFieldsCorrectMethod() {
+        return List.of(
+                Arguments.of(getInputDtoUserNull(), false),
+                Arguments.of(getInputDtoUserLessThanSix(), false),
+                Arguments.of(getInputDtoUserMoreThanTen(), false),
+                Arguments.of(getInputDtoPasswordNull(), false),
+                Arguments.of(getInputDtoCompanyEmailNull(), false),
+                Arguments.of(getInputDtoPersonalEmailNull(), false),
+                Arguments.of(getInputDtoCityNull(), false),
+                Arguments.of(getInputDtoActiveNull(), false),
+                Arguments.of(getInputDtoCreateDateNull(), false),
+                Arguments.of(personInputDto, true)
+        );
     }
 
 
@@ -282,6 +281,7 @@ class PersonServiceImplTest {
         Person personUpdated = personService.getPersonUpdated(nullInputDto, new Person(personInputDto));
 
         //Then
+        assertThat(personUpdated, notNullValue());
         assertThat(personUpdated.getName(), notNullValue());
         assertThat(personUpdated.getName(), equalTo("juanjo"));
         assertThat(personUpdated.getUser(), equalTo("usuario1"));
@@ -303,6 +303,16 @@ class PersonServiceImplTest {
         assertThat(personUpdated.getImageUrl(), equalTo("http://localhost:8080/imagen1"));
     }
 
+    @DisplayName("Test to check that inputs fields are valid in personUpdated method")
+    @ParameterizedTest(name = "Test #{index}: PersonInput: {0}, Person: {1}")
+    @MethodSource("argumentsForTestingInputsFieldAreValid")
+    void checkThatInputsFieldsAreValidInPersonUpdatedTest(PersonInputDto inputDto, Person person) {
+        Assertions.assertThrows(UnprocessableEntityException.class, () -> {
+            personService.checkInputsAreValid(inputDto, person);
+        });
+
+    }
+
     private static List<Arguments> argumentsForTestingInputsFieldAreValid() {
         return List.of(
                 Arguments.of(null, null),
@@ -314,19 +324,11 @@ class PersonServiceImplTest {
         );
     }
 
-    private static List<Arguments> argumentsForTestingIsAllFieldsCorrectMethod() {
-        return List.of(
-                Arguments.of(getInputDtoUserNull(), false),
-                Arguments.of(getInputDtoUserLessThanSix(), false),
-                Arguments.of(getInputDtoUserMoreThanTen(), false),
-                Arguments.of(getInputDtoPasswordNull(), false),
-                Arguments.of(getInputDtoCompanyEmailNull(), false),
-                Arguments.of(getInputDtoPersonalEmailNull(), false),
-                Arguments.of(getInputDtoCityNull(), false),
-                Arguments.of(getInputDtoActiveNull(), false),
-                Arguments.of(getInputDtoCreateDateNull(), false),
-                Arguments.of(personInputDto, true)
-        );
+    private PersonOutputDto getPersonOutputDto() {
+        return PersonOutputDto.builder().idPerson("1").user("usuario1").password("123456").name("juanjo")
+                .surname("garcia").companyEmail("bosonit@bosonit.com").personalEmail("jitos86@gmail.com")
+                .city("Sabiote").active(true).createdDate(new Date()).imageUrl("http://localhost:8080/imagen1")
+                .terminationDate(new Date()).build();
     }
 
     private static PersonInputDto getInputDtoCreateDateNull() {
