@@ -27,7 +27,7 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TeacherServiceImplTest {
@@ -108,16 +108,24 @@ class TeacherServiceImplTest {
         //Then
         //Caso1
         assertThrows(UnprocessableEntityException.class, ()-> teacherService.save(teacherInputDto));
+        verify(personRepository, times(1)).findById("1");
 
         //Caso2
         teacherInputDto.setPersonId("2");
         personTeacher.setIdPerson("2");
+
         assertThrows(UnprocessableEntityException.class, ()-> teacherService.save(teacherInputDto));
+        verify(personRepository, times(1)).findById("2");
+        verify(studentRepository, times(1)).findStudentIdByPersonId("2");
 
         //Caso3
         teacherInputDto.setPersonId("3");
         personTeacher.setIdPerson("3");
+
         assertThrows(UnprocessableEntityException.class, ()-> teacherService.save(teacherInputDto));
+        verify(personRepository, times(1)).findById("3");
+        verify(studentRepository, times(1)).findStudentIdByPersonId("3");
+        verify(teacherRepository, times(1)).findTeacherIdFromIdPerson("3");
 
         //Caso bueno
         teacher.getPerson().setIdPerson("4");
@@ -125,6 +133,9 @@ class TeacherServiceImplTest {
 
         assertThat(optional, notNullValue());
         assertTrue(optional.isPresent());
+        verify(personRepository, times(1)).findById("4");
+        verify(studentRepository, times(1)).findStudentIdByPersonId("4");
+        verify(teacherRepository, times(1)).findTeacherIdFromIdPerson("4");
     }
 
     @DisplayName("Test for the getTeacherUpdated method")
