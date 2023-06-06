@@ -19,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 
 import static com.bosonit.garciajuanjo.block7crudvalidation.utils.Constants.URL_MOCK_DATA;
@@ -58,8 +59,7 @@ class PersonControllerTest {
     void whenGetAllPersons_returnListOfPersonCompleteOutputDto() {
         //When
         RequestEntity<Void> request = RequestEntity.get(url).accept(MediaType.APPLICATION_JSON).build();
-        ParameterizedTypeReference<List<PersonCompleteOutputDto>> responseType = new ParameterizedTypeReference<>() {
-        };
+        ParameterizedTypeReference<List<PersonCompleteOutputDto>> responseType = new ParameterizedTypeReference<>() {};
         ResponseEntity<List<PersonCompleteOutputDto>> responseEntity = restTemplate.exchange(request, responseType);
 
         //Then
@@ -322,17 +322,14 @@ class PersonControllerTest {
         String deleteUrl = url + "/" + person.getIdPerson();
 
         //When
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<PersonInputDto> request = new HttpEntity<>(personInputDto, headers);
-        ResponseEntity<PersonOutputDto> responseEntity = restTemplate.exchange(deleteUrl, HttpMethod.DELETE, request, PersonOutputDto.class);
-
-        Optional<Person> personDelete = personRepository.findById(person.getIdPerson());
+        RequestEntity<Void> request = RequestEntity.delete(URI.create(deleteUrl)).build();
+        ResponseEntity<Void> responseEntity = restTemplate.exchange(request, Void.class);
 
         //Then
         assertThat(responseEntity, notNullValue());
         assertThat(responseEntity.getStatusCode().value(), equalTo(200));
+
+        Optional<Person> personDelete = personRepository.findById(person.getIdPerson());
 
         assertFalse(personDelete.isPresent());
     }

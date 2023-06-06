@@ -80,6 +80,11 @@ public class TeacherServiceImpl implements TeacherService {
         //no necesito guardar el Teacher, solo que si no lo encuentra que lance una excepcion
         Teacher teacher = teacherRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
+        //Borramos primero la persona asociada a él
+        if (teacher.getPerson() != null) {
+            personRepository.delete(teacher.getPerson());
+        }
+
         teacherRepository.deleteById(teacher.getIdTeacher());
     }
 
