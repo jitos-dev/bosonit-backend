@@ -95,9 +95,11 @@ public class SubjectServiceImpl implements SubjectService {
             throw new UnprocessableEntityException("The value of subject name isn't valid");
 
         //si quiere modificar el SubjectName pero ya existe en la base de datos
-        Optional<Subject> subjectBySubjectName = subjectRepository.findSubjectBySubjectName(subject.getSubjectName().name());
-        if (subjectBySubjectName.isPresent())
-            throw new UnprocessableEntityException("The subject name already exist in the data base");
+        if (inputDto.getSubjectName() != null) {
+            Optional<Subject> subjectBySubjectName = subjectRepository.findSubjectBySubjectName(inputDto.getSubjectName());
+            if (subjectBySubjectName.isPresent())
+                throw new UnprocessableEntityException("The subject name already exist in the data base");
+        }
 
         Subject subjectUpdated = getStudentSubjectUpdated(subject, inputDto);
         Subject subjectDb = subjectRepository.save(subjectUpdated);

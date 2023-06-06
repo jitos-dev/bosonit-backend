@@ -1,6 +1,7 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.exceptions;
 
 import com.bosonit.garciajuanjo.block7crudvalidation.utils.CustomError;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -8,8 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.logging.Logger;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -29,6 +32,7 @@ public class GlobalExceptionHandler {
         error.setHttpCode(HttpStatus.NO_CONTENT.value());
         error.setMessage(exception.getMessage());
 
+        log.info("Exception unprocesable: ", exception);
         return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 

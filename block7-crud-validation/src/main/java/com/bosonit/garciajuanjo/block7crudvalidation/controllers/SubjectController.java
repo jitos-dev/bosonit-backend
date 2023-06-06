@@ -31,13 +31,14 @@ public class SubjectController {
     }
 
     @GetMapping("student/{userId}")
-    public SubjectListOutputDto getByUserId(@PathVariable String userId) {
+    @ResponseStatus(HttpStatus.OK)
+    public SubjectListOutputDto getByStudentId(@PathVariable String userId) {
         return service.findByStudentId(userId).orElseThrow();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SubjectOutputDto addStudentSubject(@RequestBody SubjectInputDto subjectInputDto) {
+    public SubjectOutputDto addSubject(@RequestBody SubjectInputDto subjectInputDto) {
         Optional<SubjectOutputDto> optional = service.save(subjectInputDto);
 
         return optional.orElseThrow();
