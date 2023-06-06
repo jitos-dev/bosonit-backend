@@ -33,8 +33,6 @@ class TeacherControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
     @Autowired
-    private ResourceLoader resourceLoader;
-    @Autowired
     private TeacherRepository teacherRepository;
     @Autowired
     private PersonRepository personRepository;
@@ -102,6 +100,7 @@ class TeacherControllerTest {
         url = "http://localhost:8080/teacher";
     }
 
+    @Order(1)
     @DisplayName("Test for the getAll method")
     @Test
     void whenGetAll_returnListOfTeacherOutputDto() {
@@ -118,6 +117,7 @@ class TeacherControllerTest {
         assertThat(Objects.requireNonNull(responseEntity.getBody()).size(), equalTo(2));
     }
 
+    @Order(2)
     @DisplayName("Test for the getById method")
     @Test
     void whenGetById_returnTeacherOutputDto() {
@@ -143,6 +143,7 @@ class TeacherControllerTest {
         assertThat(teacherOutputDto.getIdTeacher(), equalTo(teacher.getIdTeacher()));
     }
 
+    @Order(3)
     @DisplayName("Test for the addTeacher method")
     @Test
     void whenAddTeacher_returnTeacherOutputDto() {
@@ -186,6 +187,7 @@ class TeacherControllerTest {
         assertThat(teacherOutputDto.getPerson().getIdPerson(), equalTo(personTeacherDB.getIdPerson()));
     }
 
+    @Order(4)
     @DisplayName("Test for the update method")
     @Test
     void whenUpdate_returnTeacherOutputDto(){
@@ -216,6 +218,7 @@ class TeacherControllerTest {
         assertThat(teacherOutputDto.getBranch(), equalTo(Branch.FRONT));
     }
 
+    @Order(5)
     @DisplayName("Test for the delete method")
     @Test
     void whenDelete_returnVoid(){

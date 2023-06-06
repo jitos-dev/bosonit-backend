@@ -44,7 +44,7 @@ public class Student {
     private Person person;
 
     @ManyToOne
-    @JoinColumn(name = "teacher_id", unique = true)
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
     @ManyToMany
