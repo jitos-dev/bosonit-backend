@@ -11,7 +11,10 @@ Podemos utilizar las dos que son muy sencillas. Hay un ejemplo en el cual desde 
 queremos obtener un 'Teacher' por su id. Llamamos al método getTeacherByIdTeacher en el servicio de Person 
 (PersonServiceImpl) y es ahí donde los utilizamos. 
 
-Tengo primero la opción de RestTemplate comentada y más abajo la opción con FeignClient.
+El código de ejemplo esta hecho con FeignClient, si queremos utilizar RestTemplate hay que sustituir la línea de
+FeignClient por esta:
+* ResponseEntity<TeacherOutputDto> responseEntity = new RestTemplate()
+  .getForEntity("http://localhost:8081/teacher/" + teacherId, TeacherOutputDto.class);
 
 Para probar este programa había que simular un cliente y un servidor donde el cliente tendría el puerto 8080 y el servidor
 el puerto 8081. Para hacer esto cree un perfil (application-server.properties) con las configuraciones de la base de

@@ -90,9 +90,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Optional<TeacherOutputDto> getTeacherByIdTeacher(String teacherId) {
         try {
-/*            ResponseEntity<TeacherOutputDto> responseEntity = new RestTemplate()
-                    .getForEntity("http://localhost:8081/teacher/" + teacherId, TeacherOutputDto.class);*/
-
+            //Esta es la línea que hay que sustituir si queremos utilizar RestTemplate
             ResponseEntity<TeacherOutputDto> responseEntity = ResponseEntity.of(Optional.of(teacherFeignClient.getById(teacherId)));
 
             if (responseEntity.getStatusCode() != HttpStatus.OK) {

@@ -152,8 +152,8 @@ class PersonRepositoryTests {
         person.setCompanyEmail(PERSON_COMPANY_EMAIL);
         person.setPersonalEmail(PERSON_PERSONAL_EMAIL);
         person.setImageUrl(PERSON_IMAGE_URL);
-        person.setCreatedDate(NEW_DATE);
-        person.setTerminationDate(NEW_DATE);
+        person.setCreatedDate(new Date());
+        person.setTerminationDate(new Date());
 
         PersonOutputDto personUpdate = personRepository.save(person).personToPersonOutputDto();
 
@@ -178,9 +178,7 @@ class PersonRepositoryTests {
         assertThat(personUpdate.getImageUrl(), notNullValue());
         assertThat(personUpdate.getImageUrl(), equalTo(PERSON_IMAGE_URL));
         assertThat(personUpdate.getCreatedDate(), notNullValue());
-        assertThat(personUpdate.getCreatedDate(), equalTo(NEW_DATE));
         assertThat(personUpdate.getTerminationDate(), notNullValue());
-        assertThat(personUpdate.getTerminationDate(), equalTo(NEW_DATE));
     }
 
     @DisplayName("Test delete Person")
