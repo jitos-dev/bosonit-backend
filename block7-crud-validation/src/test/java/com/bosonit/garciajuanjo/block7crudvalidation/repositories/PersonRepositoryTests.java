@@ -9,8 +9,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,8 +33,8 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  * @author Juan José García
  */
-@DataJpaTest
-@Profile("test")
+@DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = PersonRepository.class))
+@ActiveProfiles("test")
 class PersonRepositoryTests {
     @Autowired
     private PersonRepository personRepository;

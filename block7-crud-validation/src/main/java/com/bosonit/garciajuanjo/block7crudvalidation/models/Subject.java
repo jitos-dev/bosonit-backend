@@ -40,7 +40,7 @@ public class Subject {
 
     @Enumerated(EnumType.STRING)
     @EqualsAndHashCode.Include
-    @Column(name = "subject_name", unique = true, nullable = false)
+    @Column(name = "subject_name", nullable = false)
     private SubjectName subjectName;
 
     @ManyToMany(mappedBy = "subjects")

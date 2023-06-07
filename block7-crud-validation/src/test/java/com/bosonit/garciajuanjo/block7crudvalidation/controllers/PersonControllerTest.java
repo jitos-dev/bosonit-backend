@@ -47,6 +47,9 @@ class PersonControllerTest {
 
     @BeforeAll
     void initValues() throws IOException {
+        //Primero limpio si tengo registros en la base de datos
+        personRepository.deleteAll();
+
         mockData();
         url = "http://localhost:8080/person";
 

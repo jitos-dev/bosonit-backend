@@ -45,6 +45,9 @@ class SubjectControllerTest {
 
     @BeforeAll
     void initValues(){
+        //Primero limpio si hay algo en la base de datos
+        subjectRepository.deleteAll();
+
         Subject subject1 = Subject.builder()
                 .idSubject(null)
                 .comments("comentario subject 1")

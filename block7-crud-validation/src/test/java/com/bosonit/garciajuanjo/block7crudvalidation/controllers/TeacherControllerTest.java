@@ -42,6 +42,10 @@ class TeacherControllerTest {
 
     @BeforeAll
     void initValues() {
+        //Limpiamos primero todos los datos
+        teacherRepository.deleteAll();
+        personRepository.deleteAll();
+
         Person person1 = Person.builder()
                 .idPerson(null)
                 .user("usuario1")
