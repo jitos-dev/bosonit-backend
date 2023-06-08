@@ -1,4 +1,4 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.entities.dto;
+package com.bosonit.garciajuanjo.block7crudvalidation.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,5 +22,5 @@ public class PersonCompleteOutputDto {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty(value = "teacher")
-    private TeacherOutputDto teacherOutputDto;
+    private TeacherOutputDto teacher;
 }

@@ -1,4 +1,4 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.entities.dto;
+package com.bosonit.garciajuanjo.block7crudvalidation.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,27 +10,26 @@ import java.util.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class PersonOutputDto {
+@NoArgsConstructor
+public class PersonCodepenInputDto {
 
-    @JsonProperty(value = "id_person")
     private String idPerson;
-    @JsonProperty(value = "user")
+    @JsonProperty("usuario")
     private String user;
     private String password;
     private String name;
     private String surname;
-    @JsonProperty(value = "company_email")
+    @JsonProperty("company_email")
     private String companyEmail;
-    @JsonProperty(value = "personal_email")
+    @JsonProperty("personal_email")
     private String personalEmail;
     private String city;
     private Boolean active;
-    @JsonProperty(value = "created_date")
+    @JsonProperty("created_date")
     private Date createdDate;
-    @JsonProperty(value = "image_url")
+    @JsonProperty("imagen_url")
     private String imageUrl;
-    @JsonProperty(value = "termination_date")
+    @JsonProperty("termination_date")
     private Date terminationDate;
 }

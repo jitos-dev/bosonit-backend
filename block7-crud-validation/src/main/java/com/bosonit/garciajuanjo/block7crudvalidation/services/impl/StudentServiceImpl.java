@@ -1,12 +1,11 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.services.impl;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Person;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Student;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Subject;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.Teacher;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.*;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
 import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.UnprocessableEntityException;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.*;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonCompleteOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.StudentRepository;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.SubjectRepository;
@@ -16,7 +15,6 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +36,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Optional<PersonCompleteOutputDto> getById(String id, String outputType) {
+    public Optional<PersonCompleteOutputDto> getById(String id, OutputType outputType) {
+        if (id == null || outputType == null)
+            throw new UnprocessableEntityException("The input values cannot be null");
+
         Student student = studentRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -47,7 +48,7 @@ public class StudentServiceImpl implements StudentService {
         outputDto.setStudent(student.studentToStudentOutputDto());
 
         //si outputType es FULL
-        if (outputType.equalsIgnoreCase("full")) {
+        if (outputType == OutputType.FULL) {
             Person person = personRepository.findById(student.getPerson().getIdPerson())
                     .orElseThrow(EntityNotFoundException::new);
 
@@ -61,35 +62,33 @@ public class StudentServiceImpl implements StudentService {
     public Optional<StudentOutputDto> save(StudentInputDto studentInputDto) {
         //Comprobamos que el idPerson corresponde con algun Person
         Person person = personRepository.findById(studentInputDto.getPersonId())
-                .orElseThrow(() -> new UnprocessableEntityException("The id of the person doesn't correspond to any user"));
+                .orElseThrow(()-> new UnprocessableEntityException("The id of the person doesn't correspond to any user"));
 
         //Comprobamos que no sea ya un Student
         Optional<String> studentId = studentRepository.findStudentIdByPersonId(person.getIdPerson());
         if (studentId.isPresent())
-                throw new UnprocessableEntityException("The person's id is already associated with a student");
+            throw new UnprocessableEntityException("The person's id is already associated with a student");
 
         //Comprobamos que no sea ya un Teacher
         Optional<String> teacherId = teacherRepository.findTeacherIdFromIdPerson(studentInputDto.getPersonId());
         if (teacherId.isPresent())
-                throw new UnprocessableEntityException("The person's id is already associated with a teacher");
+            throw new UnprocessableEntityException("The person's id is already associated with a teacher");
 
         //Comprobamos que el teacherId existe en la base de datos asociado a algún Teacher
         Teacher teacher = teacherRepository.findById(studentInputDto.getTeacherId())
                 .orElseThrow(() -> new UnprocessableEntityException("The id of the teacher doesn't correspond any record"));
 
-        if (isAllFieldsCorrect(studentInputDto)) {
-            Student student = new Student(studentInputDto);
-            student.setPerson(person);
-            student.setTeacher(teacher);
+        // if any field is not correct throw an exception
+        checkIsAllFieldsCorrect(studentInputDto);
 
-            return Optional.of(studentRepository
-                    .save(student)
-                    .studentToStudentOutputDto());
-        }
+        Student student = new Student(studentInputDto);
+        student.setPerson(person);
+        student.setTeacher(teacher);
 
-        return Optional.empty();
+        Student studentDB = studentRepository.save(student);
+
+        return Optional.of(studentDB.studentToStudentOutputDto());
     }
-
 
 
     @Override
@@ -146,8 +145,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-
-    private Boolean isAllFieldsCorrect(StudentInputDto dto) {
+    public void checkIsAllFieldsCorrect(StudentInputDto dto) {
         if (dto == null)
             throw new UnprocessableEntityException("The object is null");
 
@@ -156,11 +154,12 @@ public class StudentServiceImpl implements StudentService {
 
         if (dto.getBranch() == null)
             throw new UnprocessableEntityException("The field branch cannot be null");
-
-        return true;
     }
 
-    private Student getStudentUpdated(StudentInputDto inputDto, Student studentDb) {
+    public Student getStudentUpdated(StudentInputDto inputDto, Student studentDb) {
+        if (inputDto == null || studentDb == null)
+            throw new UnprocessableEntityException("The input values cannot be null");
+
         studentDb.setBranch(inputDto.getBranch() == null ? studentDb.getBranch() : inputDto.getBranch());
         studentDb.setComments(inputDto.getComments() == null ? studentDb.getComments() : inputDto.getComments());
         studentDb.setNumHoursWeek(inputDto.getNumHoursWeek() == null ? studentDb.getNumHoursWeek() : inputDto.getNumHoursWeek());

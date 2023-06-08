@@ -1,9 +1,9 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.entities;
+package com.bosonit.garciajuanjo.block7crudvalidation.models;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectSimpleOutputDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -20,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
 public class Subject {
 
     @Id
@@ -39,7 +40,7 @@ public class Subject {
 
     @Enumerated(EnumType.STRING)
     @EqualsAndHashCode.Include
-    @Column(name = "subject_name", unique = true, nullable = false)
+    @Column(name = "subject_name", nullable = false)
     private SubjectName subjectName;
 
     @ManyToMany(mappedBy = "subjects")

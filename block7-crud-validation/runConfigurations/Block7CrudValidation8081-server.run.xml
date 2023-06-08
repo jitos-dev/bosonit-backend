@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Block7CrudValidation8081-server" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <envs>
+      <env name="spring.profiles.active" value="server" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.bosonit.garciajuanjo.block7crudvalidation.Block7CrudValidationApplication" />
+    <module name="block7-crud-validation" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

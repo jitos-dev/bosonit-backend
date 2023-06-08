@@ -1,6 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.client;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherOutputDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

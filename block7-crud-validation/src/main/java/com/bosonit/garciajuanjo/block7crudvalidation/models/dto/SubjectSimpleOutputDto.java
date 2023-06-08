@@ -1,6 +1,6 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.entities.dto;
+package com.bosonit.garciajuanjo.block7crudvalidation.models.dto;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.SubjectName;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.SubjectName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

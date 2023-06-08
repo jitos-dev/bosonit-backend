@@ -1,9 +1,9 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.entities;
+package com.bosonit.garciajuanjo.block7crudvalidation.models;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSimpleOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectSimpleOutputDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -19,6 +19,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
+@ToString
 public class Student {
 
     @Id
@@ -42,7 +44,7 @@ public class Student {
     private Person person;
 
     @ManyToOne
-    @JoinColumn(name = "teacher_id", unique = true)
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
     @ManyToMany

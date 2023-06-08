@@ -1,35 +1,34 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.entities.dto;
+package com.bosonit.garciajuanjo.block7crudvalidation.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class PersonCodepenInputDto {
+@AllArgsConstructor
+@Builder
+public class PersonOutputDto {
 
+    @JsonProperty(value = "id_person")
     private String idPerson;
-    @JsonProperty("usuario")
+    @JsonProperty(value = "user")
     private String user;
     private String password;
     private String name;
     private String surname;
-    @JsonProperty("company_email")
+    @JsonProperty(value = "company_email")
     private String companyEmail;
-    @JsonProperty("personal_email")
+    @JsonProperty(value = "personal_email")
     private String personalEmail;
     private String city;
     private Boolean active;
-    @JsonProperty("created_date")
+    @JsonProperty(value = "created_date")
     private Date createdDate;
-    @JsonProperty("imagen_url")
+    @JsonProperty(value = "image_url")
     private String imageUrl;
-    @JsonProperty("termination_date")
+    @JsonProperty(value = "termination_date")
     private Date terminationDate;
 }

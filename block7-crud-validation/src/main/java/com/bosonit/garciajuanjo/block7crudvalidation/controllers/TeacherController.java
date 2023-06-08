@@ -1,7 +1,8 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.exceptions.EntityNotFoundException;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class TeacherController {
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public TeacherOutputDto getById(@PathVariable String id) {
-        return service.findById(id).orElseThrow();
+        return service.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @PostMapping
@@ -44,7 +45,7 @@ public class TeacherController {
     }
 
     @DeleteMapping("{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable String id) {
         service.delete(id);
     }

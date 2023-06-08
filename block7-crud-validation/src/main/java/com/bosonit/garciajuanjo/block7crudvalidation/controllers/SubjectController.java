@@ -1,8 +1,8 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.controllers;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectListOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.SubjectOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectListOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.SubjectOutputDto;
 import com.bosonit.garciajuanjo.block7crudvalidation.services.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,13 +31,14 @@ public class SubjectController {
     }
 
     @GetMapping("student/{userId}")
-    public SubjectListOutputDto getByUserId(@PathVariable String userId) {
+    @ResponseStatus(HttpStatus.OK)
+    public SubjectListOutputDto getByStudentId(@PathVariable String userId) {
         return service.findByStudentId(userId).orElseThrow();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SubjectOutputDto addStudentSubject(@RequestBody SubjectInputDto subjectInputDto) {
+    public SubjectOutputDto addSubject(@RequestBody SubjectInputDto subjectInputDto) {
         Optional<SubjectOutputDto> optional = service.save(subjectInputDto);
 
         return optional.orElseThrow();
@@ -50,7 +51,7 @@ public class SubjectController {
     }
 
     @DeleteMapping("{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable String id) {
         service.delete(id);
     }

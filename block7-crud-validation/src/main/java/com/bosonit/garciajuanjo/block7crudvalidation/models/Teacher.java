@@ -1,16 +1,10 @@
-package com.bosonit.garciajuanjo.block7crudvalidation.entities;
+package com.bosonit.garciajuanjo.block7crudvalidation.models;
 
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.StudentSimpleOutputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherInputDto;
-import com.bosonit.garciajuanjo.block7crudvalidation.entities.dto.TeacherOutputDto;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.StudentSimpleOutputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherInputDto;
+import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.TeacherOutputDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
@@ -22,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Teacher {
 
     @Id

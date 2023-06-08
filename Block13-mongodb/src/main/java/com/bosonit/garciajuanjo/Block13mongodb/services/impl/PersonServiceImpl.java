@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -81,13 +82,15 @@ public class PersonServiceImpl implements PersonService {
 
         DeleteResult result = mongoTemplate.remove(person);
         if (result.getDeletedCount() == 0)
-            throw new RuntimeException("Person object with id " + personId + " could not be deleted");
+            throw new UnprocessableEntityException("Person object with id " + personId + " could not be deleted",
+                    HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public PersonOutputDto save(PersonInputDto inputDto) {
         return Optional.of(mongoTemplate.save(new Person(inputDto)).personToPersonOutputDto())
                 .orElseThrow(() ->
-                        new UnprocessableEntityException("A problem has occurred and the record could not be saved"));
+                        new UnprocessableEntityException("A problem has occurred and the record could not be saved"
+                        , HttpStatus.BAD_REQUEST));
     }
 }
