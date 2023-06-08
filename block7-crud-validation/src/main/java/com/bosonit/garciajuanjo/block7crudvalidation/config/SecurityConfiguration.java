@@ -31,7 +31,7 @@ public class SecurityConfiguration {
                 .csrf() //deshabilitamos la verificación por csrf
                 .disable()
                 .authorizeHttpRequests() // Empezamos con los endpoints que no hace falta un token para acceder
-                .requestMatchers("")
+                .requestMatchers("/auth/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

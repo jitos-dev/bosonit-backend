@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
+    //Repositorio
     private final PersonRepository personRepository;
 
     /**
@@ -63,7 +64,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    private PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
