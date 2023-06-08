@@ -24,14 +24,26 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final JwtService jwtService;
+
     @Override
     protected void doFilterInternal(
             @Nonnull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+        //Encabezado de autorización donde viene el token
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        final String user;
 
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-
+        //Extraemos el jwt del header. El 7 son las letras de arriba cuando empezaría el token (Bearer )
+        jwt = authHeader.substring(7);
+        user = jwtService.extractUser(jwt);
     }
 }
