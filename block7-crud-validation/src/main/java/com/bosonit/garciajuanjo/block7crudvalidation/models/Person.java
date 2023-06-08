@@ -6,8 +6,13 @@ import com.bosonit.garciajuanjo.block7crudvalidation.models.dto.PersonOutputDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "persons")
@@ -17,7 +22,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @ToString
-public class Person {
+public class Person implements UserDetails {
 
     @Id
     @GeneratedValue(generator = "myGenerator")
@@ -25,7 +30,7 @@ public class Person {
     @Column(name = "id_person")
     private String idPerson;
 
-    @Column(name = "usuario", nullable = false, length = 10)
+    @Column(name = "usuario", nullable = false, length = 10, unique = true)
     private String user;
 
     @Column(nullable = false)
@@ -39,7 +44,7 @@ public class Person {
     @Column(name = "company_email", nullable = false)
     private String companyEmail;
 
-    @Column(name = "personal_email", nullable = false)
+    @Column(name = "personal_email", nullable = false, unique = true)
     private String personalEmail;
 
     @Column(nullable = false)
@@ -67,6 +72,9 @@ public class Person {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private Student student;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public Person(PersonInputDto personInputDto) {
         this.idPerson = personInputDto.getIdPerson();
@@ -128,6 +136,45 @@ public class Person {
                 this.createdDate,
                 this.imageUrl,
                 this.terminationDate);
+    }
+
+    /**
+     * Colección de SimpleGrantedAuthority con el Role del usuario
+     * @return List of SimpleGrantedAuthority
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.user;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.active;
     }
 }
 

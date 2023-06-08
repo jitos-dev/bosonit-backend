@@ -60,7 +60,7 @@ archivo JSON con los datos en la carpeta resources (mockData.json). Este archivo
 al ejecutar la aplicación desde la clase Block7CrudValidationApplication.java en el método mockData() y lo ejecuto
 con un CommandLineRunner.
 
-En el directorio /postman esta el json para hacer las pruebas.
+En el directorio /postman está el json para hacer las pruebas.
 
 ### Bloque 13 Testing con JUnit avanzado
 Para este proyecto hay que realizar los test a todo lo que tenga funcionalidad como por ejemplo servicios, repositorios
@@ -69,7 +69,10 @@ Para algunas pruebas he hecho pruebas funcionales y para otras pruebas unitarias
 Si nos fijamos en los test para algunos he creído conveniente levantar una base de datos h2 en memoria por lo que tengo
 varios perfiles para estas pruebas en función de lo que necesito en cada caso.
 Dentro de mi carpeta programación hay una explicación de como hacer las pruebas con JUnit y Mockito y como correr los
-tests con Sonarqube
+tests con Sonarqube para no tener problemas
+
+### Bloque 14 Spring Security
+
 
 
 # Getting Started
