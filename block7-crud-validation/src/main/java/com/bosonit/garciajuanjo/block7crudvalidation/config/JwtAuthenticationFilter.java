@@ -7,9 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,7 +30,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService; //Bean creado en ApplicationConfig
 
     @Override
     protected void doFilterInternal(
@@ -53,6 +55,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //Esta parte se da cuando el usuario no se ha autenticado, por lo que tiene que autenticarse
         if (user == null || SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(user);
+
+            //Comprobamos que el token sea válido. El parámetro null son las credenciales que para este caso no tenemos
+            if (jwtService.isValidToken(jwt, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+
+                //le añadimos los details de la request que nos viene
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
+                //Actualizamos el titular del contextHolder
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
         }
+
+        filterChain.doFilter(request, response);
     }
 }
