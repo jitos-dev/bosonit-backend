@@ -13,9 +13,9 @@ public interface PersonService {
 
     Optional<PersonOutputDto> save(PersonInputDto personInputDto);
 
-    Optional<PersonCompleteOutputDto> getById(String id, String outputType);
+    PersonCompleteOutputDto getById(String id, String outputType);
 
-    List<PersonCompleteOutputDto> getByUser(String name, String outputType);
+    PersonCompleteOutputDto getByUser(String name, String outputType);
 
     List<PersonCompleteOutputDto> getAll(String outputType);
 

@@ -35,12 +35,12 @@ public class PersonController {
     public PersonCompleteOutputDto getById(
             @PathVariable String id,
             @RequestParam(required = false, defaultValue = "simple") String outputType) {
-        return service.getById(id, outputType).orElseThrow();
+        return service.getById(id, outputType);
     }
 
     @GetMapping(value = "/user/{user}")
     @ResponseStatus(HttpStatus.OK)
-    public List<PersonCompleteOutputDto> personByUser(
+    public PersonCompleteOutputDto personByUser(
             @PathVariable String user,
             @RequestParam(required = false, defaultValue = "simple") String outputType) {
         return service.getByUser(user, outputType);

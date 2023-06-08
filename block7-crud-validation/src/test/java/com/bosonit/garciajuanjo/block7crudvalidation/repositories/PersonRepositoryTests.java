@@ -24,6 +24,7 @@ import java.util.*;
 import static com.bosonit.garciajuanjo.block7crudvalidation.utils.Constants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -206,12 +207,15 @@ class PersonRepositoryTests {
         Person person = personRepository.save(new Person(inputDto));
 
         //When
-        List<Person> personByName = personRepository.findByUser(person.getUser());
+        Optional<Person> personByName = personRepository.findByUser(person.getUser());
 
         //Then
         assertThat(personByName, notNullValue());
-        assertThat(personByName.size(), greaterThan(0));
-        assertThat(personByName.get(0).getIdPerson(), equalTo(person.getIdPerson()));
+        assertTrue(personByName.isPresent());
+
+        Person personByUser = personByName.get();
+
+        assertThat(personByName.get().getIdPerson(), equalTo(person.getIdPerson()));
     }
 
 
