@@ -223,8 +223,8 @@ public class PersonServiceImpl implements PersonService {
         if (personInputDto.getUser() == null)
             throw new UnprocessableEntityException("The user field cannot be null");
 
-        if (personInputDto.getUser().length() < 6 || personInputDto.getUser().length() > 10)
-            throw new UnprocessableEntityException("The user length cannot be less than 6 characters or greater than 10");
+        if (personInputDto.getUser().length() < 5 || personInputDto.getUser().length() > 10)
+            throw new UnprocessableEntityException("The user length cannot be less than 5 characters or greater than 10");
 
         if (personInputDto.getPassword() == null)
             throw new UnprocessableEntityException("The password field cannot be null");
@@ -275,8 +275,8 @@ public class PersonServiceImpl implements PersonService {
         if (personInputDto.getUser() == null)
             throw new UnprocessableEntityException("The user value of inputDto cannot be null");
 
-        if (personInputDto.getUser().length() < 6)
-            throw new UnprocessableEntityException("The user length cannot be less than 6 characters");
+        if (personInputDto.getUser().length() < 5)
+            throw new UnprocessableEntityException("The user length cannot be less than 5 characters");
 
         if (personInputDto.getUser().length() > 10)
             throw new UnprocessableEntityException("The user length cannot be greater than 10 characters");

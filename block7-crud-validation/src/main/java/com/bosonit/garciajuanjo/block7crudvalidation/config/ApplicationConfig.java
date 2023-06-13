@@ -1,5 +1,6 @@
 package com.bosonit.garciajuanjo.block7crudvalidation.config;
 
+import com.bosonit.garciajuanjo.block7crudvalidation.models.Person;
 import com.bosonit.garciajuanjo.block7crudvalidation.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -8,10 +9,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
 
 /**
  * Esta va a ser una clase de configuración donde vamos a tener los Beans que nos puedan ser necesarios para
@@ -22,7 +27,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    //Repositorio
     private final PersonRepository personRepository;
 
     /**

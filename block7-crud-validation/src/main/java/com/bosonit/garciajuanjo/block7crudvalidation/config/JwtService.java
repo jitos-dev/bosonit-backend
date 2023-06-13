@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,11 @@ public class JwtService {
 
     //Esta clave la genero desde la página: https://www.allkeysgenerator.com/ aunque hay muchas
     //Es de tipo sha-256 con ex
-    private final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
+    @Value("${application.security.jwt.secret-key}")
+    private String secretKey;
+
+    @Value("${application.security.jwt.expiration}")
+    private long expirationToken;
     /**
      * En este método extraemos el usuario del token que se pasa como parámetro
      * @param token de tipo String de donde se extrae el usuario
@@ -71,7 +76,7 @@ public class JwtService {
      * @return objeto Key con la clave secreta
      */
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -83,15 +88,14 @@ public class JwtService {
      */
     public String generateToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            long expiration
+            UserDetails userDetails
     ){
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis())) //Para calcular si el token ha expirado
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationToken))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256) //le pasamos la Key y el tipo de algoritmo utilizado
                 .compact();
 
@@ -102,8 +106,8 @@ public class JwtService {
      * @param userDetails UserDetails para añadir al token
      * @return String con el token generado
      */
-    public String generateToken(UserDetails userDetails, long expiration) {
-        return generateToken(new HashMap<>(), userDetails, expiration);
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
     }
 
     public boolean isValidToken(String token, UserDetails userDetails) {
