@@ -7,6 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,14 +29,48 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService; //Bean creado en ApplicationConfig
+
     @Override
     protected void doFilterInternal(
             @Nonnull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+        //Encabezado de autorización donde viene el token
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        final String user;
 
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
+        //Extraemos el jwt del header. El 7 son las letras de arriba cuando empezaría el token (Bearer )
+        jwt = authHeader.substring(7);
+        user = jwtService.extractUser(jwt);
 
+        //Esta parte se da cuando el usuario no se ha autenticado, por lo que tiene que autenticarse
+        if (user == null || SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(user);
+
+            //Comprobamos que el token sea válido. El parámetro null son las credenciales que para este caso no tenemos
+            if (jwtService.isValidToken(jwt, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+
+                //le añadimos los details de la request que nos viene
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
+                //Actualizamos el titular del contextHolder
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
+
+        filterChain.doFilter(request, response);
     }
 }

@@ -44,7 +44,7 @@ public class Person implements UserDetails {
     @Column(name = "company_email", nullable = false)
     private String companyEmail;
 
-    @Column(name = "personal_email", nullable = false, unique = true)
+    @Column(name = "personal_email", nullable = false)
     private String personalEmail;
 
     @Column(nullable = false)

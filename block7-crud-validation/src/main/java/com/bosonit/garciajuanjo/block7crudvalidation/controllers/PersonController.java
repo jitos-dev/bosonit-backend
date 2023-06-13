@@ -35,12 +35,12 @@ public class PersonController {
     public PersonCompleteOutputDto getById(
             @PathVariable String id,
             @RequestParam(required = false, defaultValue = "simple") String outputType) {
-        return service.getById(id, outputType).orElseThrow();
+        return service.getById(id, outputType);
     }
 
     @GetMapping(value = "/user/{user}")
     @ResponseStatus(HttpStatus.OK)
-    public List<PersonCompleteOutputDto> personByUser(
+    public PersonCompleteOutputDto personByUser(
             @PathVariable String user,
             @RequestParam(required = false, defaultValue = "simple") String outputType) {
         return service.getByUser(user, outputType);
@@ -89,18 +89,21 @@ public class PersonController {
         return service.getBy(values);
     }
 
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PersonOutputDto addPerson(@RequestBody PersonInputDto personInputDto) {
         return service.save(personInputDto).orElseThrow();
     }
 
+    //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PersonOutputDto update(@RequestBody PersonInputDto personInputDto, @PathVariable String id) {
         return service.update(id, personInputDto).orElseThrow();
     }
 
+    //@PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable String id) {

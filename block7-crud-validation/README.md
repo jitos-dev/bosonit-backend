@@ -72,8 +72,28 @@ Dentro de mi carpeta programación hay una explicación de como hacer las prueba
 tests con Sonarqube para no tener problemas
 
 ### Bloque 14 Spring Security
+Este proyecto se ha adaptado a Spring Security con JWT. Cuando se hace login (http://localhost:8080/auth/login) siempre
+que se esté registrado (se puede registrar en http://localhost:8080/auth/register) se le asignará un token, el cual se 
+tiene que incluir en las cabeceras de las solicitudes para poder acceder a los distintos endpoint. Los usuarios con el
+role 'USER' solo pueden acceder a los endpoint de tipo GET mientras que el usuario con el role 'ADMIN' podrá acceder
+a cualquier endpoint. Los usuarios que no estén logeados solo podrán acceder a los endpoint dentro del controlador
+'auth' para realizar el login y el registro.
+Los archivos que componen este apartado de seguridad (aparte de las dependencias en el POM) son los siguientes:
+* config: En este directorio se encuentran varias clases de configuración como SecurityConfiguration que se encarga de
+filtrar que tipo de peticiones puede hacer cada usuario en función de su Role o JwtAuthenticationFilter que se encarga
+de recoger las solicitudes a los endpoint, comprobar que el token es correcto y está en vigor y dar o no acceso, y 
+alguna clase más.
+* models/auth: En este directorio encontramos los modelos que utilizo para la entrada y salida de datos para el registro
+o el login.
+* Aparte también tenemos un Service con su implementación para las distintas operaciones o un controlador (auth) para los
+endpoint de login y registro.
 
+Para las pruebas dispongo de dos usuarios ya creados en la base de datos que son:
+* ADMIN: user: admin, password: admin
+* USER: user: user, password: admin
 
+La base de datos para este proyecto la creo con docker en un contenedor con el siguiente nombre:
+* postgres-block7-spring-security
 
 # Getting Started
 

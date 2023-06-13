@@ -78,12 +78,12 @@ class PersonControllerTest {
     void whenGetById_returnPersonCompleteOutputDto() {
         //Give
         //Primero obtengo el usuario porque el id es autogenerado de tipo String y no se cual es
-        List<Person> list = personRepository.findByUser("usuario25");
+        Optional<Person> optionalPerson = personRepository.findByUser("usuario25");
 
-        if (list.isEmpty())
+        if (optionalPerson.isEmpty())
             throw new EntityNotFoundException();
 
-        Person person = list.get(0);
+        Person person = optionalPerson.get();
         String urlGetById = url + "/" + person.getIdPerson();
 
         //When

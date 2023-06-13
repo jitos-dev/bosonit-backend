@@ -57,29 +57,30 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Optional<PersonCompleteOutputDto> getById(String id, String output) {
+    public PersonCompleteOutputDto getById(String id, String output) {
         Person person = personRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
 
         List<PersonOutputDto> persons = Collections.singletonList(person.personToPersonOutputDto());
         OutputType outputType = OutputType.valueOf(output.toUpperCase());
 
-        return getPersonCompleteOutputDto(outputType, persons).stream().findFirst();
+        return getPersonCompleteOutputDto(outputType, persons)
+                .stream().findFirst()
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
-    public List<PersonCompleteOutputDto> getByUser(String user, String output) {
-        List<PersonOutputDto> personList = personRepository.findByUser(user)
-                .stream()
-                .map(Person::personToPersonOutputDto)
-                .toList();
-
-        if (personList.isEmpty())
-            throw new EntityNotFoundException();
+    public PersonCompleteOutputDto getByUser(String user, String output) {
+        PersonOutputDto person = personRepository.findByUser(user)
+                .orElseThrow(EntityNotFoundException::new)
+                .personToPersonOutputDto();
 
         OutputType outputType = OutputType.valueOf(output.toUpperCase());
 
-        return getPersonCompleteOutputDto(outputType, personList);
+        return getPersonCompleteOutputDto(outputType, List.of(person))
+                .stream()
+                .findFirst()
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
@@ -222,8 +223,8 @@ public class PersonServiceImpl implements PersonService {
         if (personInputDto.getUser() == null)
             throw new UnprocessableEntityException("The user field cannot be null");
 
-        if (personInputDto.getUser().length() < 6 || personInputDto.getUser().length() > 10)
-            throw new UnprocessableEntityException("The user length cannot be less than 6 characters or greater than 10");
+        if (personInputDto.getUser().length() < 5 || personInputDto.getUser().length() > 10)
+            throw new UnprocessableEntityException("The user length cannot be less than 5 characters or greater than 10");
 
         if (personInputDto.getPassword() == null)
             throw new UnprocessableEntityException("The password field cannot be null");
@@ -274,8 +275,8 @@ public class PersonServiceImpl implements PersonService {
         if (personInputDto.getUser() == null)
             throw new UnprocessableEntityException("The user value of inputDto cannot be null");
 
-        if (personInputDto.getUser().length() < 6)
-            throw new UnprocessableEntityException("The user length cannot be less than 6 characters");
+        if (personInputDto.getUser().length() < 5)
+            throw new UnprocessableEntityException("The user length cannot be less than 5 characters");
 
         if (personInputDto.getUser().length() > 10)
             throw new UnprocessableEntityException("The user length cannot be greater than 10 characters");

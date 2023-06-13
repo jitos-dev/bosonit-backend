@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface PersonRepository extends JpaRepository<Person, String> {
 
-    List<Person> findByUser(String user);
+    Optional<Person> findByUser(String user);
 
     List<PersonOutputDto> findPersonsBy(Map<String, Object> values);
 
