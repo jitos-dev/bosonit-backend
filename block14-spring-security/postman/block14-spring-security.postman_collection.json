@@ -1,0 +1,1830 @@
+{
+	"info": {
+		"_postman_id": "c26de78f-9cea-4e36-8e0e-0926303b32c7",
+		"name": "block14-spring-security",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25196274"
+	},
+	"item": [
+		{
+			"name": "PERSONA",
+			"item": [
+				{
+					"name": "POST PERSONA",
+					"item": [
+						{
+							"name": "addPersona 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"usuario\": \"Persona1\",\r\n    \"password\": \"PassPersona1\",\r\n    \"name\": \"Persona1\",\r\n    \"surname\": \"Persona1 Persona1\",\r\n    \"companyEmail\": \"Persona1@example.com\",\r\n    \"personalEmail\": \"Persona1@gmail.com\",\r\n    \"city\": \"Ciudad Persona1\",\r\n    \"active\": true,\r\n    \"imagenUrl\": \"http://example.com/images/Persona1.jpg\",\r\n    \"admin\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/persona",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addPersona 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"usuario\": \"Persona2\",\r\n    \"password\": \"PassPersona2\",\r\n    \"name\": \"Persona2\",\r\n    \"surname\": \"Persona2 Persona2\",\r\n    \"companyEmail\": \"Persona2@example.com\",\r\n    \"personalEmail\": \"Persona2@gmail.com\",\r\n    \"city\": \"Ciudad Persona2\",\r\n    \"active\": true,\r\n    \"imagenUrl\": \"http://example.com/images/Persona2.jpg\",\r\n    \"admin\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/persona",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addPersona 3",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"usuario\": \"Persona3\",\r\n    \"password\": \"PassPersona3\",\r\n    \"name\": \"Persona3\",\r\n    \"surname\": \"Persona3 Persona3\",\r\n    \"companyEmail\": \"Persona3@example.com\",\r\n    \"personalEmail\": \"Persona3@gmail.com\",\r\n    \"city\": \"Ciudad Persona3\",\r\n    \"active\": true,\r\n    \"imagenUrl\": \"http://example.com/images/Persona3.jpg\",\r\n    \"admin\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/persona",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addPersona 4",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"usuario\": \"Persona4\",\r\n    \"password\": \"PassPersona4\",\r\n    \"name\": \"Persona4\",\r\n    \"surname\": \"Persona4 Persona4\",\r\n    \"companyEmail\": \"Persona4@example.com\",\r\n    \"personalEmail\": \"Persona4@gmail.com\",\r\n    \"city\": \"Ciudad Persona4\",\r\n    \"active\": true,\r\n    \"imagenUrl\": \"http://example.com/images/Persona4.jpg\",\r\n    \"admin\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/persona",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addPersona 4 Error Duplicado",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"PassPersona1\",\r\n    \"name\": \"Persona1\",\r\n    \"surname\": \"Persona1 Persona1\",\r\n    \"companyEmail\": \"Persona1@example.com\",\r\n    \"personalEmail\": \"Persona1@gmail.com\",\r\n    \"city\": \"Ciudad Persona1\",\r\n    \"active\": true,\r\n    \"imagenUrl\": \"http://example.com/images/Persona1.jpg\",\r\n    \"admin\":false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/persona",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addPersona 4 Error Input",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"PassPersona1\",\r\n    \"name\": \"Persona1\",\r\n    \"surname\": \"Persona1 Persona1\",\r\n    \"companyEmail\": \"Persona1@example.com\",\r\n    \"personalEmail\": \"Persona1@gmail.com\",\r\n    \"city\": \"Ciudad Persona1\",\r\n    \"active\": true,\r\n    \"imagenUrl\": \"http://example.com/images/Persona1.jpg\",\r\n    \"admin\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/persona",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addPersona 4 Error Admin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"usuario\": \"Persona5\",\r\n    \"password\": \"PassPersona5\",\r\n    \"name\": \"Persona5\",\r\n    \"surname\": \"Persona5 Persona5\",\r\n    \"companyEmail\": \"Persona4@example.com\",\r\n    \"personalEmail\": \"Persona5@gmail.com\",\r\n    \"city\": \"Ciudad Persona5\",\r\n    \"active\": true,\r\n    \"imagenUrl\": \"http://example.com/images/Persona5.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/persona",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET PERSONA",
+					"item": [
+						{
+							"name": "getPersonaById 1",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/persona/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPersonaById 2",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/persona/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPersonaById 3",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/persona/3",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPersonaById 4",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/persona/4",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPersonaById 4Error",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/persona/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPersonaByName 1",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/persona/nombre/Persona1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"nombre",
+										"Persona1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPsonaByName 4Error",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/persona/nombre/Persona8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"nombre",
+										"Persona8080"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllPersonas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/persona",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT PERSONA",
+					"item": [
+						{
+							"name": "updatePersona 1 Completo",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"usuario\": \"Cambio\",\r\n    \"name\": \"Cambio\",\r\n    \"surname\": \"Cambio\",\r\n    \"companyEmail\": \"Cambio@example.com\",\r\n    \"personalEmail\": \"Cambio@gmail.com\",\r\n    \"city\": \"Cambio\",\r\n    \"active\": true,\r\n    \"createdDate\": \"2023-01-19T11:08:16.864+00:00\",\r\n    \"imagenUrl\": \"http9s://example.com/images/Cambio.jpg\",\r\n    \"terminationDate\": null\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/persona/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatePersona 1 Parcial",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Cambio parcial\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/persona/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatePersona 4Error",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Cambio4Error\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/persona/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE PERSONA",
+					"item": [
+						{
+							"name": "deletePersona 1",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/persona/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletePersona 4Error",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/persona/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"persona",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "PROFESOR",
+			"item": [
+				{
+					"name": "POST PROFESOR",
+					"item": [
+						{
+							"name": "addProfesor 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPersona\": 1,\r\n    \"comments\": \"Comentario Profesor1\",\r\n    \"branch\": \"Branch Profesor1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/profesor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addProfesor 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPersona\": 2,\r\n    \"comments\": \"Comentario Profesor2\",\r\n    \"branch\": \"Branch Profesor2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/profesor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addProfesor 4 Error Duplicado",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPersona\": 1,\r\n    \"comments\": \"Comentario Profesor1\",\r\n    \"branch\": \"Branch Profesor1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/profesor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addProfesor 4 Error Input 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"comments\": \"Comentario Profesor1\",\r\n    \"branch\": \"Branch Profesor1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/profesor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addProfesor 4 Error Input 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPersona\": 1,\r\n    \"comments\": \"Comentario Profesor1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/profesor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST AssignStudentToProfesor",
+					"item": [
+						{
+							"name": "assignStudentToProfesor 1-1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/profesor/assignStudentToProfesor?idProfesor=1&idStudent=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor",
+										"assignStudentToProfesor"
+									],
+									"query": [
+										{
+											"key": "idProfesor",
+											"value": "1"
+										},
+										{
+											"key": "idStudent",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "assignStudentToProfesor 1-2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/profesor/assignStudentToProfesor?idProfesor=1&idStudent=2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor",
+										"assignStudentToProfesor"
+									],
+									"query": [
+										{
+											"key": "idProfesor",
+											"value": "1"
+										},
+										{
+											"key": "idStudent",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET PROFESOR",
+					"item": [
+						{
+							"name": "getProfesorById 1",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/profesor/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getProfesorById 2",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/profesor/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getProfesorById 4Error",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/profesor/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllProfesores",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/profesor",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT PROFESOR",
+					"item": [
+						{
+							"name": "updateProfesor 1 Complet",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"comments\": \"Cambio completo\",\r\n    \"branch\": \"Cambio completo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/profesor/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateProfesor 1 Parcial",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"comments\": \"Cambio parcial\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/profesor/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateProfesor 4Error",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"comments\": \"IdProfesor no existe\",\r\n    \"branch\": \"Para error\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/profesor/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE PROFESOR",
+					"item": [
+						{
+							"name": "deleteProfesor 1",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/profesor/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteProfesor 4Error",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/profesor/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"profesor",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "STUDENT",
+			"item": [
+				{
+					"name": "POST STUDENT",
+					"item": [
+						{
+							"name": "addStudent 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPersona\": 3,\r\n    \"numHourWeek\": 40,\r\n    \"comments\": \"Comentario Student1\",\r\n    \"branch\":\"Branch Student1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/student",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addStudent 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPersona\": 4,\r\n    \"numHourWeek\": 40,\r\n    \"comments\": \"Comentario Student2\",\r\n    \"branch\":\"Branch Student2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/student",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addStudent 4 Duplicado",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPersona\": 3,\r\n    \"numHourWeek\": 40,\r\n    \"comments\": \"Comentario Student1\",\r\n    \"branch\":\"Branch Student1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/student",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addStudent 4 Error Input 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"comments\": \"Comentario Student1\",\r\n    \"branch\":\"Branch Student1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/student",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addStudent 4 Error Input 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPersona\": 4,\r\n    \"comments\": \"Comentario Student1\",\r\n    \"branch\":\"Branch Student1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/student",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST AssignStudentToAsignatura",
+					"item": [
+						{
+							"name": "assignAsignaturaToStudent 1-1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/assignAsignaturaToStudent?idStudent=1&idsAsignaturas=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"assignAsignaturaToStudent"
+									],
+									"query": [
+										{
+											"key": "idStudent",
+											"value": "1"
+										},
+										{
+											"key": "idsAsignaturas",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "assignAsignaturaToStudent 2-1,2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/assignAsignaturaToStudent?idStudent=2&idsAsignaturas=1,2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"assignAsignaturaToStudent"
+									],
+									"query": [
+										{
+											"key": "idStudent",
+											"value": "2"
+										},
+										{
+											"key": "idsAsignaturas",
+											"value": "1,2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "assignAsignaturaToStudent 1-1,2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/assignAsignaturaToStudent?idStudent=1&idsAsignaturas=1,2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"assignAsignaturaToStudent"
+									],
+									"query": [
+										{
+											"key": "idStudent",
+											"value": "1"
+										},
+										{
+											"key": "idsAsignaturas",
+											"value": "1,2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT RemoveAsignaturasFromStudent",
+					"item": [
+						{
+							"name": "removeAsignaturasFromStudent 1-1",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/removeAsignaturasFromStudent?idStudent=1&idsAsignaturas=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"removeAsignaturasFromStudent"
+									],
+									"query": [
+										{
+											"key": "idStudent",
+											"value": "1"
+										},
+										{
+											"key": "idsAsignaturas",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "removeAsignaturasFromStudent 2-1,2",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/removeAsignaturasFromStudent?idStudent=2&idsAsignaturas=1,2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"removeAsignaturasFromStudent"
+									],
+									"query": [
+										{
+											"key": "idStudent",
+											"value": "2"
+										},
+										{
+											"key": "idsAsignaturas",
+											"value": "1,2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET STUDENT",
+					"item": [
+						{
+							"name": "getStudentById 1 Default",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getStudentById 1 Simple",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/1?outputType=simple",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"1"
+									],
+									"query": [
+										{
+											"key": "outputType",
+											"value": "simple"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getStudentById 2 Full",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/1?outputType=full",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"1"
+									],
+									"query": [
+										{
+											"key": "outputType",
+											"value": "full"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getStudentById 4Error",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/8080?outputType=full",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"8080"
+									],
+									"query": [
+										{
+											"key": "outputType",
+											"value": "full"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllStudents",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT STUDENT",
+					"item": [
+						{
+							"name": "updateStudent1 Complet",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"comments\": \"Cambio Completo\",\r\n    \"branch\":\"Cambio Completo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/student/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateStudent 1 Parcial",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"branch\":\"Cambio Parcial\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/student/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateStudent 4Error",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"comments\": \"IdStudent no existe\",\r\n    \"branch\": \"Para error\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/student/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE STUDENT",
+					"item": [
+						{
+							"name": "deleteStudent 1",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteStudent 4Error",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/student/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"student",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "ASIGNATURA",
+			"item": [
+				{
+					"name": "POST ASIGNATURA",
+					"item": [
+						{
+							"name": "addAsignatura 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombreAsignatura\":\"Asignatura1\",\r\n    \"comments\": \"Comentario Asignatura1\",\r\n    \"branch\":\"Branch Asignatura1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/asignatura",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addAsignatura 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombreAsignatura\":\"Asignatura2\",\r\n    \"comments\": \"Comentario Asignatura2\",\r\n    \"branch\":\"Branch Asignatura2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/asignatura",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addAsignatura 4 Error Input Duplicado",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombreAsignatura\":\"Asignatura1\",\r\n    \"comments\": \"Comentario Asignatura1\",\r\n    \"branch\":\"Branch Asignatura1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/asignatura",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET ASIGNATURA",
+					"item": [
+						{
+							"name": "getAsignaturaById 1",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/asignatura/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAsignaturaById 2",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/asignatura/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAsignaturaById 4Error",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/asignatura/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllAsignaturas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/asignatura",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT ASIGNATURA",
+					"item": [
+						{
+							"name": "updateAsignatura 1 Complet",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombreAsignatura\": \"Cambio Completo\",\r\n    \"comments\": \"Cambio Completo\",\r\n    \"branch\":\"Cambio Completo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/asignatura/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateAsignatura1 Parcial",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"branch\":\"Cambio Parcial\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/asignatura/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateAsignatura 4Error",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idPersona\": 1,\r\n    \"comments\": \"IdStudent no existe\",\r\n    \"branch\": \"Para error\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/asignatura/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE ASIGNATURA",
+					"item": [
+						{
+							"name": "deleteAsignatura 1",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/asignatura/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteAsignatura 4Error",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/asignatura/8080",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"asignatura",
+										"8080"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "LOGIN",
+			"item": [
+				{
+					"name": "Login Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"PersonaAdmin\",\r\n    \"password\": \"PersonaAdmin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"PersonaUser\",\r\n    \"password\": \"PersonaUser\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
